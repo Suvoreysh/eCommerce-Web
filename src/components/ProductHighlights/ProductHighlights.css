@@ -1,0 +1,206 @@
+.product-highlights {
+  width: 100%;
+  background: #fff;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+/* =========================
+   HIGHLIGHTS
+========================= */
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 3px;
+  row-gap: 24px;
+}
+
+.highlight-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.highlight-card > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.highlight-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  object-fit: contain;
+  margin-top: 2px;
+}
+
+.highlight-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111;
+}
+
+.highlight-desc {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #666;
+}
+
+/* =========================
+   BUTTON BAR (NOT STICKY)
+========================= */
+
+.action-bar {
+  display: flex;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.wishlist-bar-btn,
+.cart-bar-btn {
+  flex: 1;
+  height: 56px;
+  border-radius: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.wishlist-bar-btn {
+  background: #fff;
+  border: 2px solid #11485b;
+  color: #111;
+}
+
+.wishlist-bar-btn:hover {
+  background: #f7f7f7;
+}
+
+.cart-bar-btn {
+  background: #11485b;
+  border: none;
+  color: #fff;
+}
+
+.cart-bar-btn:hover {
+  background: #0d3b4b;
+}
+
+.wishlist-bar-btn svg,
+.cart-bar-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+.product-highlights {
+    width: 100%;
+    max-width: none;
+}
+
+.highlights-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 20px 16px;
+    width: 100%;
+}
+  .highlight-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .highlight-title {
+    font-size: 14px;
+  }
+
+  .highlight-desc {
+    font-size: 10px !important;
+  }
+
+  .wishlist-bar-btn,
+  .cart-bar-btn {
+    height: 54px;
+    font-size: 17px;
+  }
+}
+
+/* =========================
+   VERY SMALL MOBILE
+========================= */
+
+@media (max-width: 380px) {
+  .highlights-grid {
+    gap: 18px 12px;
+  }
+
+  .highlight-title {
+    font-size: 13px;
+  }
+
+  .highlight-desc {
+    font-size: 10px;
+  }
+
+  .highlight-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .wishlist-bar-btn,
+  .cart-bar-btn {
+    height: 50px;
+    font-size: 16px;
+  }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 992px) {
+  .product-highlights {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .highlights-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+
+  .highlight-title {
+    font-size: 16px;
+  }
+
+  .highlight-desc {
+    font-size: 13px;
+  }
+
+  .highlight-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .action-bar {
+    max-width: 480px;
+    margin: 40px auto 0;
+  }
+}

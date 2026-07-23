@@ -1,0 +1,218 @@
+/* =========================================
+   Privacy Security
+========================================= */
+
+.privacy-security {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 80px 80px;
+    box-sizing: border-box;
+}
+
+/* Top banner image */
+
+.privacy-media {
+    width: 100%;
+    margin-bottom: 70px;
+}
+
+.privacy-media img {
+    width: 100%;
+    display: block;
+}
+
+/* Content */
+
+.privacy-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Small heading */
+
+.privacy-eyebrow {
+    font-size: 14px;
+    color: #86868b;
+    margin-bottom: 12px;
+}
+
+/* Main Heading */
+
+.privacy-content h2 {
+    font-size: 84px;
+    line-height: .9;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 50px;
+}
+
+/* =============================
+   Mac Image
+============================= */
+
+.privacy-mac {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 55px;
+}
+
+.privacy-mac img {
+    width: 100%;
+    max-width: 950px;
+    height: auto;
+    display: block;
+}
+
+/* Description */
+
+.privacy-intro {
+    max-width: 760px;
+    margin: 0 auto 50px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #424245;
+}
+
+/* Feature List */
+
+.privacy-points {
+    max-width: 760px;
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.privacy-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.privacy-icon {
+    font-size: 24px;
+    color: #1d1d1f;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.privacy-point h4 {
+    font-size: 18px;
+    color: #1d1d1f;
+    margin-bottom: 6px;
+}
+
+.privacy-point p {
+    font-size: 15px;
+    color: #6e6e73;
+    line-height: 1.6;
+}
+
+/* =========================================
+   Tablet
+========================================= */
+
+@media (max-width:1024px){
+
+    .privacy-security{
+        padding:0 40px 70px;
+    }
+
+    .privacy-content h2{
+        font-size:64px;
+    }
+
+    .privacy-mac img{
+        max-width:700px;
+    }
+
+}
+.privacy-intro {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 60px;
+    text-align: center;
+    font-size: 22px;
+    line-height: 1.6;
+    color: #1d1d1f;
+}
+
+.privacy-intro span {
+    color: #ff3b30;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+    .privacy-intro {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto 40px;
+        padding: 0 16px;
+        box-sizing: border-box;
+
+        font-size: 17px;
+        line-height: 1.7;
+
+        text-align: center !important;
+    }
+}
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width:768px){
+
+    .privacy-security{
+        padding:0 16px 50px;
+    }
+
+    .privacy-media{
+        margin-bottom:40px;
+    }
+
+    .privacy-eyebrow{
+        font-size:13px;
+        margin-bottom:8px;
+    }
+
+    .privacy-content h2{
+        font-size:48px;
+        margin-bottom:30px;
+    }
+
+    .privacy-mac{
+        margin-bottom:30px;
+    }
+
+    .privacy-mac img{
+        width:100%;
+        max-width:320px;
+    }
+
+    .privacy-intro{
+        max-width:100%;
+        text-align:left;
+        font-size:15px;
+        margin-bottom:35px;
+    }
+
+    .privacy-points{
+        max-width:100%;
+        gap:24px;
+    }
+
+    .privacy-point h4{
+        font-size:15px;
+    }
+
+    .privacy-point p{
+        font-size:13px;
+    }
+
+}

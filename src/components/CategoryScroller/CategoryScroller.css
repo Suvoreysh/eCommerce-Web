@@ -1,0 +1,101 @@
+.category-scroller {
+    position: relative;
+    max-width: 1400px;
+    margin: 16px auto;
+    padding: 0 25px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.category-track {
+    flex: 1;
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+
+    padding: 18px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+
+    scrollbar-width: none;
+}
+
+.category-track::-webkit-scrollbar {
+    display: none;
+}
+
+.category-scroll-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.category-scroll-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f4f6f7;
+    overflow: hidden;
+}
+
+.category-scroll-circle img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
+.category-scroll-item span {
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+}
+
+.category-next-btn {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    background: #123848;
+    color: #fff;
+    font-size: 18px;
+
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.category-next-btn:hover {
+    background: #0d2732;
+}
+
+@media (max-width: 768px) {
+    .category-scroller {
+        padding: 0 16px;
+        margin: 12px auto;
+    }
+
+    .category-track {
+        gap: 18px;
+        padding: 14px;
+    }
+
+    .category-scroll-circle {
+        width: 54px;
+        height: 54px;
+    }
+}

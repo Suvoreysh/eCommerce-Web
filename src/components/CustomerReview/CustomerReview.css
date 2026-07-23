@@ -1,0 +1,160 @@
+.keep-exploring {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 25px;
+}
+
+.keep-exploring-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.keep-exploring-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.explore-more-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e88e5;
+    text-decoration: none;
+}
+
+.keep-exploring-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.explore-card {
+    position: relative;
+
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+}
+
+.explore-tag {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+
+    background: #ff3b30;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.explore-card img {
+    width: 100%;
+    max-height: 120px;
+    object-fit: contain;
+    margin: 20px 0 14px;
+}
+
+.explore-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+}
+
+.explore-meta {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 14px;
+}
+
+.explore-chip {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #f4f6f7;
+    font-size: 11px;
+    font-weight: 600;
+    color: #333;
+}
+
+.explore-btn {
+    width: 100%;
+    padding: 10px 0;
+
+    border: 1px solid #123848;
+    border-radius: 30px;
+
+    background: #fff;
+    color: #123848;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.explore-btn:hover {
+    background: #123848;
+    color: #fff;
+}
+
+.explore-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #d9d9d9;
+}
+
+.dot.active {
+    background: #123848;
+    width: 20px;
+    border-radius: 4px;
+}
+
+/* ========================= */
+/* Tablet */
+/* ========================= */
+
+@media (max-width: 992px) {
+    .keep-exploring-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ========================= */
+/* Mobile */
+/* ========================= */
+
+@media (max-width: 768px) {
+    .keep-exploring {
+        padding: 30px 16px;
+    }
+
+    .keep-exploring-header h2 {
+        font-size: 18px;
+    }
+
+    .keep-exploring-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .explore-card {
+        padding: 12px;
+    }
+}

@@ -1,0 +1,83 @@
+.built-bold {
+    width: 100%;
+    background: #eef6f6;
+    padding: 60px 25px;
+}
+
+.built-bold-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.built-bold-media {
+    flex: 1;
+    max-width: 700px;
+}
+
+.built-bold-media img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.built-bold-text {
+    flex: 1;
+    max-width: 400px;
+}
+
+.built-bold-text .eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.built-bold-text h2 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #123848;
+    margin-bottom: 16px;
+}
+
+.built-bold-text p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+/* ========================= */
+/* Tablet */
+/* ========================= */
+
+@media (max-width: 992px) {
+    .built-bold-inner {
+        gap: 24px;
+    }
+}
+
+/* ========================= */
+/* Mobile */
+/* ========================= */
+
+@media (max-width: 768px) {
+    .built-bold {
+        padding: 36px 16px;
+    }
+
+    .built-bold-inner {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
+    .built-bold-text {
+        max-width: 100%;
+    }
+}

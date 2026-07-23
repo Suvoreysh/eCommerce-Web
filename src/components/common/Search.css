@@ -1,0 +1,334 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.search-page {
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f6f7f9;
+    min-height: 100vh;
+    color: #1a1a1a;
+    max-width: 430px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+.search-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 6px;
+}
+
+.search-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 26px;
+    height: 26px;
+}
+
+.search-top-spacer {
+    width: 26px;
+}
+
+.search-top-bar h1 {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.search-bar-wrap {
+    position: relative;
+    padding: 14px 20px 0;
+    z-index: 20;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1.5px solid #e2e2e2;
+    border-radius: 27px;
+    height: 54px;
+    padding: 0 12px 0 20px;
+    position: relative;
+    z-index: 21;
+}
+
+.search-bar.focused {
+    border-color: #d0d0d0;
+    border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+}
+
+.search-bar-icon {
+    display: flex;
+    color: #a3a3a3;
+    flex-shrink: 0;
+}
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    height: 100%;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1a1a1a;
+    background: transparent;
+}
+
+.search-bar input::placeholder {
+    color: #a3a3a3;
+}
+
+.search-clear-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.search-backdrop {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    z-index: 15;
+    cursor: default;
+}
+
+.search-dropdown {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: calc(100% - 2px);
+    background: #fff;
+    border: 1.3px solid #d0d0d0;
+    border-top: none;
+    border-radius: 0 0 22px 22px;
+    padding: 18px 20px 22px;
+    box-shadow: 0 20px 34px rgba(0, 0, 0, 0.1);
+    z-index: 21;
+}
+
+.search-dropdown-label-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+}
+
+.search-dropdown-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #8a8a8a;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.search-dropdown-rule {
+    flex: 1;
+    height: 1px;
+    background: #ececec;
+}
+
+.search-chip-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.search-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1.3px solid #e6e6e6;
+    border-radius: 24px;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4d4d4d;
+    cursor: pointer;
+}
+
+.search-chip-icon {
+    display: flex;
+    color: #b0b0b0;
+    flex-shrink: 0;
+}
+
+.search-results {
+    padding: 24px 20px 0;
+}
+
+.search-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.search-section-head h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.search-see-more {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2f6fed;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.search-product-row {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+}
+
+.search-product-row::-webkit-scrollbar {
+    display: none;
+}
+
+.search-product-card {
+    position: relative;
+    flex: 0 0 192px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-sale-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #d13b3b;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 8px;
+    z-index: 1;
+    text-transform: lowercase;
+}
+
+.search-wish-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #c2c2c2;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.search-product-thumb {
+    width: 100%;
+    height: 104px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f0f1f3;
+    margin-bottom: 12px;
+}
+
+.search-product-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.search-product-price {
+    font-size: 12px;
+    color: #6b6b6b;
+    margin: 0 0 8px;
+}
+
+.search-product-price b {
+    color: #1a1a1a;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.search-product-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 3px;
+    line-height: 1.3;
+    color: #1a1a1a;
+}
+
+.search-product-chip {
+    font-size: 12px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 4px;
+}
+
+.search-product-tagline {
+    font-size: 11px;
+    color: #9a9a9a;
+    margin: 0 0 14px;
+    line-height: 1.4;
+}
+
+.search-product-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-view-btn {
+    flex: 1;
+    height: 38px;
+    border-radius: 10px;
+    border: none;
+    background: #123848;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.search-cart-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1.3px solid #e2e2e2;
+    background: #fff;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}

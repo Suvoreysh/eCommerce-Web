@@ -1,0 +1,313 @@
+.pro-beyond {
+    width: 100%;
+    background: #ffffff;
+}
+
+/* ===========================
+   Common Section
+=========================== */
+
+.product-section {
+    width: 100%;
+    padding: 90px 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* .product-section::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            #e9ffff 100%);
+    z-index: 0;
+} */
+
+.product-content,
+.split-layout {
+    position: relative;
+    z-index: 2;
+}
+
+/* ===========================
+   CENTER LAYOUT
+=========================== */
+
+.center-layout {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.product-content {
+    width: 100%;
+    max-width: 620px;
+}
+
+.product-content h2 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+}
+
+.product-subtitle {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.product-image img {
+    width: 100%;
+    max-width: 360px;
+    display: block;
+    margin: auto;
+    object-fit: contain;
+    transition: .35s;
+}
+
+.product-image img:hover {
+    transform: scale(1.05);
+}
+
+.product-buttons {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.btn-outline,
+.btn-filled {
+    height: 42px;
+    padding: 0 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.btn-outline {
+    border: 2px solid #1b4352;
+    background: #fff;
+    color: #1b4352;
+}
+
+.btn-outline:hover {
+    background: #1b4352;
+    color: #fff;
+}
+
+.btn-filled {
+    border: none;
+    background: #1b4352;
+    color: #fff;
+}
+
+.btn-filled:hover {
+    background: #0f2d39;
+}
+
+/* ===========================
+   SPLIT LAYOUT
+=========================== */
+
+.split-layout {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 70px;
+    align-items: center;
+}
+
+.split-image {
+    display: flex;
+    justify-content: center;
+}
+
+.split-image img {
+    width: 100%;
+    max-width: 320px;
+    transition: .35s;
+}
+
+.split-image img:hover {
+    transform: scale(1.05);
+}
+
+.split-content h2 {
+    font-size: 34px;
+    margin-bottom: 12px;
+    color: #111;
+}
+
+.split-content .product-subtitle {
+    max-width: 420px;
+    margin-bottom: 24px;
+}
+
+.split-content .product-buttons {
+    justify-content: flex-start;
+}
+
+/* ===========================
+   SPACING
+=========================== */
+
+.product-section:nth-child(even) {
+    background: #ffffff;
+}
+
+.product-section:nth-child(odd) {
+    background: #fff;
+}
+
+/* ===========================
+   LARGE DESKTOP
+=========================== */
+
+@media (min-width:1400px) {
+
+    .product-content h2 {
+        font-size: 46px;
+    }
+
+    .split-content h2 {
+        font-size: 42px;
+    }
+
+    .product-image img {
+        max-width: 420px;
+    }
+
+    .split-image img {
+        max-width: 380px;
+    }
+
+}
+
+/* ===========================
+   TABLET
+=========================== */
+
+@media (max-width:992px) {
+
+    .product-section {
+        padding: 70px 20px;
+    }
+
+    .split-layout {
+        grid-template-columns: 1fr;
+        gap: 35px;
+        text-align: center;
+    }
+
+    .split-content .product-buttons {
+        justify-content: center;
+    }
+
+    .split-content .product-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .split-content h2 {
+        font-size: 30px;
+    }
+
+    .product-content h2 {
+        font-size: 34px;
+    }
+
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width:768px) {
+
+    .product-section {
+        padding: 45px 18px;
+    }
+
+    .product-section::before {
+        width: 55%;
+    }
+
+    .product-content {
+        max-width: 320px;
+        margin: auto;
+    }
+
+    .product-content h2,
+    .split-content h2 {
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
+
+    .product-subtitle {
+        font-size: 12px;
+        margin-bottom: 18px;
+    }
+
+    .product-image img,
+    .split-image img {
+        max-width: 220px;
+    }
+
+    .product-buttons {
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    .btn-outline,
+    .btn-filled {
+        height: 34px;
+        padding: 0 14px;
+        font-size: 12px;
+        border-radius: 6px;
+    }
+
+    .split-layout {
+        gap: 20px;
+    }
+
+}
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+
+@media (max-width:480px) {
+
+    .product-section {
+        padding: 35px 15px;
+    }
+
+    .product-content h2,
+    .split-content h2 {
+        font-size: 18px;
+    }
+
+    .product-subtitle {
+        font-size: 11px;
+    }
+
+    .product-image img,
+    .split-image img {
+        max-width: 180px;
+    }
+
+}

@@ -1,0 +1,207 @@
+.sale-grid-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 25px 0;
+}
+
+.sale-grid-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.sale-grid-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.see-more-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e88e5;
+    text-decoration: none;
+}
+
+.sale-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.sale-card {
+    position: relative;
+    cursor: pointer;
+
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    padding: 14px;
+
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sale-card:hover {
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.sale-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+
+    background: #d32f2f;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.sale-wishlist-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+
+    background: #f4f6f7;
+    color: #999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.sale-card-img {
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 22px 0 10px;
+}
+
+.sale-card-img img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.sale-price {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.sale-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+}
+
+.sale-chip {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.sale-desc {
+    font-size: 11px;
+    color: #999;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.sale-actions {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sale-cta-btn {
+    flex: 1;
+    padding: 9px 0;
+
+    border: none;
+    border-radius: 30px;
+
+    background: #123848;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.sale-cta-btn:hover {
+    background: #0d2732;
+}
+
+.sale-cart-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f4f6f7;
+    color: #123848;
+    font-size: 13px;
+}
+
+/* ========================= */
+/* Tablet */
+/* ========================= */
+
+@media (max-width: 992px) {
+    .sale-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ========================= */
+/* Mobile */
+/* ========================= */
+
+@media (max-width: 768px) {
+    .sale-grid-section {
+        padding: 20px 16px 0;
+    }
+
+    .sale-grid-header h2 {
+        font-size: 16px;
+    }
+
+    .sale-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .sale-card {
+        padding: 10px;
+    }
+
+    .sale-card-img {
+        height: 90px;
+        margin: 18px 0 8px;
+    }
+}

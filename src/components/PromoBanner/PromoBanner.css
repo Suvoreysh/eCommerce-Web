@@ -1,0 +1,23 @@
+.promo-banner {
+    max-width: 1400px;
+    margin: 16px auto;
+    padding: 0 16px;
+}
+
+.promo-banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+    .promo-banner {
+        margin: 14px auto;
+        padding: 0 16px;
+    }
+
+    .promo-banner img {
+        border-radius: 16px;
+    }
+}

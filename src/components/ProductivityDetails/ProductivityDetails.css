@@ -1,0 +1,234 @@
+.productivity-details {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.productivity-heading {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: #111;
+}
+
+/* ===========================
+   IMAGE
+=========================== */
+
+.productivity-media {
+    width: 100%;
+    min-height: 360px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(180deg, #eefbfb 0%, #ffffff 100%);
+    border-radius: 16px;
+
+    padding: 30px;
+    margin-bottom: 32px;
+}
+
+.productivity-media img {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* ===========================
+   ACCORDION
+=========================== */
+
+.productivity-panels {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.productivity-panel {
+    border: 1px solid #d8d8d8;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* Header */
+
+.panel-toggle {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #d8d8d8;
+
+    background: #f6f6f6;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 16px 18px;
+
+    transition: background .2s;
+}
+
+.panel-toggle:hover {
+    background: #f1f1f1;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+}
+
+.panel-title svg {
+    width: 18px;
+    height: 18px;
+    color: #555;
+    transition: transform .25s ease;
+}
+
+.rotated {
+    transform: rotate(90deg);
+}
+
+/* Content */
+
+.panel-content {
+    background: #fff;
+    padding: 18px 22px 22px 48px;
+}
+
+.panel-description {
+    margin: 0 0 16px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+    font-weight: 500;
+}
+
+.panel-items {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.panel-items li {
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.panel-items li:last-child {
+    margin-bottom: 0;
+}
+
+/* Footnote */
+
+.productivity-footnote {
+    margin-top: 28px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* ===========================
+   TABLET
+=========================== */
+
+@media (max-width: 768px) {
+
+    .productivity-details {
+        padding: 24px 16px;
+    }
+
+    .productivity-heading {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .productivity-media {
+        min-height: 260px;
+        padding: 20px;
+        margin-bottom: 22px;
+    }
+
+    .productivity-media img {
+        max-width: 240px;
+    }
+
+    .panel-toggle {
+        padding: 14px 16px;
+    }
+
+    .panel-title {
+        font-size: 17px;
+    }
+
+    .panel-content {
+        padding: 14px 16px 18px 38px;
+    }
+
+    .panel-description {
+        font-size: 13px;
+    }
+
+    .panel-items li {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .productivity-footnote {
+        font-size: 13px;
+    }
+}
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+
+@media (max-width: 480px) {
+
+    .productivity-details {
+        padding: 20px 14px;
+    }
+
+    .productivity-heading {
+        font-size: 20px;
+    }
+
+    .productivity-media {
+        min-height: 220px;
+        padding: 16px;
+    }
+
+    .productivity-media img {
+        max-width: 200px;
+    }
+
+    .panel-title {
+        font-size: 16px;
+    }
+
+    .panel-content {
+        padding-left: 34px;
+    }
+
+    .panel-description,
+    .panel-items li {
+        font-size: 12px;
+    }
+}

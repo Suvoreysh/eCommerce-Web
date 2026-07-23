@@ -1,0 +1,532 @@
+/* ============================================================
+   SHARED BASE
+   ============================================================ */
+
+.profile-page {
+  min-height: 100vh;
+  background: #184d5d;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop layout hidden on mobile */
+.profile-desktop {
+  display: none;
+}
+
+/* ============================================================
+   MOBILE  (< 769px)
+   ============================================================ */
+
+.profile-header {
+  height: 60px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.profile-header h2 {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.profile-header__btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-size: 30px;
+  padding: 0;
+}
+
+.profile-header__btn:active { opacity: 0.7; }
+
+.profile-hero {
+  padding: 10px 20px 75px;
+  text-align: center;
+  color: #fff;
+}
+
+.profile-avatar-wrapper {
+  width: 145px;
+  margin: auto;
+  position: relative;
+}
+
+.profile-avatar {
+  width: 145px;
+  height: 145px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #d8d8d8;
+  border: 4px solid rgba(255, 255, 255, 0.18);
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-edit-btn {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: #184d5d;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.profile-edit-btn:hover { background: #215f72; }
+
+.profile-hero h1 {
+  margin: 18px 0 6px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.profile-hero p {
+  margin: 0;
+  font-size: 15px;
+  opacity: 0.95;
+}
+
+.profile-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 32px 32px 0 0;
+  margin-top: -35px;
+  padding: 28px 22px calc(90px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.profile-card h3 {
+  margin: 0 0 22px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+}
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: #111;
+  padding: 16px 0;
+}
+
+.profile-item__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-item__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #eef2f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #184d5d;
+  flex-shrink: 0;
+}
+
+.profile-item__icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.profile-item span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.profile-item__arrow {
+  font-size: 24px;
+  color: #184d5d;
+}
+
+.profile-item:hover { opacity: 0.8; }
+
+@media (max-width: 480px) {
+  .profile-header         { height: 56px; padding: 0 16px; }
+  .profile-header h2      { font-size: 20px; }
+  .profile-header__btn    { font-size: 28px; }
+  .profile-avatar-wrapper { width: 130px; }
+  .profile-avatar         { width: 130px; height: 130px; }
+  .profile-edit-btn       { width: 34px; height: 34px; }
+  .profile-hero           { padding-bottom: 65px; }
+  .profile-hero h1        { font-size: 22px; }
+  .profile-hero p         { font-size: 14px; }
+  .profile-card           { margin-top: -30px; border-radius: 28px 28px 0 0; padding: 24px 18px calc(88px + env(safe-area-inset-bottom)); }
+  .profile-card h3        { font-size: 17px; }
+  .profile-item           { padding: 14px 0; }
+  .profile-item__icon     { width: 42px; height: 42px; }
+  .profile-item span      { font-size: 15px; }
+  .profile-item__arrow    { font-size: 22px; }
+}
+
+
+/* ============================================================
+   DESKTOP  (≥ 769px)
+   ============================================================ */
+@media (min-width: 769px) {
+
+  .profile-header,
+  .profile-hero,
+  .profile-card {
+    display: none;
+  }
+
+  .profile-desktop {
+    display: flex;
+    align-items: stretch;
+    gap: 28px;
+    padding: 48px 48px 60px;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  .pd-sidebar {
+    flex: 1;
+    background: #1a3e4a;
+    border-radius: 20px;
+    padding: 24px 32px 36px;   /* less top padding — back btn sits there */
+    box-sizing: border-box;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Back button — aligned left, full-width row */
+  .pd-back-btn {
+    align-self: flex-start;     /* push to left edge */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background 0.18s;
+    flex-shrink: 0;
+  }
+
+  .pd-back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .pd-back-btn:active { opacity: 0.7; }
+
+  .pd-avatar-wrap {
+    position: relative;
+    width: 130px;
+    margin-bottom: 20px;
+  }
+
+  .pd-avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #d0d0d0;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .pd-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .pd-edit-btn {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2.5px solid #fff;
+    background: #184d5d;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .pd-edit-btn:hover { background: #215f72; }
+
+  .pd-name {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .pd-phone {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .pd-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 24px 0;
+  }
+
+  .pd-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 22px;
+  }
+
+  .pd-info-icon {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .pd-info-label {
+    margin: 0 0 3px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .pd-info-value {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .pd-edit-profile-btn {
+    margin-top: auto;
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    border: none;
+    background: #fff;
+    color: #184d5d;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.18s;
+  }
+
+  .pd-edit-profile-btn:hover { background: #e5eef1; }
+
+  /* ── Right main panel ── */
+  .pd-main {
+    flex: 1;
+    background: #fff;
+    border-radius: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .pd-welcome,
+  .pd-quick-actions {
+    padding: 0 36px;
+  }
+
+  .pd-welcome {
+    padding-top: 36px;
+    margin-bottom: 28px;
+  }
+
+  .pd-welcome h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .pd-welcome-sub {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #111;
+  }
+
+  .pd-welcome-desc {
+    margin: 0;
+    font-size: 14px;
+    color: #777;
+  }
+
+  .pd-quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+
+  .pd-qa-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border: 1.5px solid #e8edf0;
+    border-radius: 14px;
+    text-decoration: none;
+    color: #111;
+    transition: border-color 0.18s, box-shadow 0.18s;
+  }
+
+  .pd-qa-card:hover {
+    border-color: #184d5d;
+    box-shadow: 0 4px 16px rgba(24, 77, 93, 0.1);
+  }
+
+  .pd-qa-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: #eef2f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .pd-qa-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .pd-qa-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .pd-qa-text strong {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+  }
+
+  .pd-qa-text span {
+    font-size: 13px;
+    color: #888;
+  }
+
+  .pd-qa-arrow {
+    font-size: 20px;
+    color: #184d5d;
+    flex-shrink: 0;
+  }
+
+  /* Trust bar pinned to bottom */
+  .pd-trust-bar {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #1a3e4a;
+    padding: 22px 28px;
+    gap: 12px;
+  }
+
+  .pd-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+  }
+
+  .pd-trust-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .pd-trust-title {
+    margin: 0 0 2px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .pd-trust-sub {
+    margin: 0;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    .profile-desktop {
+      padding: 32px 28px 48px;
+      gap: 20px;
+    }
+
+    .pd-sidebar {
+      padding: 20px 24px 28px;
+    }
+
+    .pd-welcome,
+    .pd-quick-actions {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .pd-trust-bar {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      padding: 22px 24px;
+    }
+  }
+}

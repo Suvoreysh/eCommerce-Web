@@ -1,0 +1,29 @@
+.store-intro {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 22px 25px 6px;
+}
+
+.store-intro h1 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.store-intro p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    max-width: 480px;
+}
+
+@media (max-width: 768px) {
+    .store-intro {
+        padding: 18px 16px 4px;
+    }
+
+    .store-intro h1 {
+        font-size: 24px;
+    }
+}

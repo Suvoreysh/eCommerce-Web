@@ -1,0 +1,39 @@
+.tagline-banner {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 40px 30px;
+
+    text-align: center;
+    border-radius: 20px;
+    background: #eef6f6;
+}
+
+.tagline-banner h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e88e5;
+    max-width: 480px;
+    margin: 0 auto 10px;
+    line-height: 1.4;
+}
+
+.tagline-banner p {
+    font-size: 14px;
+    color: #555;
+}
+
+.brand-name {
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .tagline-banner {
+        margin: 24px 16px;
+        padding: 30px 20px;
+    }
+
+    .tagline-banner h2 {
+        font-size: 18px;
+    }
+}

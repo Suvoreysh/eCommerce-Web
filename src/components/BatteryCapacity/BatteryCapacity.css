@@ -1,0 +1,187 @@
+.battery-capacity {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+/* Top Text */
+
+.battery-top {
+    font-size: 14px;
+    color: #7b7b7b;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.battery-heading h2 {
+    margin: 0;
+    line-height: 1.1;
+    color: #111;
+}
+
+.battery-heading h2:first-child {
+    font-size: 52px;
+    font-weight: 700;
+}
+
+.battery-heading h2 span {
+    font-size: 36px;
+    font-weight: 400;
+}
+
+.battery-tagline {
+    margin: 18px 0 10px;
+    color: #00a53c;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.battery-desc {
+    margin: 0;
+    max-width: 720px;
+    color: #222;
+    font-size: 28px;
+    line-height: 1.45;
+}
+
+/* Image */
+
+.battery-media {
+    margin: 48px 0;
+}
+
+.battery-media img {
+    width: 100%;
+    display: block;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+/* Battery Stat */
+
+.battery-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.battery-up {
+    font-size: 28px;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.battery-number {
+    margin: 0;
+    color: #00a53c;
+    font-size: 92px;
+    font-weight: 700;
+    line-height: .95;
+}
+
+.battery-stat-label {
+    margin-top: 8px;
+    font-size: 28px;
+    color: #111;
+    line-height: 1.3;
+}
+
+/* Tablet */
+
+@media (max-width:768px){
+
+    .battery-capacity{
+        padding:24px 16px;
+    }
+
+    .battery-top{
+        font-size:13px;
+    }
+
+    .battery-heading h2:first-child{
+        font-size:46px;
+    }
+
+    .battery-heading h2 span{
+        font-size:28px;
+    }
+
+    .battery-tagline{
+        font-size:20px;
+        margin-top:14px;
+    }
+
+    .battery-desc{
+        font-size:18px;
+    }
+
+    .battery-media{
+        margin:30px 0;
+    }
+
+    .battery-up{
+        font-size:18px;
+    }
+
+    .battery-number{
+        font-size:60px;
+    }
+
+    .battery-stat-label{
+        font-size:18px;
+    }
+
+}
+
+/* Mobile */
+
+@media (max-width:480px){
+
+    .battery-capacity{
+        padding:20px 14px;
+    }
+
+    .battery-top{
+        font-size:12px;
+        margin-bottom:8px;
+    }
+
+    .battery-heading h2:first-child{
+        font-size:28px;
+    }
+
+    .battery-heading h2 span{
+        font-size:18px;
+    }
+
+    .battery-tagline{
+        font-size:14px;
+        margin:12px 0 8px;
+    }
+
+    .battery-desc{
+        font-size:13px;
+        line-height:1.45;
+    }
+
+    .battery-media{
+        margin:22px 0;
+    }
+
+    .battery-up{
+        font-size:12px;
+    }
+
+    .battery-number{
+        font-size:56px;
+    }
+
+    .battery-stat-label{
+        font-size:12px;
+        line-height:1.4;
+    }
+
+}

@@ -1,0 +1,29 @@
+:root {
+  --color-primary: #0f3a48;
+  --color-primary-light: #17566a;
+  --color-accent: #e8f0f2;
+  --color-success: #2fa84f;
+  --color-danger: #e74c3c;
+  --color-text: #1c1c1c;
+  --color-text-muted: #6b7280;
+  --color-bg: #f7f9fa;
+  --color-white: #ffffff;
+  --color-border: #e2e6e8;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  --font-base: "Poppins", "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --container-max: 480px; /* mobile-first app shell, grows via media queries */
+  --header-height: 56px;
+  --bottomnav-height: 64px;
+}
