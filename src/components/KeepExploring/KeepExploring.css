@@ -1,160 +1,628 @@
+/* =========================================================
+   KEEP EXPLORING SECTION
+========================================================= */
+
 .keep-exploring {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 25px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 50px 24px;
+
+  background: #f8fafb;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
 .keep-exploring-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-bottom: 30px;
 }
 
 .keep-exploring-header h2 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1a1a1a;
+  margin: 0;
+
+  color: #101114;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.7px;
 }
 
 .explore-more-link {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1e88e5;
-    text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #1777ff;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.explore-more-link:hover {
+  opacity: 0.75;
+}
+
+.explore-more-link span {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   PRODUCT SLIDER
+========================================================= */
+
+.keep-exploring-slider {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 4px 2px 8px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.keep-exploring-slider::-webkit-scrollbar {
+  display: none;
 }
 
 .keep-exploring-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+  display: flex;
+  align-items: stretch;
+  gap: 22px;
+
+  width: max-content;
 }
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
 
 .explore-card {
-    position: relative;
+  position: relative;
+  flex: 0 0 300px;
+  width: 300px;
+  min-height: 390px;
 
-    border: 1px solid #ececec;
-    border-radius: 14px;
-    padding: 18px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 20px 16px 16px;
+
+  background: #ffffff;
+  border: 1px solid #e1e5e7;
+  border-radius: 17px;
+  box-sizing: border-box;
+
+  text-align: center;
+
+  box-shadow:
+    0 3px 10px rgba(13, 38, 50, 0.08),
+    0 8px 24px rgba(13, 38, 50, 0.05);
+
+  scroll-snap-align: start;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
+
+.explore-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 7px 18px rgba(13, 38, 50, 0.1),
+    0 14px 30px rgba(13, 38, 50, 0.08);
+}
+
+/* =========================================================
+   SALE BADGE
+========================================================= */
 
 .explore-tag {
-    position: absolute;
-    top: 14px;
-    left: 14px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
 
-    background: #ff3b30;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-    padding: 3px 10px;
-    border-radius: 20px;
+  min-width: 39px;
+  height: 23px;
+  padding: 0 10px;
+
+  background: #ff101c;
+  color: #ffffff;
+
+  border-radius: 30px;
+
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: lowercase;
 }
 
-.explore-card img {
-    width: 100%;
-    max-height: 120px;
-    object-fit: contain;
-    margin: 20px 0 14px;
+/* =========================================================
+   WISHLIST BUTTON
+========================================================= */
+
+.explore-wishlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+
+  color: #c4c9cc;
+  font-size: 21px;
+
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.explore-wishlist:hover {
+  color: #ff101c;
+  transform: scale(1.08);
+}
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
+
+.explore-image-box {
+  width: 100%;
+  height: 155px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 13px;
+  margin-bottom: 8px;
+
+  overflow: hidden;
+}
+
+.explore-image-box img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+  max-width: 230px;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+/* =========================================================
+   PRODUCT INFORMATION
+========================================================= */
+
+.explore-price {
+  margin: 0 0 9px;
+
+  color: #55595d;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.explore-price strong {
+  color: #1a1b1d;
+  font-weight: 500;
 }
 
 .explore-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 6px;
-}
+  margin: 0 0 5px;
 
-.explore-meta {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 14px;
+  color: #111315;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 .explore-chip {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    background: #f4f6f7;
-    font-size: 11px;
-    font-weight: 600;
-    color: #333;
+  margin: 0 0 7px;
+
+  color: #2f3235;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.explore-description {
+  margin: 0 0 14px;
+
+  color: #6c7074;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+/* =========================================================
+   CARD ACTIONS
+========================================================= */
+
+.explore-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+  margin-top: auto;
 }
 
 .explore-btn {
-    width: 100%;
-    padding: 10px 0;
+  flex: 1;
+  min-width: 0;
+  height: 39px;
+  padding: 0 18px;
 
-    border: 1px solid #123848;
-    border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    background: #fff;
-    color: #123848;
-    font-size: 13px;
-    font-weight: 600;
+  background: #103f50;
+  color: #ffffff;
 
-    cursor: pointer;
-    transition: all 0.2s ease;
+  border: 1px solid #103f50;
+  border-radius: 7px;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .explore-btn:hover {
-    background: #123848;
-    color: #fff;
+  background: #0a303e;
+  transform: translateY(-1px);
+}
+
+.explore-cart-btn {
+  flex: 0 0 39px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 39px;
+  height: 39px;
+  padding: 0;
+
+  background: #ffffff;
+  color: #152f38;
+
+  border: 1px solid #152f38;
+  border-radius: 7px;
+
+  font-size: 21px;
+
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.explore-cart-btn:hover {
+  background: #103f50;
+  color: #ffffff;
+}
+
+/* =========================================================
+   SLIDER NAVIGATION
+========================================================= */
+
+.explore-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+
+  margin-top: 21px;
 }
 
 .explore-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  height: 27px;
+  padding: 0 13px;
+
+  background: #d9d9d9;
+  border-radius: 30px;
 }
 
-.dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #d9d9d9;
+.explore-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+
+  background: #acafb1;
+  border: 0;
+  border-radius: 50%;
+
+  cursor: pointer;
 }
 
-.dot.active {
-    background: #123848;
-    width: 20px;
-    border-radius: 4px;
+.explore-dot.active {
+  background: #151719;
 }
 
-/* ========================= */
-/* Tablet */
-/* ========================= */
+.explore-next-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 27px;
+  height: 27px;
+  padding: 0;
+
+  background: #d9d9d9;
+  color: #3a3d3f;
+
+  border: 0;
+  border-radius: 50%;
+
+  font-size: 17px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.explore-next-btn:hover {
+  background: #c7c9ca;
+  transform: translateX(2px);
+}
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1200px) {
+  .keep-exploring-row {
+    width: 100%;
+  }
+
+  .explore-card {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
 
 @media (max-width: 992px) {
-    .keep-exploring-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .keep-exploring {
+    padding: 40px 20px;
+  }
+
+  .keep-exploring-header h2 {
+    font-size: 27px;
+  }
+
+  .keep-exploring-row {
+    gap: 17px;
+  }
+
+  .explore-card {
+    flex-basis: 270px;
+    width: 270px;
+    min-height: 365px;
+  }
+
+  .explore-image-box {
+    height: 140px;
+  }
 }
 
-/* ========================= */
-/* Mobile */
-/* ========================= */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 768px) {
-    .keep-exploring {
-        padding: 30px 16px;
-    }
+  .keep-exploring {
+    padding: 17px 15px 10px;
+  }
 
-    .keep-exploring-header h2 {
-        font-size: 18px;
-    }
+  .keep-exploring-header {
+    gap: 11px;
+    margin-bottom: 29px;
+  }
 
-    .keep-exploring-row {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-    }
+  .keep-exploring-header h2 {
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+  }
 
-    .explore-card {
-        padding: 12px;
-    }
+  .explore-more-link {
+    font-size: 11px;
+  }
+
+  .keep-exploring-slider {
+    width: calc(100% + 15px);
+    padding: 3px 15px 8px 1px;
+  }
+
+  .keep-exploring-row {
+    gap: 14px;
+  }
+
+  .explore-card {
+    flex: 0 0 158px;
+    width: 158px;
+    min-height: 188px;
+
+    padding: 8px 8px 8px;
+
+    border-radius: 11px;
+
+    box-shadow:
+      0 2px 8px rgba(13, 38, 50, 0.09),
+      0 5px 17px rgba(13, 38, 50, 0.07);
+  }
+
+  .explore-tag {
+    top: 5px;
+    left: 5px;
+
+    min-width: 34px;
+    height: 17px;
+    padding: 0 7px;
+
+    font-size: 8px;
+  }
+
+  .explore-wishlist {
+    top: 5px;
+    right: 5px;
+
+    width: 21px;
+    height: 21px;
+
+    font-size: 16px;
+  }
+
+  .explore-image-box {
+    height: 75px;
+    margin-top: 8px;
+    margin-bottom: 3px;
+  }
+
+  .explore-image-box img {
+    max-width: 125px;
+  }
+
+  .explore-price {
+    margin-bottom: 5px;
+    font-size: 8px;
+  }
+
+  .explore-name {
+    margin-bottom: 2px;
+
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .explore-chip {
+    margin-bottom: 3px;
+    font-size: 8px;
+  }
+
+  .explore-description {
+    margin-bottom: 6px;
+
+    font-size: 6px;
+    line-height: 1.25;
+  }
+
+  .explore-actions {
+    gap: 7px;
+  }
+
+  .explore-btn {
+    height: 21px;
+    padding: 0 8px;
+
+    border-radius: 4px;
+
+    font-size: 7px;
+  }
+
+  .explore-cart-btn {
+    flex-basis: 21px;
+
+    width: 21px;
+    height: 21px;
+
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  .explore-navigation {
+    gap: 8px;
+    margin-top: 7px;
+  }
+
+  .explore-dots {
+    gap: 8px;
+
+    height: 19px;
+    padding: 0 10px;
+  }
+
+  .explore-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .explore-next-btn {
+    width: 19px;
+    height: 19px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+  .keep-exploring {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .keep-exploring-slider {
+    width: calc(100% + 14px);
+  }
+
+  .explore-card {
+    flex-basis: 154px;
+    width: 154px;
+  }
 }

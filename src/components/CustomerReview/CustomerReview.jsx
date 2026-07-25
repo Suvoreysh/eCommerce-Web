@@ -1,45 +1,59 @@
 import "./CustomerReview.css";
-import { FiStar } from "react-icons/fi";
+
 import avatar1 from "../../assets/images/airpods-model.png";
 import avatar2 from "../../assets/images/airpods-model.png";
 
 const reviews = [
   {
+    id: 1,
     name: "Jon N.",
     rating: 5,
     avatar: avatar1,
-    text: "Introduces basic document editing, and formatting techniques, such as adjusting text spacing, using the ribbon, and saving files.",
+    text: "Introduces basic document creation, editing, and formatting techniques, such as adjusting line spacing, using the ribbon, and saving files.",
   },
   {
+    id: 2,
     name: "Sam R.",
     rating: 4,
     avatar: avatar2,
-    text: "Fantastic battery life and the screen is gorgeous for everyday work and browsing.",
+    text: "Introduces useful features for managing files, formatting content, and improving productivity during everyday work.",
+  },
+  {
+    id: 3,
+    name: "Alex M.",
+    rating: 5,
+    avatar: avatar1,
+    text: "A simple and helpful experience with clear instructions, useful features, and an easy-to-understand interface.",
   },
 ];
 
 export default function CustomerReview() {
   return (
     <section className="customer-review">
-      <h2>Customer Review</h2>
+      <h2 className="customer-review-title">Customer Review</h2>
 
-      <div className="review-row">
-        {reviews.map((r) => (
-          <div className="review-card" key={r.name}>
-            <div className="review-header">
-              <img src={r.avatar} alt={r.name} />
-              <div>
-                <p className="review-name">{r.name}</p>
-                <div className="review-stars">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <FiStar key={i} className={i < r.rating ? "filled" : ""} />
-                  ))}
+      <div className="review-slider">
+        <div className="review-row">
+          {reviews.map((review) => (
+            <article className="review-card" key={review.id}>
+              <div className="review-header">
+                <div className="review-user">
+                  <img
+                    src={review.avatar}
+                    alt={review.name}
+                    className="review-avatar"
+                  />
+
+                  <p className="review-name">{review.name}</p>
                 </div>
+
+                <span className="review-rating">{review.rating} Star</span>
               </div>
-            </div>
-            <p className="review-text">{r.text}</p>
-          </div>
-        ))}
+
+              <p className="review-text">{review.text}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

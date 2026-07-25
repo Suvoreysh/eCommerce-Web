@@ -22,7 +22,18 @@ export default function ProductMulti() {
   return (
     <section className="product-hero">
       <div className="product-hero-media">
-        <img src={images[currentImage]} alt="MacBook Neo" />
+        <div className="image-track-wrapper">
+          <div
+            className="image-track"
+            style={{ transform: `translateX(-${currentImage * 100}%)` }}
+          >
+            {images.map((img, index) => (
+              <div className="image-slide" key={index}>
+                <img src={img} alt="MacBook Neo" />
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div className="image-slider">
           <button onClick={prevImage}>&lsaquo;</button>

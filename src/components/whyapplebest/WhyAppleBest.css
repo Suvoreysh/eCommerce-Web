@@ -1,0 +1,368 @@
+/* =========================================================
+   WHY APPLE BEST SECTION
+========================================================= */
+
+.why-apple-best {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 24px 24px;
+
+  overflow: hidden;
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      180deg,
+      #d8fffb 0%,
+      #e6fffc 22%,
+      #f9fbfc 62%,
+      #f7f9fa 100%
+    );
+}
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.why-apple-heading {
+  margin-bottom: 34px;
+}
+
+.why-apple-heading h2 {
+  margin: 0;
+
+  color: #0d0f12;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.7px;
+}
+
+/* =========================================================
+   HORIZONTAL SLIDER
+========================================================= */
+
+.why-apple-slider {
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 3px 2px 12px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.why-apple-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.why-apple-row {
+  display: flex;
+  align-items: stretch;
+  gap: 22px;
+
+  width: max-content;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.why-apple-card {
+  flex: 0 0 330px;
+  width: 330px;
+  min-height: 300px;
+
+  padding: 28px 24px;
+
+  background: #ffffff;
+  border: 1px solid #d8dcde;
+  border-radius: 24px;
+
+  box-sizing: border-box;
+  scroll-snap-align: start;
+
+  box-shadow:
+    0 4px 10px rgba(12, 38, 48, 0.06),
+    0 10px 24px rgba(12, 38, 48, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.why-apple-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 7px 16px rgba(12, 38, 48, 0.08),
+    0 16px 30px rgba(12, 38, 48, 0.1);
+}
+
+.why-apple-card-title {
+  margin: 0 0 10px;
+
+  color: #222529;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.why-apple-card h3 {
+  margin: 0 0 12px;
+
+  color: #0d0f12;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.why-apple-description {
+  max-width: 240px;
+  margin: 0;
+
+  color: #62666a;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.why-apple-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  margin-top: 6px;
+}
+
+.why-apple-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  height: 28px;
+  padding: 0 13px;
+
+  background: #d7d7d7;
+  border-radius: 30px;
+}
+
+.why-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+
+  background: #afb1b3;
+  border: 0;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.why-dot.active {
+  background: #17191b;
+}
+
+.why-next-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+  padding: 0;
+
+  background: #d7d7d7;
+  color: #303336;
+
+  border: 0;
+  border-radius: 50%;
+
+  font-size: 17px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.why-next-btn:hover {
+  background: #c7c8c9;
+  transform: translateX(2px);
+}
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1200px) {
+  .why-apple-row {
+    width: 100%;
+  }
+
+  .why-apple-card {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+  .why-apple-best {
+    padding: 40px 20px 24px;
+  }
+
+  .why-apple-heading h2 {
+    font-size: 29px;
+  }
+
+  .why-apple-card {
+    flex-basis: 290px;
+    width: 290px;
+    min-height: 275px;
+  }
+
+  .why-apple-card h3 {
+    font-size: 19px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+  .why-apple-best {
+    padding: 17px 0 20px 23px;
+
+    background:
+      linear-gradient(
+        180deg,
+        #d9fffb 0%,
+        #dffffb 12%,
+        #f8fafb 51%,
+        #f7f9fa 100%
+      );
+  }
+
+  .why-apple-heading {
+    margin-bottom: 33px;
+    padding-right: 20px;
+  }
+
+  .why-apple-heading h2 {
+    font-size: 21px;
+    line-height: 1.35;
+    letter-spacing: -0.3px;
+  }
+
+  .why-apple-slider {
+    width: calc(100% + 23px);
+    padding: 3px 23px 12px 0;
+  }
+
+  .why-apple-row {
+    gap: 21px;
+  }
+
+  .why-apple-card {
+    flex: 0 0 211px;
+    width: 211px;
+    min-height: 252px;
+
+    padding: 16px 16px;
+
+    border-radius: 25px;
+
+    box-shadow:
+      0 3px 9px rgba(12, 38, 48, 0.07),
+      0 8px 18px rgba(12, 38, 48, 0.08);
+  }
+
+  .why-apple-card-title {
+    margin-bottom: 7px;
+
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .why-apple-card h3 {
+    margin-bottom: 6px;
+
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.48;
+  }
+
+  .why-apple-description {
+    max-width: 165px;
+
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .why-apple-navigation {
+    gap: 8px;
+    margin-top: 4px;
+    padding-right: 23px;
+  }
+
+  .why-apple-dots {
+    gap: 8px;
+
+    height: 19px;
+    padding: 0 9px;
+  }
+
+  .why-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .why-next-btn {
+    width: 19px;
+    height: 19px;
+
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+  .why-apple-best {
+    padding-left: 20px;
+  }
+
+  .why-apple-slider {
+    width: calc(100% + 20px);
+  }
+
+  .why-apple-card {
+    flex-basis: 210px;
+    width: 210px;
+  }
+
+  .why-apple-navigation {
+    padding-right: 20px;
+  }
+}

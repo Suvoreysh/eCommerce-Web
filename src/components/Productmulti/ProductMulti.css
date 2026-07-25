@@ -21,11 +21,37 @@
     align-items: center;
 }
 
-.product-hero-media img {
+/* IMAGE TRACK (smooth slide animation, fixed uniform size) */
+
+.image-track-wrapper {
     width: 100%;
     max-width: 520px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.image-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform .5s cubic-bezier(.65,0,.35,1);
+}
+
+.image-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-slide img {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    transition: .35s;
     filter: drop-shadow(0 18px 35px rgba(0,0,0,.15));
 }
 
@@ -147,7 +173,7 @@
         padding: 20px 16px;
     }
 
-    .product-hero-media img {
+    .image-track-wrapper {
         max-width: 320px;
     }
 

@@ -10,28 +10,28 @@
   box-sizing: border-box;
 }
 .otp-btn-login {
-    width: 100%;
-    height: 50px;
+  width: 100%;
+  height: 50px;
 
-    margin-top: 20px;
-    margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 
-    border: 0.5px solid #29586b;
-    cursor: pointer;
+  border: 0.5px solid #29586b;
+  cursor: pointer;
 
-    border-radius: 999px;
+  border-radius: 999px;
 
-    background: #ffffff;
-    color: #434343;
+  background: #ffffff;
+  color: #434343;
 
-    font-size: 40px;
-    font-weight: 600;
+  font-size: 40px;
+  font-weight: 600;
 
-    transition: .3s;
+  transition: 0.3s;
 }
 
 .otp-btn-login:hover {
-    background: #f0f5f6;
+  background: #f0f5f6;
 }
 .auth-container {
   width: 100%;
@@ -71,13 +71,19 @@
   height: clamp(80px, 12vh, 160px);
   background-image: radial-gradient(circle, #184d63 1.5px, transparent 1.5px);
   background-size: 16px 16px;
-  opacity: .15;
+  opacity: 0.15;
   -webkit-mask-image: radial-gradient(circle, #000 60%, transparent 100%);
   mask-image: radial-gradient(circle, #000 60%, transparent 100%);
 }
 
-.top-left { top: 0; left: 0; }
-.bottom-left { bottom: 40px; left: 40px; }
+.top-left {
+  top: 0;
+  left: 0;
+}
+.bottom-left {
+  bottom: 40px;
+  left: 40px;
+}
 
 /* RIGHT */
 .auth-right {
@@ -99,8 +105,8 @@
   border: 1px solid #ececec;
   border-radius: clamp(10px, 1.2vw, 16px);
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, .07),
-    0 2px 8px rgba(0, 0, 0, .04);
+    0 10px 30px rgba(0, 0, 0, 0.07),
+    0 2px 8px rgba(0, 0, 0, 0.04);
   padding: clamp(14px, 2.5vh, 32px) clamp(18px, 2.5vw, 36px);
   margin: auto;
   text-align: center;
@@ -295,7 +301,7 @@ form {
 }
 
 /* MOBILE */
-@media(max-width:900px) {
+@media (max-width: 900px) {
   .auth-page {
     height: 100vh;
     padding: 0;
@@ -316,7 +322,9 @@ form {
     align-items: center;
   }
 
-  .auth-left { display: none; }
+  .auth-left {
+    display: none;
+  }
 
   .auth-right {
     padding: clamp(10px, 3vh, 35px) clamp(14px, 5vw, 22px);
@@ -346,8 +354,10 @@ form {
   }
 }
 
-@media(max-width:500px) {
-  .auth-page { padding: 0; }
+@media (max-width: 500px) {
+  .auth-page {
+    padding: 0;
+  }
 
   .auth-right {
     padding: clamp(8px, 3vh, 25px) clamp(12px, 4vw, 16px);
@@ -367,7 +377,9 @@ form {
 }
 
 @media (max-width: 900px) {
-  .auth-left { display: none; }
+  .auth-left {
+    display: none;
+  }
 }
 
 /* Back Button */
@@ -404,5 +416,7 @@ form {
 }
 
 @media (min-width: 901px) {
-  .auth-back-btn { display: none; }
+  .auth-back-btn {
+    display: none;
+  }
 }

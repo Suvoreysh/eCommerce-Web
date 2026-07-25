@@ -44,8 +44,16 @@ export default function Login() {
     setApiError("");
     setLoading(true);
     try {
-      // const res = await authApi.login(values);
-      // login(res?.user || { email: values.email }, res?.token);
+      const res = await authApi.login({
+        login_id: values.email,
+        login_password: values.password,
+      });
+
+      if (!res?.success) {
+        throw new Error(res?.message || "Login failed. Please try again.");
+      }
+
+      login(res?.user || { email: values.email }, res?.access_token);
       navigate("/home");
     } catch (err) {
       setApiError(err.message || "Login failed. Please try again.");
@@ -122,9 +130,14 @@ export default function Login() {
               <Button type="submit" fullWidth loading={loading}>
                 Log in
               </Button>
-             <Button type="button" className="otp-btn-login" fullWidth loading={loading}>
-  Login with OTP
-</Button>
+              <Button
+                type="button"
+                className="otp-btn-login"
+                fullWidth
+                onClick={() => navigate("/login-with-otp")}
+              >
+                Login with OTP
+              </Button>
             </form>
 
             <p className="auth-switch">

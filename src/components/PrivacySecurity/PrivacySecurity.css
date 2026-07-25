@@ -1,218 +1,477 @@
 /* =========================================
-   Privacy Security
+   RESET
+========================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* =========================================
+   MAIN SECTION
 ========================================= */
 
 .privacy-security {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 80px 80px;
-    box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0 0 80px;
+  background: #ffffff;
 }
 
-/* Top banner image */
+/* =========================================
+   TOP IMAGE
+========================================= */
 
 .privacy-media {
-    width: 100%;
-    margin-bottom: 70px;
+  width: 100%;
+  margin: 0 0 70px;
+  padding: 0 50px;
 }
 
 .privacy-media img {
-    width: 100%;
-    display: block;
+  display: block;
+  width: 100%;
+  height: clamp(450px, 47vw, 720px);
+
+  object-fit: cover;
+  object-position: center;
+
+  border-radius: 18px;
 }
 
-/* Content */
+/* =========================================
+   CONTENT
+========================================= */
 
 .privacy-content {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+  width: 100%;
+  margin: 0;
+  padding: 0 50px;
 }
 
-/* Small heading */
+/* =========================================
+   EYEBROW
+========================================= */
 
 .privacy-eyebrow {
-    font-size: 14px;
-    color: #86868b;
-    margin-bottom: 12px;
+  margin: 0 0 12px;
+
+  color: #86868b;
+  font-size: 14px;
+  line-height: 1.3;
+  font-weight: 500;
 }
 
-/* Main Heading */
+/* =========================================
+   MAIN HEADING
+========================================= */
 
-.privacy-content h2 {
-    font-size: 84px;
-    line-height: .9;
-    font-weight: 700;
-    color: #1d1d1f;
-    margin-bottom: 50px;
+.privacy-heading {
+  margin: 0 0 55px;
+
+  color: #1d1d1f;
+  font-size: clamp(58px, 7vw, 100px);
+  line-height: 0.9;
+  font-weight: 700;
+  letter-spacing: -0.055em;
 }
 
-/* =============================
-   Mac Image
-============================= */
+/* =========================================
+   MAC IMAGE
+========================================= */
 
 .privacy-mac {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 55px;
+  width: 100%;
+  margin: 0 0 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .privacy-mac img {
-    width: 100%;
-    max-width: 950px;
-    height: auto;
-    display: block;
-}
-
-/* Description */
-
-.privacy-intro {
-    max-width: 760px;
-    margin: 0 auto 50px;
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.8;
-    color: #424245;
-}
-
-/* Feature List */
-
-.privacy-points {
-    max-width: 760px;
-    margin: auto;
-
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.privacy-point {
-    display: flex;
-    align-items: flex-start;
-    gap: 18px;
-}
-
-.privacy-icon {
-    font-size: 24px;
-    color: #1d1d1f;
-    flex-shrink: 0;
-    margin-top: 4px;
-}
-
-.privacy-point h4 {
-    font-size: 18px;
-    color: #1d1d1f;
-    margin-bottom: 6px;
-}
-
-.privacy-point p {
-    font-size: 15px;
-    color: #6e6e73;
-    line-height: 1.6;
+  display: block;
+  width: min(78%, 1050px);
+  height: auto;
+  object-fit: contain;
 }
 
 /* =========================================
-   Tablet
+   INTRO TEXT
 ========================================= */
 
-@media (max-width:1024px){
-
-    .privacy-security{
-        padding:0 40px 70px;
-    }
-
-    .privacy-content h2{
-        font-size:64px;
-    }
-
-    .privacy-mac img{
-        max-width:700px;
-    }
-
-}
 .privacy-intro {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto 60px;
-    text-align: center;
-    font-size: 22px;
-    line-height: 1.6;
-    color: #1d1d1f;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto 70px;
+
+  color: #1d1d1f;
+  font-size: clamp(19px, 1.7vw, 25px);
+  line-height: 1.6;
+  font-weight: 400;
+  text-align: center;
 }
 
 .privacy-intro span {
-    color: #ff3b30;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  color: #ff3b30;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
 }
 
-@media (max-width: 768px) {
-    .privacy-intro {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto 40px;
-        padding: 0 16px;
-        box-sizing: border-box;
-
-        font-size: 17px;
-        line-height: 1.7;
-
-        text-align: center !important;
-    }
-}
 /* =========================================
-   Mobile
+   FEATURE POINTS — single grey block, no card separation
 ========================================= */
 
-@media (max-width:768px){
+.privacy-points {
+  width: 100%;
+  margin: 0;
 
-    .privacy-security{
-        padding:0 16px 50px;
-    }
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0;
 
-    .privacy-media{
-        margin-bottom:40px;
-    }
+  background: #f5f5f7;
+  border-radius: 18px;
+  padding: 30px;
+}
 
-    .privacy-eyebrow{
-        font-size:13px;
-        margin-bottom:8px;
-    }
+/* =========================================
+   FEATURE CARD — no border, no individual background
+========================================= */
 
-    .privacy-content h2{
-        font-size:48px;
-        margin-bottom:30px;
-    }
+.privacy-point {
+  min-width: 0;
+  min-height: 180px;
+  padding: 0 24px;
 
-    .privacy-mac{
-        margin-bottom:30px;
-    }
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
 
-    .privacy-mac img{
-        width:100%;
-        max-width:320px;
-    }
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
 
-    .privacy-intro{
-        max-width:100%;
-        text-align:left;
-        font-size:15px;
-        margin-bottom:35px;
-    }
+/* =========================================
+   SVG ICON
+========================================= */
 
-    .privacy-points{
-        max-width:100%;
-        gap:24px;
-    }
+.privacy-icon-wrapper {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
 
-    .privacy-point h4{
-        font-size:15px;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .privacy-point p{
-        font-size:13px;
-    }
+.privacy-icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
 
+/* =========================================
+   POINT CONTENT
+========================================= */
+
+.privacy-point-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.privacy-point h4 {
+  margin: 0 0 7px;
+
+  color: #1d1d1f;
+  font-size: clamp(18px, 1.45vw, 22px);
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.privacy-point p {
+  margin: 0;
+
+  color: #6e6e73;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1440px) {
+  .privacy-security {
+    padding-bottom: 95px;
+  }
+
+  .privacy-media,
+  .privacy-content {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  .privacy-media {
+    margin-bottom: 85px;
+  }
+
+  .privacy-points {
+    padding: 36px;
+  }
+
+  .privacy-point {
+    min-height: 190px;
+    padding: 0 28px;
+  }
+}
+
+/* =========================================
+   SMALL DESKTOP / LAPTOP
+========================================= */
+
+@media (max-width: 1100px) {
+  .privacy-media,
+  .privacy-content {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .privacy-point {
+    padding: 0 18px;
+    gap: 14px;
+  }
+
+  .privacy-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .privacy-icon {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 768px) {
+  .privacy-security {
+    padding-bottom: 55px;
+  }
+
+  .privacy-media {
+    margin-bottom: 42px;
+    padding: 0 20px;
+  }
+
+  .privacy-media img {
+    height: 380px;
+    border-radius: 16px;
+  }
+
+  .privacy-content {
+    padding: 0 20px;
+  }
+
+  .privacy-eyebrow {
+    margin-bottom: 9px;
+    font-size: 13px;
+  }
+
+  .privacy-heading {
+    margin-bottom: 35px;
+
+    font-size: 56px;
+    line-height: 0.92;
+  }
+
+  .privacy-mac {
+    margin-bottom: 35px;
+  }
+
+  .privacy-mac img {
+    width: min(100%, 600px);
+  }
+
+  .privacy-intro {
+    max-width: 650px;
+    margin-bottom: 50px;
+
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .privacy-points {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .privacy-point {
+    width: 100%;
+    min-height: auto;
+    padding: 16px 0;
+  }
+
+  .privacy-point h4 {
+    font-size: 18px;
+  }
+
+  .privacy-point p {
+    font-size: 14px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .privacy-security {
+    padding: 0 0 35px;
+  }
+
+  .privacy-media {
+    margin-bottom: 32px;
+    padding: 0 14px;
+  }
+
+  .privacy-media img {
+    height: 210px;
+    border-radius: 14px;
+  }
+
+  .privacy-content {
+    padding: 0 14px;
+  }
+
+  .privacy-eyebrow {
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+
+  .privacy-heading {
+    margin-bottom: 28px;
+
+    font-size: 45px;
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+  }
+
+  .privacy-mac {
+    margin-bottom: 28px;
+  }
+
+  .privacy-mac img {
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .privacy-intro {
+    max-width: 100%;
+    margin-bottom: 38px;
+    padding: 0;
+
+    font-size: 15px;
+    line-height: 1.65;
+    text-align: center;
+  }
+
+  .privacy-points {
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .privacy-point {
+    min-height: auto;
+    padding: 10px 0;
+    gap: 14px;
+  }
+
+  .privacy-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .privacy-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .privacy-point h4 {
+    margin-bottom: 3px;
+
+    font-size: 15px;
+    line-height: 1.25;
+  }
+
+  .privacy-point p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 360px) {
+  .privacy-media,
+  .privacy-content {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .privacy-heading {
+    font-size: 41px;
+  }
+
+  .privacy-intro {
+    font-size: 14px;
+  }
+
+  .privacy-points {
+    padding: 14px 10px;
+  }
+
+  .privacy-point {
+    gap: 12px;
+  }
+
+  .privacy-icon-wrapper {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  .privacy-icon {
+    width: 33px;
+    height: 33px;
+  }
+
+  .privacy-point h4 {
+    font-size: 14px;
+  }
+
+  .privacy-point p {
+    font-size: 12px;
+  }
 }

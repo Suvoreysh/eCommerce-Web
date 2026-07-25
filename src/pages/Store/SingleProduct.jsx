@@ -10,6 +10,7 @@ import PrivacySecurity from "../../components/PrivacySecurity/PrivacySecurity";
 import WhyChooseUs from "../../components/WhyChooseUs/WhyChooseUs";
 import KeepExploring from "../../components/KeepExploring/KeepExploring";
 import CustomerReview from "../../components/CustomerReview/CustomerReview";
+import WhyAppleBest from "../../components/whyapplebest/WhyAppleBest";
 import Footer from "../../components/Footer/Footer";
 
 export default function SingleProductpage() {
@@ -28,7 +29,7 @@ export default function SingleProductpage() {
       <BatteryCapacity />
       <DisplayShowcase />
       <PrivacySecurity />
-      <WhyChooseUs />
+      <WhyAppleBest />
       <KeepExploring />
       <CustomerReview />
       <Footer />

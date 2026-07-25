@@ -69,24 +69,7 @@ const products = [
     reviews: 150,
     image: watch,
   },
-  {
-    id: 7,
-    name: "Accessories",
-    price: 399,
-    oldPrice: 499,
-    rating: 3,
-    reviews: 150,
-    image: accessories,
-  },
-  {
-    id: 8,
-    name: "AirPods Category",
-    price: 399,
-    oldPrice: 499,
-    rating: 3,
-    reviews: 150,
-    image: airpods,
-  },
+
 ];
 
 export default function ProductGrid() {

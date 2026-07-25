@@ -1,94 +1,206 @@
-.about-product{
-    width:100%;
-    padding:80px 20px;
-    background:#fff;
+.about-product {
+  width: 100%;
+  background: #ffffff;
+  padding: 90px 20px;
 }
 
-.about-container{
-    max-width:1100px;
-    margin:auto;
-    text-align:center;
+.about-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.about-container h1{
-    font-size:52px;
-    font-weight:700;
-    color:#111;
-    margin-bottom:8px;
-    letter-spacing:1px;
+/* ===========================
+   Heading
+=========================== */
+
+.about-container h1 {
+  margin: 0;
+  font-size: 46px;
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
-.about-container span{
-    display:block;
-    font-size:22px;
-    color:#777;
-    margin-bottom:50px;
+.about-container span {
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 28px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #7b7b7b;
 }
 
-.about-container img{
-    width:100%;
-    max-width:700px;
-    display:block;
-    margin:0 auto 60px;
-    object-fit:contain;
+/* ===========================
+   Product Image
+=========================== */
+
+.about-container img {
+  display: block;
+  width: 100%;
+  max-width: 340px; /* Desktop image size */
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto 42px;
+  transition: transform 0.35s ease;
 }
 
-.about-container p{
-    max-width:900px;
-    margin:0 auto 30px;
-    font-size:19px;
-    line-height:1.9;
-    color:#444;
+.about-container img:hover {
+  transform: scale(1.03);
 }
 
-/* Tablet */
+/* ===========================
+   Paragraph
+=========================== */
 
-@media (max-width:992px){
-
-.about-container h1{
-    font-size:40px;
+.about-container p {
+  max-width: 760px;
+  margin: 0 auto 26px;
+  color: #444;
+  font-size: 17px;
+  line-height: 1.9;
+  font-weight: 400;
 }
 
-.about-container span{
-    font-size:18px;
+.about-container p:last-child {
+  margin-bottom: 0;
 }
 
-.about-container img{
-    max-width:700px;
+/* ===========================
+   Large Desktop
+=========================== */
+
+@media (min-width: 1600px) {
+  .about-container {
+    max-width: 1000px;
+  }
+
+  .about-container h1 {
+    font-size: 50px;
+  }
+
+  .about-container img {
+    max-width: 360px;
+  }
+
+  .about-container p {
+    font-size: 18px;
+  }
 }
 
-.about-container p{
-    font-size:17px;
+/* ===========================
+   Laptop
+=========================== */
+
+@media (max-width: 1200px) {
+  .about-product {
+    padding: 80px 20px;
+  }
+
+  .about-container h1 {
+    font-size: 42px;
+  }
+
+  .about-container img {
+    max-width: 320px;
+  }
+
+  .about-container p {
+    font-size: 16px;
+  }
 }
 
+/* ===========================
+   Tablet
+=========================== */
+
+@media (max-width: 992px) {
+  .about-product {
+    padding: 70px 20px;
+  }
+
+  .about-container {
+    max-width: 720px;
+  }
+
+  .about-container h1 {
+    font-size: 36px;
+  }
+
+  .about-container span {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  .about-container img {
+    max-width: 280px;
+    margin-bottom: 34px;
+  }
+
+  .about-container p {
+    font-size: 16px;
+    line-height: 1.8;
+  }
 }
 
-/* Mobile */
+/* ===========================
+   Mobile
+=========================== */
 
-@media (max-width:768px){
+@media (max-width: 768px) {
+  .about-product {
+    padding: 50px 18px;
+  }
 
-.about-product{
-    padding:40px 18px;
+  .about-container h1 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .about-container span {
+    font-size: 15px;
+    margin-bottom: 18px;
+  }
+
+  .about-container img {
+    max-width: 220px;
+    margin-bottom: 26px;
+  }
+
+  .about-container p {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
 }
 
-.about-container h1{
-    font-size:30px;
-}
+/* ===========================
+   Small Mobile
+=========================== */
 
-.about-container span{
-    font-size:15px;
-    margin-bottom:25px;
-}
+@media (max-width: 480px) {
+  .about-product {
+    padding: 40px 16px;
+  }
 
-.about-container img{
-    max-width:200px;
-    margin-bottom:30px;
-}
+  .about-container h1 {
+    font-size: 24px;
+  }
 
-.about-container p{
-    font-size:15px;
-    line-height:1.6;
-    margin-bottom:20px;
-}
+  .about-container span {
+    font-size: 14px;
+  }
 
+  .about-container img {
+    max-width: 180px;
+    margin-bottom: 22px;
+  }
+
+  .about-container p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
 }

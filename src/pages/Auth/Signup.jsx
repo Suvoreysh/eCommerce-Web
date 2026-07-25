@@ -1,69 +1,212 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import BaselineVisibilityIcon from "@iconify-react/ic/baseline-visibility";
+import BaselineVisibilityOffIcon from "@iconify-react/ic/baseline-visibility-off";
+import { IoChevronBack } from "react-icons/io5";
+
 import Seo from "../../components/common/Seo";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import { rules, validateForm } from "../../utils/validation";
 import { authApi } from "../../api/authApi";
+
 import "./Auth.css";
-import BaselinePersonIcon from "@iconify-react/ic/baseline-person";
-import BaselineEmailIcon from "@iconify-react/ic/baseline-email";
-import BaselineLockIcon from "@iconify-react/ic/baseline-lock";
-import BaselineVisibilityIcon from "@iconify-react/ic/baseline-visibility";
-import BaselineVisibilityOffIcon from "@iconify-react/ic/baseline-visibility-off";
-import { RiLock2Fill } from "react-icons/ri";
+
 import logoSmall from "../../assets/images/logo-small.png";
 import facebookIcon from "../../assets/icons/facebook.png";
 import googleIcon from "../../assets/icons/google.png";
 import appleIcon from "../../assets/icons/apple.png";
+
 import emailIcon from "../../assets/icons/Icon-fill/email.svg";
 import passwordIcon from "../../assets/icons/Icon-fill/password.svg";
 import nameIcon from "../../assets/icons/Icon-fill/email.svg";
+import phoneIcon from "../../assets/icons/Icon-fill/phone.svg";
 
-import { IoChevronBack } from "react-icons/io5";
 const schema = {
-  name: [(v) => rules.required(v, "Name")],
-  email: [(v) => rules.required(v, "Email"), rules.email],
-  password: [(v) => rules.required(v, "Password"), rules.password],
+  name: [(value) => rules.required(value, "Name")],
+
+  email: [(value) => rules.required(value, "Email"), rules.email],
+
+  phone: [
+    (value) => rules.required(value, "Phone"),
+    (value) => {
+      const phone = String(value || "").trim();
+
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        return "Enter a valid 10-digit phone number";
+      }
+
+      return "";
+    },
+  ],
+
+  password: [(value) => rules.required(value, "Password"), rules.password],
+
   confirmPassword: [
-    (v) => rules.required(v, "Confirm password"),
-    (v, all) => rules.confirmPassword(v, all.password),
+    (value) => rules.required(value, "Confirm password"),
+
+    (value, allValues) => rules.confirmPassword(value, allValues.password),
   ],
 };
 
+function splitName(fullName) {
+  const parts = String(fullName || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  const firstName = parts[0] || "";
+  const lastName = parts.slice(1).join(" ") || firstName;
+
+  return {
+    firstName,
+    lastName,
+  };
+}
+
+function extractUserId(response) {
+  return (
+    response?.user_id ||
+    response?.data?.user_id ||
+    response?.user?.id ||
+    response?.data?.user?.id ||
+    response?.id ||
+    null
+  );
+}
+
+function extractOtp(response) {
+  return String(
+    response?.otp ||
+      response?.data?.otp ||
+      response?.verification_otp ||
+      response?.data?.verification_otp ||
+      response?.signup_otp ||
+      response?.data?.signup_otp ||
+      "",
+  );
+}
+
 export default function Signup() {
   const navigate = useNavigate();
+
   const [values, setValues] = useState({
     name: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
+
   const [errors, setErrors] = useState({});
+
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
+  const handleChange = (event) => {
+    const { name, value } = event.target;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { isValid, errors: newErrors } = validateForm(values, schema);
-    setErrors(newErrors);
-    if (!isValid) return;
+    setValues((previousValues) => ({
+      ...previousValues,
+      [name]: value,
+    }));
+
+    setErrors((previousErrors) => ({
+      ...previousErrors,
+      [name]: "",
+    }));
 
     setApiError("");
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const { isValid, errors: validationErrors } = validateForm(values, schema);
+
+    setErrors(validationErrors);
+
+    if (!isValid) return;
+
     setLoading(true);
+    setApiError("");
+
     try {
-      // await authApi.signup(values);
-      navigate("/otp", { state: { email: values.email } });
-    } catch (err) {
-      setApiError(err.message || "Sign up failed. Please try again.");
+      const { firstName, lastName } = splitName(values.name);
+
+      const response = await authApi.signup({
+        first_name: firstName,
+        last_name: lastName,
+        email_id: values.email.trim(),
+        phone_number: values.phone.trim(),
+        user_name: values.email.trim().split("@")[0],
+        password: values.password,
+        password_confirmation: values.confirmPassword,
+      });
+
+      if (response?.success === false) {
+        throw new Error(
+          response?.message || "Sign up failed. Please try again.",
+        );
+      }
+
+      const userId = extractUserId(response);
+      const developmentOtp = extractOtp(response);
+
+      if (!userId) {
+        throw new Error("Account created, but user ID was not returned.");
+      }
+
+      navigate("/otp", {
+        state: {
+          mode: "signup",
+          userId,
+          phone: values.phone.trim(),
+          email: values.email.trim(),
+          developmentOtp,
+        },
+      });
+    } catch (error) {
+      if (error?.errors && typeof error.errors === "object") {
+        const fieldMap = {
+          first_name: "name",
+          last_name: "name",
+          email_id: "email",
+          email: "email",
+          phone_number: "phone",
+          phone: "phone",
+          user_name: "email",
+          password: "password",
+          password_confirmation: "confirmPassword",
+        };
+
+        const mappedErrors = {};
+
+        Object.entries(error.errors).forEach(([apiField, messages]) => {
+          const fieldName = fieldMap[apiField] || apiField;
+
+          mappedErrors[fieldName] = Array.isArray(messages)
+            ? messages[0]
+            : messages;
+        });
+
+        setErrors((previousErrors) => ({
+          ...previousErrors,
+          ...mappedErrors,
+        }));
+
+        setApiError(
+          Object.values(mappedErrors)[0] ||
+            error?.message ||
+            "Sign up failed. Please try again.",
+        );
+      } else {
+        setApiError(error?.message || "Sign up failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -77,16 +220,12 @@ export default function Signup() {
       />
 
       <div className="auth-container">
-        {/* LEFT */}
-
         <div className="auth-left">
-          <img src={logoSmall} alt="" className="auth-big-logo" />
+          <img src={logoSmall} alt="Logo" className="auth-big-logo" />
 
-          <div className="auth-pattern top-left"></div>
-          <div className="auth-pattern bottom-left"></div>
+          <div className="auth-pattern top-left" />
+          <div className="auth-pattern bottom-left" />
         </div>
-
-        {/* RIGHT */}
 
         <div className="auth-right">
           <div className="auth-card">
@@ -94,7 +233,7 @@ export default function Signup() {
               className="auth-back-btn"
               onClick={() => navigate("/login")}
               type="button"
-              aria-label="Back"
+              aria-label="Back to login"
             >
               <IoChevronBack />
             </button>
@@ -105,14 +244,17 @@ export default function Signup() {
               Create your account to access all features and enjoy a seamless
               shopping experience.
             </p>
+
             <form onSubmit={handleSubmit} noValidate>
               <Input
-                label="Full Name"
+                label="Name"
                 name="name"
+                type="text"
                 value={values.name}
                 onChange={handleChange}
                 error={errors.name}
-                icon={<img src={nameIcon} alt="Name" height="1em" />}
+                autoComplete="name"
+                icon={<img src={nameIcon} alt="" height="1em" />}
               />
 
               <Input
@@ -122,7 +264,20 @@ export default function Signup() {
                 value={values.email}
                 onChange={handleChange}
                 error={errors.email}
-                icon={<img src={emailIcon} alt="Email" height="1em" />}
+                autoComplete="email"
+                icon={<img src={emailIcon} alt="" height="1em" />}
+              />
+
+              <Input
+                label="Phone No"
+                name="phone"
+                type="tel"
+                inputMode="numeric"
+                value={values.phone}
+                onChange={handleChange}
+                error={errors.phone}
+                autoComplete="tel"
+                icon={<img src={phoneIcon} alt="" height="1em" />}
               />
 
               <Input
@@ -132,7 +287,8 @@ export default function Signup() {
                 value={values.password}
                 onChange={handleChange}
                 error={errors.password}
-                icon={<img src={passwordIcon} alt="Password" height="1em" />}
+                autoComplete="new-password"
+                icon={<img src={passwordIcon} alt="" height="1em" />}
                 rightIcon={
                   showPassword ? (
                     <BaselineVisibilityOffIcon height="1.2em" />
@@ -140,28 +296,35 @@ export default function Signup() {
                     <BaselineVisibilityIcon height="1.2em" />
                   )
                 }
-                onRightIconClick={() => setShowPassword(!showPassword)}
+                onRightIconClick={() => setShowPassword((current) => !current)}
               />
 
               <Input
                 label="Confirm Password"
                 name="confirmPassword"
-                type={showConfirm ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
                 value={values.confirmPassword}
                 onChange={handleChange}
                 error={errors.confirmPassword}
-                icon={<img src={passwordIcon} alt="Confirm Password" height="1em" />}
+                autoComplete="new-password"
+                icon={<img src={passwordIcon} alt="" height="1em" />}
                 rightIcon={
-                  showConfirm ? (
+                  showConfirmPassword ? (
                     <BaselineVisibilityOffIcon height="1.2em" />
                   ) : (
                     <BaselineVisibilityIcon height="1.2em" />
                   )
                 }
-                onRightIconClick={() => setShowConfirm(!showConfirm)}
+                onRightIconClick={() =>
+                  setShowConfirmPassword((current) => !current)
+                }
               />
 
-              {apiError && <p className="auth-error">{apiError}</p>}
+              {apiError && (
+                <p className="auth-error" role="alert">
+                  {apiError}
+                </p>
+              )}
 
               <Button type="submit" fullWidth loading={loading}>
                 Create Account
@@ -175,7 +338,8 @@ export default function Signup() {
               </Link>
             </p>
 
-            <div className="auth-divider"></div>
+            <div className="auth-divider" />
+
             <div className="auth-divider-text">Or Continue With Account</div>
 
             <div className="auth-social">

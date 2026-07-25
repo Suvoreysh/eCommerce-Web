@@ -2,627 +2,563 @@
    AIRPODS BANNER
 ====================================================== */
 
-.airpods-banner{
-    width:100%;
-    padding:45px 20px;
-    background:#f5f5f5;
+.airpods-banner {
+  width: 100%;
+  padding: 45px 20px;
+  background: #f5f5f5;
 }
 
-.airpods-card{
+.airpods-card {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px;
+  overflow: hidden;
+  border-radius: 38px;
 
-    max-width:1400px;
-    margin:auto;
+  background: linear-gradient(
+    180deg,
+    #ededed 0%,
+    rgba(180, 251, 243, 0.52) 27%,
+    #ededed 79%,
+    #ededed 100%
+  );
 
-    border-radius:38px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.35s ease;
+}
 
-    overflow:hidden;
-
-    background:linear-gradient(
-        180deg,
-        #f3f3f3 0%,
-        #f1f1f1 34%,
-        #d8f6f3 100%
-    );
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.08);
-
-    padding:28px;
-
+.airpods-card:hover {
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.12);
 }
 
 /* ======================================================
    TITLE
 ====================================================== */
 
-.airpods-title{
-
-    text-align:center;
-
-    font-size:54px;
-
-    font-weight:800;
-
-    color:#111;
-
-    margin:0;
-
+.airpods-title {
+  margin: 0;
+  text-align: center;
+  color: #111;
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 1.1;
 }
 
-.airpods-subtitle{
-
-    text-align:center;
-
-    margin-top:8px;
-
-    font-size:22px;
-
-    color:#333;
-
-    font-weight:500;
-
-    margin-bottom:28px;
-
+.airpods-subtitle {
+  margin: 8px 0 28px;
+  text-align: center;
+  color: #333;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 /* ======================================================
-   IMAGE
+   MAIN BANNER IMAGE
 ====================================================== */
 
-.airpods-image-wrapper{
+.airpods-image-wrapper {
+  width: 100%;
+  height: 540px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #dce8ef;
 
-    width:100%;
-    height:540px;
-
-    overflow:hidden;
-
-    border-radius:24px;
-
-    background:#dce8ef;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.airpods-banner-image{
-
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-
-    transition:.5s;
-
+.airpods-banner-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-.airpods-card:hover .airpods-banner-image{
-
-    transform:scale(1.03);
-
+.airpods-card:hover .airpods-banner-image {
+  transform: scale(1.03);
 }
 
 /* ======================================================
-   ABOUT
+   ABOUT SECTION
 ====================================================== */
 
-.about-section{
-
-    max-width:950px;
-
-    margin:55px auto 0;
-
-    text-align:center;
-
+.about-section {
+  width: 100%;
+  max-width: 950px;
+  margin: 55px auto 0;
+  padding: 0 40px;
+  text-align: center;
 }
 
-.about-section h3{
-
-    margin:0;
-
-    font-size:52px;
-
-    font-weight:800;
-
-    color:#111;
-
+.about-section h3 {
+  margin: 0;
+  color: #111;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.15;
 }
 
-.about-section p{
-
-    margin-top:18px;
-
-    color:#333;
-
-    line-height:1.8;
-
-    font-size:21px;
-
+.about-section p {
+  margin: 18px 0 0;
+  color: #333;
+  font-size: 21px;
+  line-height: 1.8;
 }
 
 /* ======================================================
-   FEATURE TITLE
+   FEATURE HEADING
 ====================================================== */
 
-.feature-heading{
-
-    text-align:center;
-
-    margin-top:45px;
-    margin-bottom:30px;
-
-    font-size:34px;
-
-    font-weight:700;
-
-    color:#111;
-
+.feature-heading {
+  margin: 45px 0 30px;
+  text-align: center;
+  color: #111;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.2;
 }
+
 /* ======================================================
    FEATURE GRID
 ====================================================== */
 
-.feature-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:32px;
-
-    margin-top:20px;
+.feature-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: 20px;
+  padding-bottom: 25px;
 }
 
-.feature-card{
-
-    position:relative;
-
-    text-align:center;
-
-    transition:.35s;
-
+.feature-card {
+  position: relative;
+  min-width: 0;
+  text-align: center;
+  transition: transform 0.35s ease;
 }
 
-.feature-card:hover{
-
-    transform:translateY(-8px);
-
+.feature-card:hover {
+  transform: translateY(-8px);
 }
 
 /* ======================================================
-   NUMBER BADGE
+   FEATURE NUMBER
 ====================================================== */
 
-.feature-number{
+.feature-number {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
 
-    position:absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
 
-    left:50%;
-    top:-14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    transform:translateX(-50%);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
 
-    width:42px;
-    height:42px;
-
-    border-radius:50%;
-
-    background:#000;
-    color:#fff;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:18px;
-    font-weight:700;
-
-    z-index:5;
-
-    box-shadow:0 6px 16px rgba(0,0,0,.18);
-
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
 /* ======================================================
-   IMAGE CARD
+   FEATURE IMAGE CARD
 ====================================================== */
 
-.feature-image-box{
+.feature-image-box {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #fff;
 
-    width:100%;
-    height:240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    border-radius:22px;
-
-    background:#fff;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow:hidden;
-
-    transition:.35s;
-
-    box-shadow:
-        0 10px 28px rgba(0,0,0,.08);
-
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
-.feature-card:hover .feature-image-box{
-
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 18px 38px rgba(0,0,0,.15);
-
+.feature-card:hover .feature-image-box {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.15);
 }
 
-.feature-image-box img{
-
-    width:78%;
-    height:78%;
-
-    object-fit:contain;
-
-    transition:.35s;
-
+.feature-image-box img {
+  width: 78%;
+  height: 78%;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.35s ease;
 }
 
-.feature-card:hover img{
-
-    transform:scale(1.06);
-
+.feature-card:hover .feature-image-box img {
+  transform: scale(1.06);
 }
 
 /* ======================================================
-   FEATURE TITLE
+   FEATURE TEXT
 ====================================================== */
 
-.feature-card h4{
+.feature-card h4 {
+  margin: 18px 0 0;
+  color: #111;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.35;
+}
 
-    margin-top:18px;
-
-    font-size:24px;
-
-    font-weight:700;
-
-    color:#111;
-
+.feature-card p {
+  margin: 8px 0 0;
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 /* ======================================================
-   OPTIONAL DESCRIPTION
+   LAPTOP - 1200PX
 ====================================================== */
 
-.feature-card p{
+@media (max-width: 1200px) {
+  .airpods-card {
+    padding: 24px;
+  }
 
-    margin-top:8px;
+  .airpods-title {
+    font-size: 46px;
+  }
 
-    font-size:16px;
+  .airpods-subtitle {
+    font-size: 20px;
+  }
 
-    line-height:1.6;
+  .airpods-image-wrapper {
+    height: 470px;
+  }
 
-    color:#666;
+  .about-section {
+    max-width: 850px;
+  }
 
+  .about-section h3 {
+    font-size: 44px;
+  }
+
+  .about-section p {
+    font-size: 18px;
+  }
+
+  .feature-grid {
+    gap: 24px;
+  }
+
+  .feature-image-box {
+    height: 210px;
+  }
+
+  .feature-card h4 {
+    font-size: 21px;
+  }
 }
 
 /* ======================================================
-   HOVER EFFECTS
+   TABLET - 992PX
 ====================================================== */
 
-.airpods-card,
-.feature-image-box,
-.feature-card,
-.airpods-banner-image{
-    transition:.35s ease;
-}
+@media (max-width: 992px) {
+  .airpods-banner {
+    padding: 30px 16px;
+  }
 
-.airpods-card:hover{
+  .airpods-card {
+    padding: 22px;
+    border-radius: 28px;
+  }
 
-    box-shadow:
-        0 22px 55px rgba(0,0,0,.12);
+  .airpods-title {
+    font-size: 38px;
+  }
 
+  .airpods-subtitle {
+    margin-bottom: 22px;
+    font-size: 18px;
+  }
+
+  .airpods-image-wrapper {
+    height: 380px;
+    border-radius: 18px;
+  }
+
+  .about-section {
+    margin-top: 35px;
+    padding: 0;
+  }
+
+  .about-section h3 {
+    font-size: 36px;
+  }
+
+  .about-section p {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .feature-heading {
+    margin: 35px 0 24px;
+    font-size: 28px;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .feature-image-box {
+    height: 180px;
+  }
+
+  .feature-card h4 {
+    font-size: 18px;
+  }
 }
 
 /* ======================================================
-   SPACING
+   MOBILE - 768PX
 ====================================================== */
 
-.feature-grid{
+@media (max-width: 768px) {
+  .airpods-banner {
+    padding: 12px;
+  }
 
-    padding-bottom:25px;
+  .airpods-card {
+    padding: 14px;
+    border-radius: 22px;
+  }
 
-}
+  .airpods-title {
+    font-size: 30px;
+  }
 
-.about-section{
+  .airpods-subtitle {
+    margin-bottom: 16px;
+    font-size: 15px;
+  }
 
-    padding-left:40px;
-    padding-right:40px;
+  .airpods-image-wrapper {
+    height: 220px;
+    border-radius: 16px;
+  }
 
+  .about-section {
+    margin-top: 24px;
+  }
+
+  .about-section h3 {
+    font-size: 26px;
+  }
+
+  .about-section p {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .feature-heading {
+    margin: 20px 0;
+    font-size: 24px;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 0;
+    padding-bottom: 12px;
+  }
+
+  .feature-number {
+    top: -10px;
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+
+  .feature-image-box {
+    height: 110px;
+    border-radius: 12px;
+  }
+
+  .feature-image-box img {
+    width: 72%;
+    height: 72%;
+  }
+
+  .feature-card h4 {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .feature-card p {
+    font-size: 12px;
+  }
 }
 
 /* ======================================================
-   1200px
+   SMALL MOBILE - 480PX
 ====================================================== */
 
-@media (max-width:1200px){
-
-.airpods-card{
-    padding:24px;
-}
-
-.airpods-title{
-    font-size:46px;
-}
-
-.airpods-subtitle{
-    font-size:20px;
-}
-
-.airpods-image-wrapper{
-    height:470px;
-}
-
-.about-section{
-    max-width:850px;
-}
-
-.about-section h3{
-    font-size:44px;
-}
-
-.about-section p{
-    font-size:18px;
-}
-
-.feature-grid{
-    gap:24px;
-}
-
-.feature-image-box{
-    height:210px;
-}
-
-.feature-card h4{
-    font-size:21px;
-}
-
-}
-
-
-/* ======================================================
-   TABLET
-====================================================== */
-
-@media (max-width:992px){
-
-.airpods-banner{
-    padding:30px 16px;
-}
-
-.airpods-card{
-    border-radius:28px;
-    padding:22px;
-}
-
-.airpods-title{
-    font-size:38px;
-}
-
-.airpods-subtitle{
-    font-size:18px;
-    margin-bottom:22px;
-}
-
-.airpods-image-wrapper{
-    height:380px;
-    border-radius:18px;
-}
-
-.about-section{
-    margin-top:35px;
-    padding:0;
-}
-
-.about-section h3{
-    font-size:36px;
-}
-
-.about-section p{
-    font-size:17px;
-    line-height:1.7;
-}
-
-.feature-heading{
-    margin-top:35px;
-    margin-bottom:24px;
-    font-size:28px;
-}
-
-.feature-grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
-}
-
-.feature-image-box{
-    height:190px;
-}
-
-.feature-card h4{
-    font-size:19px;
-}
-
-}
-
-
-/* ======================================================
-   MOBILE
-====================================================== */
-
-@media (max-width:768px){
-
-.airpods-banner{
-    padding:20px 12px;
-}
-
-.airpods-card{
-    border-radius:22px;
-    padding:16px;
-}
-
-.airpods-title{
-    font-size:30px;
-}
-
-.airpods-subtitle{
-    font-size:15px;
-    margin-bottom:16px;
-}
-
-.airpods-image-wrapper{
-    height:240px;
-    border-radius:16px;
-}
-
-.airpods-banner-image{
-    object-fit:cover;
-}
-
-.about-section{
-    margin-top:26px;
-}
-
-.about-section h3{
-    font-size:28px;
-}
-
-.about-section p{
-    margin-top:12px;
-    font-size:15px;
-    line-height:1.7;
-}
-
-.feature-heading{
-    font-size:24px;
-    margin-top:28px;
-    margin-bottom:18px;
-}
-
-.feature-grid{
-    grid-template-columns:1fr;
-    gap:18px;
-}
-
-.feature-card{
-    max-width:340px;
-    margin:auto;
-}
-
-.feature-number{
-    width:36px;
-    height:36px;
-    font-size:16px;
-}
-
-.feature-image-box{
-    height:180px;
-    border-radius:18px;
-}
-
-.feature-image-box img{
-    width:70%;
-    height:70%;
-}
-
-.feature-card h4{
-    margin-top:14px;
-    font-size:18px;
-}
-
-.feature-card p{
-    font-size:14px;
-}
-
-}
-
-
-/* ======================================================
-   SMALL MOBILE
-====================================================== */
-/* ===========================
-   Mobile
-=========================== */
-
-@media (max-width:768px){
-
-.airpods-banner{
-    padding:12px;
-}
-
-.airpods-card{
-    padding:14px;
-    border-radius:22px;
-}
-
-.airpods-title{
-    font-size:30px;
-}
-
-.airpods-subtitle{
-    font-size:15px;
-}
-
-.airpods-image-wrapper{
-    height:220px;
-}
-
-.about-section{
-    margin-top:24px;
-}
-
-.about-section h3{
-    font-size:26px;
-}
-
-.about-section p{
-    font-size:14px;
-    line-height:1.6;
-}
-
-.feature-heading{
-    font-size:24px;
-    margin:20px 0;
-}
-
-/* STILL 3 ITEMS */
-.feature-grid{
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-
-.feature-number{
-    width:28px;
-    height:28px;
-    font-size:13px;
-}
-
-.feature-image-box{
-    height:110px;
-    border-radius:12px;
-}
-
-.feature-image-box img{
-    width:72%;
-    height:72%;
-}
-
-.feature-card h4{
-    font-size:13px;
-    margin-top:8px;
-}
-
+@media (max-width: 480px) {
+  .airpods-banner {
+    padding: 8px;
+  }
+
+  .airpods-card {
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  .airpods-title {
+    font-size: 25px;
+  }
+
+  .airpods-subtitle {
+    margin-top: 4px;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+
+  .airpods-image-wrapper {
+    height: 175px;
+    border-radius: 13px;
+  }
+
+  .about-section {
+    margin-top: 20px;
+  }
+
+  .about-section h3 {
+    font-size: 22px;
+  }
+
+  .about-section p {
+    margin-top: 9px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .feature-heading {
+    margin: 16px 0;
+    font-size: 19px;
+  }
+
+  .feature-grid {
+    gap: 7px;
+  }
+
+  .feature-number {
+    top: -8px;
+    width: 23px;
+    height: 23px;
+    font-size: 11px;
+  }
+
+  .feature-image-box {
+    height: 86px;
+    border-radius: 10px;
+  }
+
+  .feature-image-box img {
+    width: 76%;
+    height: 76%;
+  }
+
+  .feature-card h4 {
+    margin-top: 6px;
+    font-size: 10px;
+    line-height: 1.2;
+  }
 }
 
 /* ======================================================
-   ANIMATIONS
+   EXTRA SMALL MOBILE - 360PX
 ====================================================== */
 
+@media (max-width: 360px) {
+  .airpods-card {
+    padding: 8px;
+  }
+
+  .airpods-title {
+    font-size: 22px;
+  }
+
+  .airpods-subtitle {
+    font-size: 10px;
+  }
+
+  .airpods-image-wrapper {
+    height: 150px;
+  }
+
+  .about-section h3 {
+    font-size: 19px;
+  }
+
+  .about-section p {
+    font-size: 11px;
+  }
+
+  .feature-heading {
+    font-size: 17px;
+  }
+
+  .feature-grid {
+    gap: 5px;
+  }
+
+  .feature-image-box {
+    height: 74px;
+  }
+
+  .feature-card h4 {
+    font-size: 9px;
+  }
+}
+
+/* ======================================================
+   REDUCED MOTION
+====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .airpods-card,
+  .airpods-banner-image,
+  .feature-card,
+  .feature-image-box,
+  .feature-image-box img {
+    transition: none;
+  }
+
+  .airpods-card:hover .airpods-banner-image,
+  .feature-card:hover,
+  .feature-card:hover .feature-image-box,
+  .feature-card:hover .feature-image-box img {
+    transform: none;
+  }
+}

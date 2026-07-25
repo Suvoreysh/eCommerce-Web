@@ -4,6 +4,7 @@ import Layout from "./Layout";
 import Login from "../pages/Auth/Login";
 import Signup from "../pages/Auth/Signup";
 import Otp from "../pages/Auth/Otp";
+import LoginWithOtp from "../pages/Auth/login_with_otp";
 
 import Home from "../pages/Store/Home";
 import SingleProductpage from "../pages/Store/SingleProduct";
@@ -19,6 +20,7 @@ import OrderSuccess from "../pages/Cart/OrderSuccess";
 
 import Profile from "../pages/Profile/Profile";
 import MyOrders from "../pages/Profile/MyOrders";
+import OrderDetails from "../pages/Profile/OrderDetails";
 
 import Placeholder from "../pages/Placeholder";
 import NotFound from "../pages/NotFound";
@@ -29,6 +31,7 @@ export default function AppRoutes() {
       <Route element={<Layout />}>
         {/* Auth */}
         <Route path="/login" element={<Login />} />
+        <Route path="/login-with-otp" element={<LoginWithOtp />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/otp" element={<Otp />} />
 
@@ -50,24 +53,30 @@ export default function AppRoutes() {
         {/* Profile */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/orders" element={<MyOrders />} />
+        <Route path="/order-details/:orderId" element={<OrderDetails />} />
 
-        {/* Simple placeholders for remaining nav items */}
+        {/* Placeholders */}
         <Route path="/search" element={<Placeholder title="Search" />} />
         <Route path="/assistant" element={<Placeholder title="Assistant" />} />
         <Route path="/wishlist" element={<Placeholder title="Wishlist" />} />
+
         <Route
           path="/change-password"
           element={<Placeholder title="Change Password" />}
         />
+
         <Route
           path="/change-language"
           element={<Placeholder title="Change Language" />}
         />
+
         <Route path="/wallet" element={<Placeholder title="My Wallet" />} />
+
         <Route
           path="/profile/details"
           element={<Placeholder title="My Profile" />}
         />
+
         <Route
           path="/forgot-password"
           element={<Placeholder title="Forgot Password" />}

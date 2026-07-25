@@ -1,55 +1,53 @@
-import { useState } from "react";
 import "./CategorySidebar.css";
+
+import phone from "../../assets/icons/category-phones.jpg";
+import tablet from "../../assets/icons/category-tablets.jpg";
+import airpods from "../../assets/icons/category-airpods.jfif";
+import watch from "../../assets/icons/category-watches.jpg";
+import accessories from "../../assets/icons/category-accessories.jpg";
 
 const items = [
   {
-    id: "iphone-17-pro",
-    label: "Iphone 17pro",
-    image: "/assets/products/iphone-17pro-orange.png",
+    id: "phones",
+    label: "Phones",
+    image: phone,
   },
   {
-    id: "iphone-17",
-    label: "Iphone 17",
-    image: "/assets/products/iphone-17-green.png",
+    id: "tablets",
+    label: "Tablets",
+    image: tablet,
   },
   {
-    id: "iphone-17-pro-max",
-    label: "Iphone 17pro max",
-    image: "/assets/products/iphone-17pro-max.png",
+    id: "airpods",
+    label: "AirPods",
+    image: airpods,
   },
   {
-    id: "iphone-17pro-2",
-    label: "Iphone 17pro",
-    image: "/assets/products/iphone-17pro-orange-2.png",
+    id: "watches",
+    label: "Watches",
+    image: watch,
   },
   {
-    id: "iphone-17-2",
-    label: "Iphone 17",
-    image: "/assets/products/iphone-17-green-2.png",
+    id: "accessories",
+    label: "Accessories",
+    image: accessories,
   },
 ];
 
-export default function CategorySidebar({ onSelect }) {
-  const [activeId, setActiveId] = useState(items[0].id);
-
-  const handleSelect = (id) => {
-    setActiveId(id);
-    onSelect?.(id);
-  };
-
+export default function CategorySidebar({ activeId, onSelect }) {
   return (
-    <div className="category-sidebar">
+    <aside className="category-sidebar">
       {items.map((item) => (
         <button
           type="button"
           key={item.id}
           className={`sidebar-item ${activeId === item.id ? "active" : ""}`}
-          onClick={() => handleSelect(item.id)}
+          onClick={() => onSelect(item.id)}
         >
           <img src={item.image} alt={item.label} />
           <span>{item.label}</span>
         </button>
       ))}
-    </div>
+    </aside>
   );
 }

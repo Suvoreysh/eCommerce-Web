@@ -1,234 +1,501 @@
-.productivity-details {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    background: #fff;
-    box-sizing: border-box;
+/* ==================================================
+   GLOBAL RESET
+================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* ==================================================
+   PRODUCTIVITY SECTION
+================================================== */
+
+.productivity-details {
+  width: 100%;
+  margin: 0;
+  padding: 60px 0;
+  background: #ffffff;
+}
+
+/* ==================================================
+   HEADING
+================================================== */
 
 .productivity-heading {
-    margin: 0 0 30px;
-    text-align: center;
-    font-size: 30px;
-    font-weight: 700;
-    color: #111;
+  width: 100%;
+  margin: 0 0 32px;
+  padding: 0 40px;
+
+  color: #111111;
+  font-size: clamp(28px, 2.4vw, 40px);
+  line-height: 1.2;
+  font-weight: 700;
+  text-align: center;
 }
 
-/* ===========================
-   IMAGE
-=========================== */
+/* ==================================================
+   PRODUCT IMAGE AREA
+================================================== */
 
 .productivity-media {
-    width: 100%;
-    min-height: 360px;
+  width: 100%;
+  min-height: 560px;
+  margin: 0 0 40px;
+  padding: 45px 30px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    background: linear-gradient(180deg, #eefbfb 0%, #ffffff 100%);
-    border-radius: 16px;
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(196, 255, 250, 0.92) 0%,
+      rgba(224, 255, 252, 0.8) 35%,
+      rgba(246, 255, 254, 0.9) 68%,
+      #ffffff 100%
+    );
 
-    padding: 30px;
-    margin-bottom: 32px;
+  overflow: hidden;
 }
 
 .productivity-media img {
-    width: 100%;
-    max-width: 340px;
-    height: auto;
-    object-fit: contain;
-    display: block;
+  display: block;
+  width: min(54vw, 700px);
+  max-width: 700px;
+  height: auto;
+  object-fit: contain;
 }
 
-/* ===========================
-   ACCORDION
-=========================== */
+/* ==================================================
+   ACCORDION CONTAINER
+   Full width on desktop
+================================================== */
 
 .productivity-panels {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+  width: 100%;
+  margin: 0;
+  padding: 0 40px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
+
+/* ==================================================
+   ACCORDION CARD
+================================================== */
 
 .productivity-panel {
-    border: 1px solid #d8d8d8;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #fff;
+  width: 100%;
+  overflow: hidden;
+
+  background: #f6f6f6;
+  border: 1px solid #9d9d9d;
+  border-radius: 15px;
 }
 
-/* Header */
+/* ==================================================
+   ACCORDION HEADER
+================================================== */
 
 .panel-toggle {
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid #d8d8d8;
+  width: 100%;
+  min-height: 64px;
+  margin: 0;
+  padding: 14px 20px;
 
-    background: #f6f6f6;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 
-    cursor: pointer;
+  color: #111111;
+  background: #f8f8f8;
+  border: 0;
+  border-bottom: 0;
 
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+  outline: none;
+  cursor: pointer;
+  text-align: left;
 
-    padding: 16px 18px;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
 
-    transition: background .2s;
+.productivity-panel.active .panel-toggle {
+  border-bottom: 1px solid #b8b8b8;
 }
 
 .panel-toggle:hover {
-    background: #f1f1f1;
+  background: #f2f2f2;
 }
+
+.panel-toggle:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: -3px;
+}
+
+/* ==================================================
+   TITLE
+================================================== */
 
 .panel-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
-    font-size: 20px;
-    font-weight: 700;
-    color: #111;
+  color: #111111;
+  font-size: clamp(19px, 1.7vw, 25px);
+  line-height: 1.25;
+  font-weight: 700;
 }
 
-.panel-title svg {
-    width: 18px;
-    height: 18px;
-    color: #555;
-    transition: transform .25s ease;
+.panel-arrow {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+
+  color: #111111;
+  stroke-width: 3;
+
+  transition: transform 0.25s ease;
 }
 
-.rotated {
-    transform: rotate(90deg);
+.panel-arrow.rotated {
+  transform: rotate(90deg);
 }
 
-/* Content */
+.terminal-symbol {
+  position: relative;
+  top: 1px;
+
+  margin-right: 2px;
+  color: #111111;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* ==================================================
+   ACCORDION CONTENT
+================================================== */
 
 .panel-content {
-    background: #fff;
-    padding: 18px 22px 22px 48px;
+  width: 100%;
+  padding: 17px 22px 20px;
+
+  background: #f6f6f6;
 }
 
 .panel-description {
-    margin: 0 0 16px;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #444;
-    font-weight: 500;
+  max-width: 900px;
+  margin: 0 0 10px;
+
+  color: #464040;
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 500;
 }
 
+/* ==================================================
+   LIST
+================================================== */
+
 .panel-items {
-    margin: 0;
-    padding-left: 18px;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  list-style: none;
 }
 
 .panel-items li {
-    margin-bottom: 10px;
-    color: #666;
-    font-size: 15px;
-    line-height: 1.5;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+
+  color: #555555;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 400;
 }
 
-.panel-items li:last-child {
-    margin-bottom: 0;
+.panel-items li svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+  margin-top: 5px;
+
+  color: #555555;
+  stroke-width: 1.8;
 }
 
-/* Footnote */
+/* ==================================================
+   LARGE DESKTOP
+================================================== */
 
-.productivity-footnote {
-    margin-top: 28px;
-    text-align: center;
-    color: #666;
-    font-size: 14px;
-    line-height: 1.7;
+@media (min-width: 1400px) {
+  .productivity-details {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+
+  .productivity-heading {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+
+  .productivity-panels {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+
+  .panel-toggle {
+    min-height: 70px;
+    padding: 16px 24px;
+  }
+
+  .panel-content {
+    padding: 20px 26px 25px;
+  }
+
+  .panel-description,
+  .panel-items li {
+    font-size: 17px;
+  }
 }
 
-/* ===========================
+/* ==================================================
    TABLET
-=========================== */
+================================================== */
 
 @media (max-width: 768px) {
+  body {
+    background: #1d1d1d;
+  }
 
-    .productivity-details {
-        padding: 24px 16px;
-    }
+  .productivity-details {
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    padding: 28px 0 34px;
 
-    .productivity-heading {
-        font-size: 22px;
-        margin-bottom: 20px;
-    }
+    background: #ffffff;
+  }
 
-    .productivity-media {
-        min-height: 260px;
-        padding: 20px;
-        margin-bottom: 22px;
-    }
+  .productivity-heading {
+    margin-bottom: 20px;
+    padding: 0 16px;
 
-    .productivity-media img {
-        max-width: 240px;
-    }
+    font-size: 25px;
+  }
 
-    .panel-toggle {
-        padding: 14px 16px;
-    }
+  .productivity-media {
+    min-height: 380px;
+    margin-bottom: 28px;
+    padding: 20px 12px;
 
-    .panel-title {
-        font-size: 17px;
-    }
+    background:
+      linear-gradient(
+        135deg,
+        #f8ffff 0%,
+        #e8fffc 48%,
+        #dcfbf8 100%
+      );
+  }
 
-    .panel-content {
-        padding: 14px 16px 18px 38px;
-    }
+  .productivity-media img {
+    width: 90%;
+    max-width: 460px;
+  }
 
-    .panel-description {
-        font-size: 13px;
-    }
+  .productivity-panels {
+    padding: 0 16px;
+    gap: 14px;
+  }
 
-    .panel-items li {
-        font-size: 13px;
-        margin-bottom: 8px;
-    }
+  .panel-toggle {
+    min-height: 55px;
+    padding: 12px 14px;
+  }
 
-    .productivity-footnote {
-        font-size: 13px;
-    }
+  .panel-title {
+    font-size: 20px;
+  }
+
+  .panel-content {
+    padding: 16px 14px 20px;
+  }
+
+  .panel-description {
+    font-size: 15px;
+  }
+
+  .panel-items {
+    gap: 7px;
+  }
+
+  .panel-items li {
+    font-size: 15px;
+  }
 }
 
-/* ===========================
-   SMALL MOBILE
-=========================== */
+/* ==================================================
+   MOBILE — MATCHES REFERENCE IMAGE
+================================================== */
 
 @media (max-width: 480px) {
+  body {
+    background: #1c1c1c;
+  }
 
-    .productivity-details {
-        padding: 20px 14px;
-    }
+  .productivity-details {
+    width: calc(100% - 40px);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 24px 0 30px;
 
-    .productivity-heading {
-        font-size: 20px;
-    }
+    background: #f9ffff;
+  }
 
-    .productivity-media {
-        min-height: 220px;
-        padding: 16px;
-    }
+  .productivity-heading {
+    margin-bottom: 16px;
+    padding: 0 15px;
 
-    .productivity-media img {
-        max-width: 200px;
-    }
+    font-size: 22px;
+  }
 
-    .panel-title {
-        font-size: 16px;
-    }
+  .productivity-media {
+    min-height: 330px;
+    margin-bottom: 24px;
+    padding: 14px 8px 20px;
+  }
 
-    .panel-content {
-        padding-left: 34px;
-    }
+  .productivity-media img {
+    width: 96%;
+    max-width: 380px;
+  }
 
-    .panel-description,
-    .panel-items li {
-        font-size: 12px;
-    }
+  .productivity-panels {
+    width: 100%;
+    padding: 0 15px;
+    gap: 12px;
+  }
+
+  .productivity-panel {
+    background: #f4f4f4;
+    border: 1px solid #969696;
+    border-radius: 15px;
+  }
+
+  .panel-toggle {
+    min-height: 41px;
+    padding: 7px 10px;
+
+    background: #fafafa;
+  }
+
+  .productivity-panel.active .panel-toggle {
+    border-bottom: 1px solid #a9a9a9;
+  }
+
+  .panel-title {
+    gap: 3px;
+
+    font-size: 21px;
+    line-height: 1.2;
+    letter-spacing: -0.25px;
+  }
+
+  .panel-arrow {
+    width: 17px;
+    height: 17px;
+    flex-basis: 17px;
+  }
+
+  .terminal-symbol {
+    top: 0;
+    margin-right: 2px;
+
+    font-size: 19px;
+  }
+
+  .panel-content {
+    padding: 16px 10px 20px;
+
+    background: #f4f4f4;
+  }
+
+  .panel-description {
+    margin-bottom: 8px;
+
+    color: #514848;
+    font-size: 15px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .panel-items {
+    gap: 6px;
+  }
+
+  .panel-items li {
+    gap: 1px;
+
+    color: #575757;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  .panel-items li svg {
+    width: 12px;
+    height: 12px;
+    flex-basis: 12px;
+    margin-top: 4px;
+  }
+}
+
+/* ==================================================
+   SMALL MOBILE
+================================================== */
+
+@media (max-width: 380px) {
+  .productivity-details {
+    width: calc(100% - 28px);
+  }
+
+  .productivity-panels {
+    padding: 0 12px;
+  }
+
+  .panel-title {
+    font-size: 18px;
+  }
+
+  .panel-description,
+  .panel-items li {
+    font-size: 14px;
+  }
 }

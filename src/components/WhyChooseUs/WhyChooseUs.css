@@ -1,209 +1,519 @@
+/* =========================================
+   MAIN SECTION
+========================================= */
+
 .why {
-    width: 100%;
-    background: #fff;
-    padding: 70px 20px;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
 }
 
-.container {
-    max-width: 900px;
-    margin: auto;
+.why::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at left center,
+      #b8fffb 0%,
+      #d9fffd 18%,
+      rgba(217,255,253,.45) 32%,
+      rgba(255,255,255,0) 58%
+    );
+
+  z-index: 0;
 }
 
-.container h2 {
-    text-align: center;
-    font-size: 42px;
-    font-weight: 700;
-    margin-bottom: 35px;
-    color: #111;
+.why-container {
+  position: relative;
+  z-index: 2;
 }
 
-/* Accordion */
-
-.accordion {
-    border: 1px solid #d8d8d8;
-    border-radius: 24px;
-    overflow: hidden;
-    margin-bottom: 22px;
-    background: #fff;
-    transition: .35s;
+.why,
+.why * {
+  box-sizing: border-box;
 }
 
-.accordion-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-
-    padding: 24px 28px;
+.why-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.accordion-header p {
-    font-size: 20px;
-    font-weight: 600;
-    color: #222;
+.why-title {
+  margin: 0 0 34px;
+  color: #111111;
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -1px;
 }
 
-.accordion-header span {
-    font-size: 34px;
-    font-weight: 600;
-    line-height: 1;
+/* =========================================
+   ACCORDION LIST
+========================================= */
+
+.why-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-/* body */
-
-.accordion-body {
-    max-height: 0;
-    overflow: hidden;
-
-    transition: .45s ease;
+.why-accordion {
+  width: 100%;
+  border: 1px solid #8d8d8d;
+  border-radius: 22px;
+  background: #ffffff;
+  overflow: hidden;
 }
 
-.accordion-body.show {
-    max-height: 600px;
+/* =========================================
+   ACCORDION HEADER
+========================================= */
+
+.why-accordion-header {
+  width: 100%;
+  min-height: 76px;
+  padding: 18px 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  border: 0;
+  border-radius: 22px;
+  background: #ffffff;
+
+  color: #171717;
+  font-family: inherit;
+  text-align: left;
+
+  cursor: pointer;
 }
 
-.accordion-body {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    padding: 0 28px;
+.why-accordion-title {
+  display: block;
+  flex: 1;
+
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.45;
 }
 
-.active .accordion-body {
-    padding-bottom: 26px;
+.why-accordion-icon {
+  flex: 0 0 auto;
+
+  width: 28px;
+  height: 28px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #111111;
+  font-size: 31px;
+  font-weight: 500;
+  line-height: 1;
 }
 
-/* image */
-
-.image {
-    flex: 0 0 240px;
+.why-accordion-header:focus-visible {
+  outline: 3px solid rgba(0, 166, 255, 0.28);
+  outline-offset: -4px;
 }
 
-.image img {
-    width: 220px;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 50%;
+/* =========================================
+   ACCORDION ANIMATION
+========================================= */
+
+.why-accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.38s ease;
 }
 
-/* right */
-
-.content {
-    flex: 1;
+.why-accordion.is-open .why-accordion-panel {
+  grid-template-rows: 1fr;
 }
 
-.point {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
+.why-accordion-body {
+  min-height: 0;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  padding: 0 26px;
+  opacity: 0;
+
+  transition:
+    opacity 0.25s ease,
+    padding 0.38s ease;
 }
 
-.point span {
-    width: 28px;
-    height: 28px;
-
-    border-radius: 50%;
-    background: #000;
-
-    color: white;
-    font-weight: 700;
-    font-size: 14px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    margin-right: 15px;
+.why-accordion.is-open .why-accordion-body {
+  padding-top: 10px;
+  padding-bottom: 28px;
+  opacity: 1;
 }
 
-.point p {
-    color: #222;
+/* =========================================
+   PRODUCT IMAGE
+========================================= */
+
+.why-product-image {
+  position: relative;
+  flex: 0 0 230px;
+
+  width: 230px;
+  height: 230px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f4a06b 0%,
+      #ef7c38 100%
+    );
+}
+
+.why-product-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* =========================================
+   POINTS
+========================================= */
+
+.why-points {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+.why-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+/*
+   Small black numbered circle.
+   It stays close to the paragraph like the reference.
+*/
+
+.why-point-number {
+  flex: 0 0 20px;
+
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #050505;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.why-point p {
+  flex: 1;
+  margin: 0;
+
+  color: #171717;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+/* =========================================
+   DESKTOP HOVER
+========================================= */
+
+@media (hover: hover) {
+  .why-accordion-header:hover {
+    background: #fafafa;
+  }
+
+  .why-accordion {
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .why-accordion:hover {
+    border-color: #5d5d5d;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 992px) {
+  .why {
+    padding: 60px 20px;
+  }
+
+  .why-container {
+    max-width: 760px;
+  }
+
+  .why-title {
+    font-size: 36px;
+    margin-bottom: 30px;
+  }
+
+  .why-accordion-header {
+    min-height: 70px;
+    padding: 17px 22px;
+  }
+
+  .why-accordion-title {
     font-size: 17px;
-    line-height: 1.6;
+  }
+
+  .why-accordion-body {
+    gap: 22px;
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .why-accordion.is-open .why-accordion-body {
+    padding-bottom: 24px;
+  }
+
+  .why-product-image {
+    flex-basis: 190px;
+    width: 190px;
+    height: 190px;
+  }
+
+  .why-point p {
+    font-size: 15px;
+  }
 }
 
-/* Tablet */
+/* =========================================
+   MOBILE
+   Matches the supplied reference
+========================================= */
 
-@media(max-width:992px){
+@media (max-width: 768px) {
+  .why {
+    padding: 30px 12px 72px;
+  }
 
-.container h2{
-font-size:34px;
+  .why-container {
+    max-width: 100%;
+  }
+
+  .why-title {
+    margin-bottom: 17px;
+    font-size: 25px;
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+  }
+
+  .why-accordion-list {
+    gap: 19px;
+  }
+
+  .why-accordion {
+    border-color: #7c7c7c;
+    border-radius: 16px;
+  }
+
+  .why-accordion-header {
+    min-height: 54px;
+    padding: 10px 14px;
+    gap: 10px;
+    border-radius: 16px;
+  }
+
+  .why-accordion-title {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  .why-accordion-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 27px;
+  }
+
+  .why-accordion-body {
+    align-items: center;
+    gap: 0;
+    padding: 0;
+  }
+
+  .why-accordion.is-open .why-accordion-body {
+    padding: 14px 10px 14px 4px;
+  }
+
+  /*
+     Image overlaps slightly toward the left,
+     like the supplied mobile design.
+  */
+
+  .why-product-image {
+    flex: 0 0 116px;
+
+    width: 116px;
+    height: 116px;
+
+    margin-left: 0;
+    margin-right: -2px;
+
+    border-radius: 50%;
+  }
+
+  .why-points {
+    gap: 12px;
+    padding-left: 0;
+  }
+
+  .why-point {
+    gap: 2px;
+  }
+
+  .why-point-number {
+    flex-basis: 16px;
+
+    width: 16px;
+    height: 16px;
+    margin-top: 1px;
+
+    font-size: 10px;
+  }
+
+  .why-point p {
+    font-size: 12.5px;
+    line-height: 1.28;
+  }
 }
 
-.image{
-flex:0 0 180px;
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .why {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .why-title {
+    font-size: 22px;
+  }
+
+  .why-accordion-header {
+    min-height: 52px;
+    padding: 9px 12px;
+  }
+
+  .why-accordion-title {
+    font-size: 13px;
+  }
+
+  .why-accordion.is-open .why-accordion-body {
+    padding: 12px 8px 13px 3px;
+  }
+
+  .why-product-image {
+    flex-basis: 108px;
+    width: 108px;
+    height: 108px;
+  }
+
+  .why-points {
+    gap: 10px;
+  }
+
+  .why-point-number {
+    flex-basis: 15px;
+    width: 15px;
+    height: 15px;
+    font-size: 9px;
+  }
+
+  .why-point p {
+    font-size: 11.5px;
+    line-height: 1.25;
+  }
 }
 
-.image img{
-width:180px;
-height:180px;
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 360px) {
+  .why {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .why-title {
+    font-size: 20px;
+  }
+
+  .why-accordion-title {
+    font-size: 12px;
+  }
+
+  .why-product-image {
+    flex-basis: 96px;
+    width: 96px;
+    height: 96px;
+  }
+
+  .why-point-number {
+    flex-basis: 14px;
+    width: 14px;
+    height: 14px;
+    font-size: 8px;
+  }
+
+  .why-point p {
+    font-size: 10.5px;
+  }
 }
 
-}
+/* =========================================
+   REDUCED MOTION
+========================================= */
 
-/* Mobile */
-
-@media(max-width:768px){
-
-.why{
-padding:45px 16px;
-}
-
-.container h2{
-font-size:30px;
-margin-bottom:24px;
-}
-
-.accordion{
-border-radius:18px;
-}
-
-.accordion-header{
-padding:18px;
-}
-
-.accordion-header p{
-font-size:17px;
-}
-
-.accordion-header span{
-font-size:28px;
-}
-
-.accordion-body{
-flex-direction:row;
-align-items:flex-start;
-gap:14px;
-padding:0 18px;
-}
-
-.active .accordion-body{
-padding-bottom:18px;
-}
-
-.image{
-flex:0 0 95px;
-}
-
-.image img{
-width:95px;
-height:95px;
-}
-
-.point{
-margin-bottom:14px;
-}
-
-.point span{
-width:22px;
-height:22px;
-font-size:12px;
-margin-right:8px;
-}
-
-.point p{
-font-size:14px;
-line-height:1.45;
-}
-
+@media (prefers-reduced-motion: reduce) {
+  .why-accordion,
+  .why-accordion-panel,
+  .why-accordion-body {
+    transition: none;
+  }
 }

@@ -7,6 +7,13 @@ import {
   FiMail,
   FiCalendar,
   FiUser,
+  FiShoppingBag,
+  FiHeart,
+  FiLock,
+  FiSettings,
+  FiMapPin,
+  FiLogOut,
+  FiHeadphones,
 } from "react-icons/fi";
 import { IoChevronBack } from "react-icons/io5";
 
@@ -22,6 +29,25 @@ const TRUST_ITEMS = [
   { icon: "🔄", title: "Easy Returns", sub: "7-day return policy" },
   { icon: "🎧", title: "24/7 Support", sub: "Dedicated support" },
   { icon: "⭐", title: "Best Quality", sub: "Guaranteed quality" },
+];
+
+const sidebarNav = [
+  { to: "/orders", icon: <FiShoppingBag />, label: "My Orders", active: false },
+  { to: "/wishlist", icon: <FiHeart />, label: "Wishlist", active: false },
+  {
+    to: "/change-password",
+    icon: <FiLock />,
+    label: "Change Password",
+    active: false,
+  },
+  {
+    to: "/settings",
+    icon: <FiSettings />,
+    label: "Account Settings",
+    active: false,
+  },
+  { to: "/address", icon: <FiMapPin />, label: "Address Book", active: false },
+  { to: "/logout", icon: <FiLogOut />, label: "Logout", active: false },
 ];
 
 export default function Profile() {
@@ -144,29 +170,18 @@ export default function Profile() {
         ))}
       </section>
 
-      {/* ══════ DESKTOP LAYOUT (hidden on mobile) ══════ */}
-      <div className="profile-desktop">
-        {/* ── Left sidebar ── */}
-        <aside className="pd-sidebar">
-          {/* Back button — top left of sidebar */}
-          <button
-            className="pd-back-btn"
-            onClick={() => navigate("/home")}
-            aria-label="Back"
-          >
-            <IoChevronBack />
-          </button>
-
-          <div className="pd-avatar-wrap">
-            <div className="pd-avatar">
-              <img
-                src={profileImage}
-                alt="Profile"
-                onError={(e) => {
-                  e.currentTarget.src = "/images/profile.png";
-                }}
-              />
-            </div>
+      {/* ══════ DESKTOP LAYOUT (hidden on mobile) — mirrors MyOrders' od-sidebar/od-main shell ══════ */}
+      <div className="orders-desktop">
+        {/* ── Left sidebar (same structure/classes as MyOrders) ── */}
+        <aside className="od-sidebar">
+          <div className="od-avatar">
+            <img
+              src={profileImage}
+              alt="Profile"
+              onError={(e) => {
+                e.currentTarget.src = "/images/profile.png";
+              }}
+            />
             <input
               ref={desktopFileInputRef}
               type="file"
@@ -175,64 +190,91 @@ export default function Profile() {
               onChange={handleImageChange}
             />
             <button
-              className="pd-edit-btn"
+              className="od-avatar-edit-btn"
               onClick={() => desktopFileInputRef.current?.click()}
               aria-label="Upload Profile"
             >
-              <FiEdit2 size={15} />
+              <FiEdit2 size={14} />
             </button>
           </div>
-
-          <h2 className="pd-name">{user?.name || "Jhon Rao"}</h2>
-          <p className="pd-phone">{user?.phone || "+91 6254897524"}</p>
-
-          <div className="pd-divider" />
-
-          <div className="pd-info-row">
-            <FiMail className="pd-info-icon" />
-            <div>
-              <p className="pd-info-label">Email</p>
-              <p className="pd-info-value">
-                {user?.email || "jhonrao@email.com"}
-              </p>
-            </div>
-          </div>
-
-          <div className="pd-info-row">
-            <FiCalendar className="pd-info-icon" />
-            <div>
-              <p className="pd-info-label">Member Since</p>
-              <p className="pd-info-value">
-                {user?.memberSince || "May 20, 2024"}
-              </p>
-            </div>
-          </div>
+          <h2 className="od-name">{user?.name || "Jhon Rao"}</h2>
+          <p className="od-phone">{user?.phone || "+91 6254897524"}</p>
 
           <button
-            className="pd-edit-profile-btn"
+            className="od-edit-profile-btn"
             onClick={() => navigate("/edit-profile")}
           >
             <FiUser size={16} />
             Edit Profile
           </button>
+
+          {/* Nav */}
+          <nav className="od-nav">
+            {sidebarNav.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={`od-nav-item${item.active ? " od-nav-item--active" : ""}`}
+              >
+                <span className="od-nav-icon">{item.icon}</span>
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* Help box */}
+          <div className="od-help">
+            <FiHeadphones className="od-help-icon" />
+            <div>
+              <p className="od-help-title">Need Help?</p>
+              <p className="od-help-sub">24/7 Customer Support</p>
+              <p className="od-help-email">support@shopkart.com</p>
+            </div>
+          </div>
         </aside>
 
-        {/* ── Right main panel ── */}
-        <div className="pd-main">
-          <div className="pd-welcome">
+        {/* ── Right main panel (same structure/classes as MyOrders) ── */}
+        <div className="od-main">
+          <div className="od-main-header">
             <h1>My Account</h1>
-            <p className="pd-welcome-sub">
-              Welcome back, {user?.name || "Jhon Rao"} 👋
-            </p>
-            <p className="pd-welcome-desc">
-              Manage your orders, wishlist and account settings.
-            </p>
+            <button className="od-info-btn">
+              <FiInfo />
+              How it works?
+            </button>
           </div>
 
-          {/* Quick action cards */}
-          <div className="pd-quick-actions">
+          <p className="pd-welcome-sub">
+            Welcome back, {user?.name || "Jhon Rao"} 👋
+          </p>
+          <p className="pd-welcome-desc">
+            Manage your orders, wishlist and account settings.
+          </p>
+
+          <div className="pd-info-grid">
+            <div className="pd-info-row">
+              <FiMail className="pd-info-icon" />
+              <div>
+                <p className="pd-info-label">Email</p>
+                <p className="pd-info-value">
+                  {user?.email || "jhonrao@email.com"}
+                </p>
+              </div>
+            </div>
+            <div className="pd-info-row">
+              <FiCalendar className="pd-info-icon" />
+              <div>
+                <p className="pd-info-label">Member Since</p>
+                <p className="pd-info-value">
+                  {user?.memberSince || "May 20, 2024"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick action cards, styled like od-card */}
+          <div className="od-list">
             {quickActions.map((qa) => (
-              <Link key={qa.to} to={qa.to} className="pd-qa-card">
+              <Link key={qa.to} to={qa.to} className="od-card od-card--link">
                 <div className="pd-qa-icon">{qa.icon}</div>
                 <div className="pd-qa-text">
                   <strong>{qa.title}</strong>

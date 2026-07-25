@@ -1,72 +1,104 @@
 import { useState } from "react";
 import "./WhyChooseUs.css";
-import phoneImg from "../../assets/images/hero-iphone.png"; // change image
+
+import phoneImg from "../../assets/images/hero-iphone.png";
 
 const data = [
   {
-    title: "Premium Quality Products",
+    id: 1,
+    title: "Utrumque satis utrumque audivi audivi nos intellegerem.",
     points: [
-      "Made from high quality materials.",
-      "Long lasting durability.",
-      "Trusted by thousands of customers.",
+      "Utrumque satis utrumque audivi audivi nos intellegerem.",
+      "Utrumque satis utrumque audivi audivi nos intellegerem.",
+      "Utrumque satis utrumque audivi audivi nos intellegerem.",
     ],
   },
   {
-    title: "Fast & Secure Delivery",
+    id: 2,
+    title:
+      "Utrumque satis utrumque audivi audivi nos intellegerem audivi nos intellegerem.",
     points: [
-      "Quick shipping nationwide.",
-      "Safe packaging guaranteed.",
-      "Live order tracking.",
+      "Fast and secure delivery throughout the country.",
+      "Safe packaging for every product.",
+      "Easy order tracking facility.",
     ],
   },
   {
-    title: "Easy Return Policy",
+    id: 3,
+    title:
+      "Utrumque satis utrumque audivi audivi nos intellegerem audivi nos intellegerem.",
     points: [
-      "7 Days replacement.",
-      "No hidden charges.",
-      "Simple return process.",
+      "Simple and easy replacement process.",
+      "No unnecessary hidden charges.",
+      "Helpful customer support service.",
     ],
   },
 ];
 
 export default function WhyChooseUs() {
-  const [open, setOpen] = useState(0);
+  const [openIndex, setOpenIndex] = useState(0);
+
+  const handleAccordion = (index) => {
+    setOpenIndex((currentIndex) => (currentIndex === index ? -1 : index));
+  };
 
   return (
     <section className="why">
-      <div className="container">
-        <h2>Why Choose Us?</h2>
+      <div className="why-container">
+        <h2 className="why-title">Why Choose Us?</h2>
 
-        {data.map((item, index) => (
-          <div
-            className={`accordion ${open === index ? "active" : ""}`}
-            key={index}
-          >
-            <div
-              className="accordion-header"
-              onClick={() => setOpen(open === index ? -1 : index)}
-            >
-              <p>{item.title}</p>
+        <div className="why-accordion-list">
+          {data.map((item, index) => {
+            const isOpen = openIndex === index;
 
-              <span>{open === index ? "−" : "+"}</span>
-            </div>
+            return (
+              <article
+                key={item.id}
+                className={`why-accordion ${isOpen ? "is-open" : ""}`}
+              >
+                <button
+                  type="button"
+                  className="why-accordion-header"
+                  onClick={() => handleAccordion(index)}
+                  aria-expanded={isOpen}
+                  aria-controls={`why-panel-${item.id}`}
+                >
+                  <span className="why-accordion-title">{item.title}</span>
 
-            <div className={`accordion-body ${open === index ? "show" : ""}`}>
-              <div className="image">
-                <img src={phoneImg} alt="" />
-              </div>
+                  <span className="why-accordion-icon" aria-hidden="true">
+                    {isOpen ? "−" : "+"}
+                  </span>
+                </button>
 
-              <div className="content">
-                {item.points.map((point, i) => (
-                  <div className="point" key={i}>
-                    <span>{i + 1}</span>
-                    <p>{point}</p>
+                <div
+                  id={`why-panel-${item.id}`}
+                  className="why-accordion-panel"
+                >
+                  <div className="why-accordion-body">
+                    <div className="why-product-image">
+                      <img src={phoneImg} alt="Premium smartphone" />
+                    </div>
+
+                    <div className="why-points">
+                      {item.points.map((point, pointIndex) => (
+                        <div
+                          className="why-point"
+                          key={`${item.id}-${pointIndex}`}
+                        >
+                          <span className="why-point-number">
+                            {pointIndex + 1}
+                          </span>
+
+                          <p>{point}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

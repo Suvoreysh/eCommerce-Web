@@ -1,160 +1,264 @@
-.keep-exploring {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 25px;
+/* ==========================================================
+   CUSTOMER REVIEW
+========================================================== */
+
+.customer-review {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  overflow: hidden;
+  background: #fff;
 }
 
-.keep-exploring-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+.customer-review-title {
+  margin: 0 0 36px;
+  text-align: center;
+
+  font-size: 34px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.2;
 }
 
-.keep-exploring-header h2 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1a1a1a;
+/* ==========================================================
+   HORIZONTAL SLIDER
+========================================================== */
+
+.review-slider {
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  -webkit-overflow-scrolling: touch;
 }
 
-.explore-more-link {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1e88e5;
-    text-decoration: none;
+.review-slider::-webkit-scrollbar {
+  display: none;
 }
 
-.keep-exploring-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+.review-row {
+  display: flex;
+  gap: 26px;
+  width: max-content;
 }
 
-.explore-card {
-    position: relative;
+/* ==========================================================
+   CARD
+========================================================== */
 
-    border: 1px solid #ececec;
-    border-radius: 14px;
-    padding: 18px;
-    text-align: center;
+.review-card {
+  flex: 0 0 520px;
+  width: 520px;
+  min-height: 250px;
+
+  background: #fff;
+  border: 1px solid #dddddd;
+  border-radius: 24px;
+
+  padding: 28px;
+
+  transition: .3s ease;
 }
 
-.explore-tag {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-
-    background: #ff3b30;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-
-    padding: 3px 10px;
-    border-radius: 20px;
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.08);
 }
 
-.explore-card img {
-    width: 100%;
-    max-height: 120px;
-    object-fit: contain;
-    margin: 20px 0 14px;
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
 }
 
-.explore-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 6px;
+.review-user {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
-.explore-meta {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 14px;
+.review-avatar {
+  width: 72px;
+  height: 72px;
+
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+
+  background: #f7e2d2;
 }
 
-.explore-chip {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    background: #f4f6f7;
-    font-size: 11px;
-    font-weight: 600;
-    color: #333;
+.review-name {
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 600;
+  color: #111;
 }
 
-.explore-btn {
-    width: 100%;
-    padding: 10px 0;
+.review-rating {
+  padding: 9px 18px;
 
-    border: 1px solid #123848;
-    border-radius: 30px;
+  background: #f0f0f0;
+  border-radius: 999px;
 
-    background: #fff;
-    color: #123848;
-    font-size: 13px;
-    font-weight: 600;
-
-    cursor: pointer;
-    transition: all 0.2s ease;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.explore-btn:hover {
-    background: #123848;
-    color: #fff;
+/* ==========================================================
+   TEXT
+========================================================== */
+
+.review-text {
+  margin: 0;
+
+  font-size: 17px;
+  line-height: 1.75;
+  color: #444;
 }
 
-.explore-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 24px;
+/* ==========================================================
+   LARGE DESKTOP
+========================================================== */
+
+@media (max-width: 1400px) {
+
+  .review-card {
+    flex: 0 0 470px;
+    width: 470px;
+  }
+
 }
 
-.dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #d9d9d9;
-}
-
-.dot.active {
-    background: #123848;
-    width: 20px;
-    border-radius: 4px;
-}
-
-/* ========================= */
-/* Tablet */
-/* ========================= */
+/* ==========================================================
+   TABLET
+========================================================== */
 
 @media (max-width: 992px) {
-    .keep-exploring-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
+
+  .customer-review {
+    padding: 40px 18px;
+  }
+
+  .customer-review-title {
+    font-size: 28px;
+    margin-bottom: 28px;
+  }
+
+  .review-row {
+    gap: 18px;
+  }
+
+  .review-card {
+    flex: 0 0 360px;
+    width: 360px;
+    min-height: 200px;
+
+    padding: 22px;
+    border-radius: 20px;
+  }
+
+  .review-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .review-name {
+    font-size: 22px;
+  }
+
+  .review-rating {
+    font-size: 12px;
+    padding: 7px 14px;
+  }
+
+  .review-text {
+    font-size: 15px;
+  }
+
 }
 
-/* ========================= */
-/* Mobile */
-/* ========================= */
+/* ==========================================================
+   MOBILE
+========================================================== */
 
 @media (max-width: 768px) {
-    .keep-exploring {
-        padding: 30px 16px;
-    }
 
-    .keep-exploring-header h2 {
-        font-size: 18px;
-    }
+  .customer-review {
+    padding: 24px 10px;
+  }
 
-    .keep-exploring-row {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-    }
+  .customer-review-title {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
 
-    .explore-card {
-        padding: 12px;
-    }
+  .review-row {
+    gap: 12px;
+  }
+
+  .review-card {
+    flex: 0 0 265px;
+    width: 265px;
+    min-height: 120px;
+
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .review-header {
+    margin-bottom: 12px;
+  }
+
+  .review-user {
+    gap: 10px;
+  }
+
+  .review-avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .review-name {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .review-rating {
+    padding: 5px 10px;
+    font-size: 9px;
+  }
+
+  .review-text {
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+}
+
+/* ==========================================================
+   SMALL MOBILE
+========================================================== */
+
+@media (max-width: 480px) {
+
+  .customer-review {
+    padding: 18px 8px;
+  }
+
+  .review-card {
+    flex: 0 0 265px;
+    width: 265px;
+  }
+
 }
