@@ -1,31 +1,74 @@
+import { useEffect, useState } from "react";
+
+import { productApi } from "../../api/productApi";
 import "./CategorySection.css";
-import phoneIcon from "../../assets/icons/category-phones.jpg";
-import tabletIcon from "../../assets/icons/category-tablets.jpg";
-import airpodIcon from "../../assets/icons/category-airpods.jfif";
-import watchIcon from "../../assets/icons/category-watches.jpg";
-import accessoryIcon from "../../assets/icons/category-accessories.jpg";
-import chargerIcon from "../../assets/icons/category-accessories.jpg";
-
-const categories = [
-  { name: "Phones", icon: phoneIcon },
-  { name: "Tablets", icon: tabletIcon },
-  { name: "AirPods", icon: airpodIcon },
-  { name: "Watches", icon: watchIcon },
-
-];
 
 export default function CategorySection() {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await productApi.getCategories();
+
+        if (!isMounted) return;
+
+        const categoryData = Array.isArray(response?.data) ? response.data : [];
+
+        // Display only the first four categories
+        setCategories(categoryData.slice(0, 4));
+      } catch (err) {
+        if (!isMounted) return;
+
+        console.error("Category API error:", err);
+
+        setError(err.message || "Unable to load categories.");
+        setCategories([]);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchCategories();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <section className="category-section">
       <div className="category-inner">
-        {categories.map((cat) => (
-          <div className="category-item" key={cat.name}>
-            <div className="category-circle">
-              <img src={cat.icon} alt={cat.name} />
+        {loading && <p className="category-message">Loading categories...</p>}
+
+        {!loading && error && (
+          <p className="category-message category-error">{error}</p>
+        )}
+
+        {!loading &&
+          !error &&
+          categories.map((category) => (
+            <div className="category-item" key={category.id}>
+              <div className="category-circle">
+                <img src={category.image} alt={category.name} loading="lazy" />
+              </div>
+
+              <span title={category.name}>{category.name}</span>
             </div>
-            <span>{cat.name}</span>
-          </div>
-        ))}
+          ))}
+
+        {!loading && !error && categories.length === 0 && (
+          <p className="category-message">No categories available.</p>
+        )}
       </div>
     </section>
   );

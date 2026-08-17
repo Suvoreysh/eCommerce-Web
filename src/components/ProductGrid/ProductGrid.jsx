@@ -1,92 +1,80 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FiHeart, FiHome, FiShield } from "react-icons/fi";
-
 import { FaHeart, FaStar } from "react-icons/fa";
-import phone from "../../assets/icons/category-phones.jpg";
-import tablet from "../../assets/icons/category-tablets.jpg";
-import airpods from "../../assets/icons/category-airpods.jfif";
-import watch from "../../assets/icons/category-watches.jpg";
-import accessories from "../../assets/icons/category-accessories.jpg";
-import apple from "../../assets/icons/apple.png";
-import heroPhone from "../../assets/images/hero-iphone.png";
-import airpodsModel from "../../assets/images/airpods-model.png";
+
+import { productApi } from "../../api/productApi";
 import "./ProductGrid.css";
-
-const products = [
-  {
-    id: 1,
-    name: "iPhone 17 Pro",
-    price: 399,
-    oldPrice: 499,
-    rating: 3,
-    reviews: 150,
-    image: heroPhone,
-  },
-  {
-    id: 2,
-    name: "Apple",
-    price: 399,
-    oldPrice: 499,
-    rating: 3,
-    reviews: 150,
-    image: apple,
-  },
-  {
-    id: 3,
-    name: "AirPods",
-    price: 399,
-    oldPrice: 499,
-    rating: 3,
-    reviews: 150,
-    image: airpodsModel,
-  },
-  {
-    id: 4,
-    name: "Phone",
-    price: 399,
-    oldPrice: 499,
-    rating: 3,
-    reviews: 150,
-    image: phone,
-  },
-  {
-    id: 5,
-    name: "Tablet",
-    price: 399,
-    oldPrice: 499,
-    rating: 3,
-    reviews: 150,
-    image: tablet,
-  },
-  {
-    id: 6,
-    name: "Watch",
-    price: 399,
-    oldPrice: 499,
-    rating: 3,
-    reviews: 150,
-    image: watch,
-  },
-
-];
 
 export default function ProductGrid() {
   const navigate = useNavigate();
 
+  const [products, setProducts] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await productApi.getAll();
+
+        if (!isMounted) return;
+
+        const productData = Array.isArray(response?.data) ? response.data : [];
+
+        // Display a maximum of six products
+        setProducts(productData.slice(0, 6));
+      } catch (err) {
+        if (!isMounted) return;
+
+        console.error("Product API error:", err);
+
+        setError(err.message || "Unable to load products.");
+        setProducts([]);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const toggleWishlist = (id) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    setWishlist((previousWishlist) =>
+      previousWishlist.includes(id)
+        ? previousWishlist.filter((itemId) => itemId !== id)
+        : [...previousWishlist, id],
     );
   };
 
-  const renderStars = (count) => {
-    return [...Array(5)].map((_, index) => (
-      <FaStar key={index} className={index < count ? "star filled" : "star"} />
+  const renderStars = (rating) => {
+    const ratingValue = Math.min(5, Math.max(0, Number(rating) || 0));
+
+    return Array.from({ length: 5 }, (_, index) => (
+      <FaStar
+        key={index}
+        className={index < Math.round(ratingValue) ? "star filled" : "star"}
+      />
     ));
+  };
+
+  const handleAddToCart = (event, product) => {
+    event.stopPropagation();
+
+    console.log("Add to cart:", product);
   };
 
   return (
@@ -94,74 +82,134 @@ export default function ProductGrid() {
       <div className="product-inner">
         <h2 className="product-heading">Product List</h2>
 
-        <div className="product-grid">
-          {products.map((p) => (
-            <div
-              className="product-card"
-              key={p.id}
-              onClick={() => navigate(`/productdetails/${p.id}`)}
-            >
-              <button
-                className="wishlist-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleWishlist(p.id);
-                }}
-              >
-                {wishlist.includes(p.id) ? (
-                  <FaHeart className="heart-active" />
-                ) : (
-                  <FiHeart />
-                )}
-              </button>
+        {loading && (
+          <p
+            style={{
+              textAlign: "center",
+              padding: "40px 0",
+            }}
+          >
+            Loading products...
+          </p>
+        )}
 
-              <div className="product-image-box">
-                <img src={p.image} alt={p.name} className="product-image" />
-              </div>
-              <h3 className="product-name">{p.name}</h3>
-              <div className="price-row">
-                <span className="price">₹ {p.price}</span>
+        {!loading && error && (
+          <p
+            style={{
+              color: "red",
+              textAlign: "center",
+              padding: "40px 0",
+            }}
+          >
+            {error}
+          </p>
+        )}
 
-                <span className="old-price">{p.oldPrice}</span>
-              </div>
+        {!loading && !error && products.length === 0 && (
+          <p
+            style={{
+              textAlign: "center",
+              padding: "40px 0",
+            }}
+          >
+            No products available.
+          </p>
+        )}
 
-              <div className="rating-row">
-                <div className="stars">{renderStars(p.rating)}</div>
+        {!loading && !error && products.length > 0 && (
+          <div className="product-grid">
+            {products.map((product) => {
+              const rating = Number(
+                product.average_rating ?? product.rating ?? 0,
+              );
 
-                <span className="review">
-                  {p.rating} | {p.reviews}
-                </span>
-              </div>
+              const reviewCount = Number(product.rating_count ?? 0);
 
-              <div className="feature-row">
-                <div className="feature">
-                  <FiHome />
+              return (
+                <div
+                  className="product-card"
+                  key={product.id}
+                  onClick={() => navigate(`/productdetails/${product.id}`)}
+                >
+                  <button
+                    type="button"
+                    className="wishlist-btn"
+                    aria-label={
+                      wishlist.includes(product.id)
+                        ? "Remove from wishlist"
+                        : "Add to wishlist"
+                    }
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      toggleWishlist(product.id);
+                    }}
+                  >
+                    {wishlist.includes(product.id) ? (
+                      <FaHeart className="heart-active" />
+                    ) : (
+                      <FiHeart />
+                    )}
+                  </button>
 
-                  <span>Product Name</span>
+                  <div className="product-image-box">
+                    <img
+                      src={product.image || product.product?.image}
+                      alt={product.name}
+                      className="product-image"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <h3 className="product-name" title={product.name}>
+                    {product.name}
+                  </h3>
+
+                  <div className="price-row">
+                    <span className="price">₹ {product.price}</span>
+
+                    {product.old_price && (
+                      <span className="old-price">₹ {product.old_price}</span>
+                    )}
+                  </div>
+
+                  <div className="rating-row">
+                    <div className="stars">{renderStars(rating)}</div>
+
+                    <span className="review">
+                      {rating.toFixed(1)} | {reviewCount}
+                    </span>
+                  </div>
+
+                  <div className="feature-row">
+                    <div className="feature">
+                      <FiHome />
+                      <span>Product Name</span>
+                    </div>
+
+                    <div className="feature">
+                      <FiShield />
+                      <span>UV Protection</span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="add-cart-btn"
+                    onClick={(event) => handleAddToCart(event, product)}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
+              );
+            })}
+          </div>
+        )}
 
-                <div className="feature">
-                  <FiShield />
-
-                  <span>UV Protection</span>
-                </div>
-              </div>
-
-              <button
-                className="add-cart-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-
-                  console.log("Add To Cart");
-                }}
-              >
-                Add to Cart
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <button className="view-all-btn" onClick={() => navigate("/products")}>
+        <button
+          type="button"
+          className="view-all-btn"
+          onClick={() => navigate("/products")}
+        >
           View all products
         </button>
       </div>

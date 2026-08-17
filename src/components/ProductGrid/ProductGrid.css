@@ -272,9 +272,10 @@
   margin-top: 18px;
 
   font-size: 26px;
-
+/* white-space: nowrap; */
+/* overflow: hidden;  */
   font-weight: 500;
-
+  text-overflow: ellipsis;
   color: #222;
 
 }

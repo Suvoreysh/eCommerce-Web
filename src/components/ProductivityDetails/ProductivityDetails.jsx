@@ -23,7 +23,7 @@ export default function ProductivityDetails() {
   const [openIndex, setOpenIndex] = useState(0);
 
   const handleToggle = (index) => {
-    setOpenIndex((currentIndex) => (currentIndex === index ? -1 : index));
+    setOpenIndex((prev) => (prev === index ? -1 : index));
   };
 
   return (
@@ -40,8 +40,8 @@ export default function ProductivityDetails() {
 
           return (
             <div
-              className={`productivity-panel ${isOpen ? "active" : ""}`}
               key={panel.title}
+              className={`productivity-panel ${isOpen ? "active" : ""}`}
             >
               <button
                 type="button"
@@ -60,20 +60,19 @@ export default function ProductivityDetails() {
                 </span>
               </button>
 
-              {isOpen && (
-                <div className="panel-content">
-                  <p className="panel-description">{panel.description}</p>
+              {/* Smooth collapsing accordion */}
+              <div className={`panel-content ${isOpen ? "open" : ""}`}>
+                <p className="panel-description">{panel.description}</p>
 
-                  <ul className="panel-items">
-                    {panel.items.map((item) => (
-                      <li key={item}>
-                        <FiChevronRight />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                <ul className="panel-items">
+                  {panel.items.map((item) => (
+                    <li key={item}>
+                      <FiChevronRight />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           );
         })}

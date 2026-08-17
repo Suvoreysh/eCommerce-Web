@@ -1,31 +1,48 @@
 /* ============================================================
-   SHARED BASE
-   ============================================================ */
+   RESET AND SHARED BASE
+============================================================ */
+
+.profile-page,
+.profile-page * {
+  box-sizing: border-box;
+}
 
 .profile-page {
+  width: 100%;
   min-height: 100vh;
-  background: #184d5d;
+  margin: 0;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  background: #184d5d;
+  font-family: inherit;
 }
 
-/* Desktop layout hidden on mobile */
+.profile-page button,
+.profile-page input {
+  font: inherit;
+}
+
+.profile-page button {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .orders-desktop {
   display: none;
 }
 
 /* ============================================================
-   MOBILE  (< 769px)  — unchanged
-   ============================================================ */
+   MOBILE HEADER
+============================================================ */
 
 .profile-header {
+  width: 100%;
   height: 60px;
   padding: 0 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #fff;
+  color: #ffffff;
 }
 
 .profile-header h2 {
@@ -33,110 +50,173 @@
   margin: 0;
   text-align: center;
   font-size: 22px;
+  line-height: 1.2;
   font-weight: 700;
 }
 
 .profile-header__btn {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background: transparent;
-  color: #fff;
+  font-size: 29px;
   cursor: pointer;
-  font-size: 30px;
-  padding: 0;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
-.profile-header__btn:active { opacity: 0.7; }
+.profile-header__btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.profile-header__btn:active {
+  opacity: 0.75;
+  transform: scale(0.94);
+}
+
+/* ============================================================
+   MOBILE PROFILE HERO
+============================================================ */
 
 .profile-hero {
+  width: 100%;
   padding: 10px 20px 75px;
   text-align: center;
-  color: #fff;
+  color: #ffffff;
 }
 
 .profile-avatar-wrapper {
-  width: 145px;
-  margin: auto;
   position: relative;
+  width: 145px;
+  height: 145px;
+  margin: 0 auto;
 }
 
 .profile-avatar {
-  width: 145px;
-  height: 145px;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
+  border: 4px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
   background: #d8d8d8;
-  border: 4px solid rgba(255, 255, 255, 0.18);
 }
 
 .profile-avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+  object-fit: cover;
+  object-position: center;
 }
 
 .profile-edit-btn {
   position: absolute;
-  right: 6px;
-  bottom: 6px;
-  width: 38px;
-  height: 38px;
+  right: 4px;
+  bottom: 4px;
+  z-index: 2;
+  width: 39px;
+  height: 39px;
+  padding: 0;
+  border: 3px solid #ffffff;
   border-radius: 50%;
-  border: 3px solid #fff;
   background: #184d5d;
-  color: #fff;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
-.profile-edit-btn:hover { background: #215f72; }
+.profile-edit-btn:hover {
+  background: #23677b;
+  transform: scale(1.05);
+}
+
+.profile-edit-btn:active {
+  transform: scale(0.94);
+}
 
 .profile-hero h1 {
   margin: 18px 0 6px;
   font-size: 24px;
+  line-height: 1.3;
   font-weight: 700;
 }
 
 .profile-hero p {
   margin: 0;
   font-size: 15px;
-  opacity: 0.95;
+  color: rgba(255, 255, 255, 0.9);
 }
 
+/* ============================================================
+   MOBILE ACCOUNT CARD
+============================================================ */
+
 .profile-card {
+  width: 100%;
   flex: 1;
-  background: #fff;
-  border-radius: 32px 32px 0 0;
   margin-top: -35px;
   padding: 28px 22px calc(90px + env(safe-area-inset-bottom));
-  box-sizing: border-box;
+  border-radius: 32px 32px 0 0;
+  background: #ffffff;
 }
 
 .profile-card h3 {
-  margin: 0 0 22px;
+  margin: 0 0 18px;
+  color: #111111;
   font-size: 18px;
+  line-height: 1.3;
   font-weight: 700;
-  color: #111;
+}
+
+.profile-menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-item {
+  width: 100%;
+  min-height: 74px;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf0f2;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+  color: #111111;
   text-decoration: none;
-  color: #111;
-  padding: 16px 0;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.profile-item:last-child {
+  border-bottom: none;
+}
+
+.profile-item:hover {
+  opacity: 0.8;
+  transform: translateX(2px);
 }
 
 .profile-item__left {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -145,57 +225,124 @@
 .profile-item__icon {
   width: 44px;
   height: 44px;
+  flex-shrink: 0;
   border-radius: 14px;
   background: #eef2f4;
+  color: #184d5d;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #184d5d;
-  flex-shrink: 0;
 }
 
 .profile-item__icon img {
   width: 22px;
   height: 22px;
+  display: block;
   object-fit: contain;
 }
 
-.profile-item span {
+.profile-item__left > span {
+  overflow: hidden;
+  color: #111111;
   font-size: 16px;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .profile-item__arrow {
-  font-size: 24px;
+  flex-shrink: 0;
   color: #184d5d;
+  font-size: 24px;
 }
-
-.profile-item:hover { opacity: 0.8; }
-
-@media (max-width: 480px) {
-  .profile-header         { height: 56px; padding: 0 16px; }
-  .profile-header h2      { font-size: 20px; }
-  .profile-header__btn    { font-size: 28px; }
-  .profile-avatar-wrapper { width: 130px; }
-  .profile-avatar         { width: 130px; height: 130px; }
-  .profile-edit-btn       { width: 34px; height: 34px; }
-  .profile-hero           { padding-bottom: 65px; }
-  .profile-hero h1        { font-size: 22px; }
-  .profile-hero p         { font-size: 14px; }
-  .profile-card           { margin-top: -30px; border-radius: 28px 28px 0 0; padding: 24px 18px calc(88px + env(safe-area-inset-bottom)); }
-  .profile-card h3        { font-size: 17px; }
-  .profile-item           { padding: 14px 0; }
-  .profile-item__icon     { width: 42px; height: 42px; }
-  .profile-item span      { font-size: 15px; }
-  .profile-item__arrow    { font-size: 22px; }
-}
-
 
 /* ============================================================
-   DESKTOP  (≥ 769px)  — identical shell to MyOrders (od-*)
-   plus profile-only additions (pd-*)
-   ============================================================ */
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+  .profile-header {
+    height: 56px;
+    padding: 0 14px;
+  }
+
+  .profile-header h2 {
+    font-size: 20px;
+  }
+
+  .profile-header__btn {
+    width: 38px;
+    height: 38px;
+    font-size: 27px;
+  }
+
+  .profile-hero {
+    padding: 10px 18px 65px;
+  }
+
+  .profile-avatar-wrapper {
+    width: 130px;
+    height: 130px;
+  }
+
+  .profile-edit-btn {
+    right: 2px;
+    bottom: 2px;
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+
+  .profile-hero h1 {
+    margin-top: 16px;
+    font-size: 22px;
+  }
+
+  .profile-hero p {
+    font-size: 14px;
+  }
+
+  .profile-card {
+    margin-top: -30px;
+    padding: 24px 18px calc(88px + env(safe-area-inset-bottom));
+    border-radius: 28px 28px 0 0;
+  }
+
+  .profile-card h3 {
+    font-size: 17px;
+  }
+
+  .profile-item {
+    min-height: 70px;
+    padding: 13px 0;
+  }
+
+  .profile-item__left {
+    gap: 14px;
+  }
+
+  .profile-item__icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .profile-item__left > span {
+    font-size: 15px;
+  }
+
+  .profile-item__arrow {
+    font-size: 22px;
+  }
+}
+
+/* ============================================================
+   DESKTOP LAYOUT
+============================================================ */
+
 @media (min-width: 769px) {
+  body:has(.profile-page) {
+    overflow: hidden;
+  }
 
   .profile-header,
   .profile-hero,
@@ -204,372 +351,740 @@
   }
 
   .profile-page {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
     background: #184d5d;
-    padding-bottom: 0;
   }
 
   .orders-desktop {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
     display: flex;
     align-items: stretch;
-    gap: 0;
-    min-height: 100vh;
   }
 
-  /* ── Sidebar (same as MyOrders' od-sidebar) ── */
+  /* ========================================================
+     DESKTOP SIDEBAR
+  ======================================================== */
+
   .od-sidebar {
-    width: 300px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 10;
+
+    width: 328px;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
     flex-shrink: 0;
-    background: #1a3e4a;
+
+    padding: 24px 30px 30px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background: #1a4653;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 24px 32px;
-    box-sizing: border-box;
     text-align: center;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  }
+
+  .od-sidebar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .od-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .od-sidebar::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  /* ========================================================
+     DESKTOP AVATAR
+  ======================================================== */
+
+  .od-avatar-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 20px;
+    flex-shrink: 0;
+    overflow: visible;
   }
 
   .od-avatar {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #d0d0d0;
-    border: 4px solid rgba(255, 255, 255, 0.15);
-    margin-bottom: 16px;
-    flex-shrink: 0;
     position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.34);
+    border-radius: 50%;
+    background: #d0d0d0;
   }
 
   .od-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     display: block;
+    object-fit: cover;
+    object-position: center;
   }
+
+  /* Edit icon placed over the circular avatar */
 
   .od-avatar-edit-btn {
     position: absolute;
-    right: -4px;
-    bottom: -4px;
-    width: 32px;
-    height: 32px;
+    right: 8px;
+    bottom: 8px;
+    z-index: 5;
+
+    width: 39px;
+    height: 39px;
+    padding: 0;
+
+    border: 3px solid #1a4653;
     border-radius: 50%;
-    border: 2.5px solid #1a3e4a;
-    background: #184d5d;
-    color: #fff;
+    background: #ffffff;
+    color: #184d5d;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    font-size: 17px;
     cursor: pointer;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.28);
+
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
-  .od-avatar-edit-btn:hover { background: #215f72; }
+  .od-avatar-edit-btn:hover {
+    background: #184d5d;
+    color: #ffffff;
+    transform: scale(1.08);
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.32);
+  }
+
+  .od-avatar-edit-btn:active {
+    transform: scale(0.95);
+  }
 
   .od-name {
-    margin: 0 0 4px;
-    font-size: 20px;
+    max-width: 100%;
+    margin: 0 0 6px;
+    overflow-wrap: anywhere;
+    color: #ffffff;
+    font-size: 23px;
+    line-height: 1.3;
     font-weight: 700;
-    color: #fff;
   }
 
   .od-phone {
-    margin: 0 0 20px;
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.65);
+    margin: 0 0 28px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 14px;
+    line-height: 1.4;
   }
 
   .od-edit-profile-btn {
     width: 100%;
-    height: 44px;
-    border-radius: 12px;
+    min-height: 56px;
+    margin: 0 0 30px;
+    padding: 12px 20px;
     border: none;
-    background: #fff;
+    border-radius: 14px;
+    background: #ffffff;
     color: #184d5d;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 28px;
-    transition: background 0.18s;
+    gap: 9px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
-  .od-edit-profile-btn:hover { background: #e5eef1; }
+  .od-edit-profile-btn svg {
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+
+  .od-edit-profile-btn:hover {
+    background: #edf5f7;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  /* ========================================================
+     DESKTOP SIDEBAR NAVIGATION
+  ======================================================== */
 
   .od-nav {
     width: 100%;
+    margin-bottom: auto;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-bottom: auto;
+    gap: 5px;
   }
 
   .od-nav-item {
+    width: 100%;
+    min-height: 50px;
+    padding: 13px 15px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 13px 16px;
-    border-radius: 12px;
+    text-align: left;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.7);
     font-size: 15px;
     font-weight: 500;
-    transition: background 0.18s, color 0.18s;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
   }
 
   .od-nav-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transform: translateX(3px);
   }
 
   .od-nav-item--active {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
     font-weight: 600;
   }
 
   .od-nav-icon {
-    font-size: 18px;
+    width: 22px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
+    font-size: 19px;
   }
 
+  .od-nav-logout {
+    font-family: inherit;
+  }
+
+  .od-nav-logout:hover {
+    background: rgba(255, 95, 95, 0.13);
+    color: #ffb8b8;
+  }
+
+  /* ========================================================
+     DESKTOP SUPPORT BOX
+  ======================================================== */
+
   .od-help {
-    margin-top: 32px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.07);
-    border-radius: 14px;
+    margin-top: 30px;
     padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.07);
     display: flex;
     align-items: flex-start;
     gap: 12px;
     text-align: left;
-    box-sizing: border-box;
   }
 
   .od-help-icon {
-    font-size: 28px;
-    color: rgba(255, 255, 255, 0.7);
-    flex-shrink: 0;
     margin-top: 2px;
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 27px;
   }
 
   .od-help-title {
-    margin: 0 0 2px;
+    margin: 0 0 3px;
+    color: #ffffff;
     font-size: 14px;
     font-weight: 700;
-    color: #fff;
   }
 
   .od-help-sub {
-    margin: 0 0 2px;
+    margin: 0 0 4px;
+    color: rgba(255, 255, 255, 0.62);
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
   }
 
   .od-help-email {
-    margin: 0;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    display: block;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 11px;
+    line-height: 1.4;
+    text-decoration: none;
+    overflow-wrap: anywhere;
   }
 
-  /* ── Right main panel (same as MyOrders' od-main) ── */
+  .od-help-email:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  /* ========================================================
+     DESKTOP MAIN CONTENT
+  ======================================================== */
+
   .od-main {
-    flex: 1;
-    background: #f6f7f9;
-    padding: 40px 40px 60px;
-    box-sizing: border-box;
+    width: calc(100% - 328px);
+    height: 100vh;
+    height: 100dvh;
+    min-width: 0;
+    min-height: 0;
+    padding: 30px 40px 60px;
+
+    overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior: contain;
+
+    background: #f6f7f9;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd4d8 transparent;
+  }
+
+  .od-main::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .od-main::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .od-main::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #cbd4d8;
   }
 
   .od-main-header {
+    width: 100%;
+    margin-bottom: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    gap: 24px;
   }
 
-  .od-main-header h1 {
+  .od-main-title {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .od-main-title h1 {
     margin: 0;
-    font-size: 28px;
+    color: #050505;
+    font-size: 35px;
+    line-height: 1.25;
     font-weight: 700;
-    color: #111;
+  }
+
+  /* ========================================================
+     DESKTOP BACK BUTTON
+  ======================================================== */
+
+  .od-desktop-back-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    flex-shrink: 0;
+    border: 1px solid #dce4e7;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #184d5d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(24, 77, 93, 0.09);
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .od-desktop-back-btn:hover {
+    background: #184d5d;
+    color: #ffffff;
+    transform: translateX(-3px);
+    box-shadow: 0 5px 15px rgba(24, 77, 93, 0.2);
+  }
+
+  .od-desktop-back-btn:active {
+    transform: scale(0.94);
   }
 
   .od-info-btn {
+    padding: 8px 0;
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: #555d60;
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: none;
-    border: none;
+    gap: 7px;
     font-size: 14px;
     font-weight: 500;
-    color: #555;
     cursor: pointer;
+    transition: color 0.2s ease;
   }
 
-  .od-info-btn svg { font-size: 18px; }
-  .od-info-btn:hover { color: #184d5d; }
+  .od-info-btn svg {
+    flex-shrink: 0;
+    font-size: 19px;
+  }
 
-  /* Profile-only welcome text under the shared header */
+  .od-info-btn:hover {
+    color: #184d5d;
+  }
+
+  /* ========================================================
+     WELCOME DETAILS
+  ======================================================== */
+
+  .pd-welcome {
+    margin-bottom: 27px;
+  }
+
   .pd-welcome-sub {
-    margin: 0 0 4px;
-    font-size: 16px;
+    margin: 0 0 5px;
+    color: #111111;
+    font-size: 17px;
+    line-height: 1.4;
     font-weight: 600;
-    color: #111;
   }
 
   .pd-welcome-desc {
-    margin: 0 0 24px;
+    margin: 0;
+    color: #777d80;
     font-size: 14px;
-    color: #777;
+    line-height: 1.5;
   }
 
+  /* ========================================================
+     USER INFORMATION
+  ======================================================== */
+
   .pd-info-grid {
+    margin-bottom: 32px;
     display: flex;
-    gap: 32px;
-    margin-bottom: 28px;
+    align-items: flex-start;
     flex-wrap: wrap;
+    gap: 38px 65px;
   }
 
   .pd-info-row {
+    min-width: 240px;
     display: flex;
     align-items: flex-start;
     gap: 12px;
   }
 
+  .pd-info-icon-box {
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .pd-info-icon {
     color: #184d5d;
-    font-size: 18px;
-    margin-top: 2px;
-    flex-shrink: 0;
+    font-size: 19px;
   }
 
   .pd-info-label {
-    margin: 0 0 3px;
+    margin: 0 0 4px;
+    color: #858585;
     font-size: 11px;
-    color: #888;
-    font-weight: 500;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 
   .pd-info-value {
     margin: 0;
+    color: #111111;
     font-size: 14px;
-    color: #111;
+    line-height: 1.5;
     font-weight: 500;
+    overflow-wrap: anywhere;
   }
 
-  /* Quick action cards reuse od-list/od-card shell */
+  /* ========================================================
+     QUICK ACTION CARDS
+  ======================================================== */
+
   .od-list {
+    width: 100%;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin-bottom: 28px;
+    gap: 16px;
+  }
+
+  .od-card {
+    width: 100%;
   }
 
   .od-card--link {
+    min-height: 122px;
+    padding: 24px 30px;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    background: #ffffff;
+    color: #111111;
     display: flex;
     align-items: center;
-    gap: 16px;
-    background: #fff;
-    border-radius: 16px;
-    padding: 20px 24px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    gap: 20px;
     text-decoration: none;
-    color: #111;
-    transition: box-shadow 0.18s;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.045);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
   }
 
   .od-card--link:hover {
-    box-shadow: 0 4px 16px rgba(24, 77, 93, 0.12);
+    border-color: rgba(24, 77, 93, 0.1);
+    box-shadow: 0 8px 24px rgba(24, 77, 93, 0.12);
+    transform: translateY(-2px);
   }
 
   .pd-qa-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
-    background: #eef2f4;
+    width: 62px;
+    height: 62px;
+    flex-shrink: 0;
+    border-radius: 17px;
+    background: #edf2f4;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
   }
 
   .pd-qa-icon img {
-    width: 24px;
-    height: 24px;
+    width: 27px;
+    height: 27px;
+    display: block;
     object-fit: contain;
   }
 
   .pd-qa-text {
-    flex: 1;
     min-width: 0;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 6px;
   }
 
   .pd-qa-text strong {
-    font-size: 15px;
+    color: #111111;
+    font-size: 16px;
+    line-height: 1.35;
     font-weight: 600;
-    color: #111;
   }
 
   .pd-qa-text span {
-    font-size: 13px;
-    color: #888;
+    color: #858585;
+    font-size: 14px;
+    line-height: 1.45;
   }
 
   .pd-qa-arrow {
-    font-size: 20px;
-    color: #184d5d;
     flex-shrink: 0;
+    color: #184d5d;
+    font-size: 22px;
+    transition: transform 0.2s ease;
   }
 
-  /* Trust bar */
+  .od-card--link:hover .pd-qa-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ========================================================
+     TRUST BAR
+  ======================================================== */
+
   .pd-trust-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    padding: 23px 27px;
+    border-radius: 18px;
     background: #1a3e4a;
-    border-radius: 16px;
-    padding: 22px 28px;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
   }
 
   .pd-trust-item {
+    min-width: 0;
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #fff;
+    color: #ffffff;
   }
 
   .pd-trust-icon {
-    font-size: 24px;
     flex-shrink: 0;
+    font-size: 24px;
   }
 
   .pd-trust-title {
-    margin: 0 0 2px;
+    margin: 0 0 3px;
+    color: #ffffff;
     font-size: 13px;
+    line-height: 1.35;
     font-weight: 600;
-    color: #fff;
   }
 
   .pd-trust-sub {
     margin: 0;
+    color: rgba(255, 255, 255, 0.62);
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
   }
 
-  /* Tablet */
-  @media (max-width: 1024px) {
-    .od-sidebar { width: 260px; padding: 32px 18px 28px; }
-    .od-main    { padding: 32px 28px 48px; }
-    .pd-trust-bar { grid-template-columns: repeat(2, 1fr); }
+  /* ========================================================
+     ACCESSIBILITY
+  ======================================================== */
+
+  .od-avatar-edit-btn:focus-visible,
+  .od-edit-profile-btn:focus-visible,
+  .od-desktop-back-btn:focus-visible,
+  .od-info-btn:focus-visible,
+  .od-nav-item:focus-visible,
+  .od-card--link:focus-visible {
+    outline: 3px solid rgba(50, 160, 190, 0.45);
+    outline-offset: 3px;
+  }
+}
+
+/* ============================================================
+   TABLET / SMALL DESKTOP
+============================================================ */
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .od-sidebar {
+    width: 270px;
+    padding: 26px 20px 28px;
+  }
+
+  .od-avatar-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .od-avatar-edit-btn {
+    right: 7px;
+    bottom: 7px;
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  .od-main {
+    width: calc(100% - 270px);
+    padding: 30px 28px 48px;
+  }
+
+  .od-main-title {
+    gap: 11px;
+  }
+
+  .od-main-title h1 {
+    font-size: 29px;
+  }
+
+  .od-desktop-back-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
+  }
+
+  .od-card--link {
+    min-height: 108px;
+    padding: 20px 22px;
+  }
+
+  .pd-qa-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .pd-trust-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ============================================================
+   VERY SMALL DESKTOP WIDTH
+============================================================ */
+
+@media (min-width: 769px) and (max-width: 850px) {
+  .od-sidebar {
+    width: 240px;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .od-main {
+    width: calc(100% - 240px);
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .od-main-header {
+    align-items: flex-start;
+  }
+
+  .od-main-title h1 {
+    font-size: 25px;
+  }
+
+  .od-info-btn span {
+    display: none;
+  }
+
+  .pd-info-grid {
+    gap: 22px;
+  }
+
+  .pd-info-row {
+    min-width: 200px;
   }
 }

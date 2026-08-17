@@ -4,17 +4,17 @@
 
 .airpods-banner {
   width: 100%;
-  padding: 45px 20px;
+  padding: 28px 20px;
   background: #f5f5f5;
 }
 
 .airpods-card {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 28px;
+  padding: 20px;
   overflow: hidden;
-  border-radius: 38px;
+  border-radius: 28px;
 
   background: linear-gradient(
     180deg,
@@ -25,7 +25,7 @@
   );
 
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.35s ease;
+  transition: all 0.35s ease;
 }
 
 .airpods-card:hover {
@@ -40,29 +40,29 @@
   margin: 0;
   text-align: center;
   color: #111;
-  font-size: 54px;
+  font-size: 42px;
   font-weight: 800;
   line-height: 1.1;
 }
 
 .airpods-subtitle {
-  margin: 8px 0 28px;
+  margin: 6px 0 20px;
   text-align: center;
   color: #333;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 /* ======================================================
-   MAIN BANNER IMAGE
+   HERO IMAGE
 ====================================================== */
 
 .airpods-image-wrapper {
   width: 100%;
-  height: 540px;
+  height: 410px;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 18px;
   background: #dce8ef;
 
   display: flex;
@@ -73,9 +73,8 @@
 .airpods-banner-image {
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform .5s ease;
 }
 
 .airpods-card:hover .airpods-banner-image {
@@ -83,30 +82,32 @@
 }
 
 /* ======================================================
-   ABOUT SECTION
+   ABOUT
 ====================================================== */
 
 .about-section {
   width: 100%;
-  max-width: 950px;
-  margin: 55px auto 0;
-  padding: 0 40px;
+  max-width: 760px;
+  margin: 36px auto 0;
+  padding: 0 20px;
   text-align: center;
 }
 
 .about-section h3 {
   margin: 0;
+
   color: #111;
-  font-size: 52px;
+  font-size: 40px;
   font-weight: 800;
   line-height: 1.15;
 }
 
 .about-section p {
-  margin: 18px 0 0;
+  margin: 14px 0 0;
+
   color: #333;
-  font-size: 21px;
-  line-height: 1.8;
+  font-size: 17px;
+  line-height: 1.65;
 }
 
 /* ======================================================
@@ -114,10 +115,12 @@
 ====================================================== */
 
 .feature-heading {
-  margin: 45px 0 30px;
+  margin: 30px 0 20px;
+
   text-align: center;
   color: #111;
-  font-size: 34px;
+
+  font-size: 27px;
   font-weight: 700;
   line-height: 1.2;
 }
@@ -128,18 +131,21 @@
 
 .feature-grid {
   width: 100%;
+
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  margin-top: 20px;
-  padding-bottom: 25px;
+
+  gap: 20px;
+  margin-top: 12px;
+  padding-bottom: 10px;
 }
 
 .feature-card {
   position: relative;
   min-width: 0;
   text-align: center;
-  transition: transform 0.35s ease;
+
+  transition: transform .35s ease;
 }
 
 .feature-card:hover {
@@ -152,13 +158,15 @@
 
 .feature-number {
   position: absolute;
-  top: -14px;
+  top: -10px;
   left: 50%;
   z-index: 5;
+
   transform: translateX(-50%);
 
-  width: 42px;
-  height: 42px;
+  width: 34px;
+  height: 34px;
+
   border-radius: 50%;
   background: #000;
   color: #fff;
@@ -167,11 +175,10 @@
   align-items: center;
   justify-content: center;
 
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 700;
-  line-height: 1;
 
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 16px rgba(0,0,0,.18);
 }
 
 /* ======================================================
@@ -180,32 +187,37 @@
 
 .feature-image-box {
   width: 100%;
-  height: 240px;
+  height: 185px;
+
   overflow: hidden;
-  border-radius: 22px;
+
+  border-radius: 18px;
   background: #fff;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 28px rgba(0,0,0,.08);
+
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
+    transform .35s ease,
+    box-shadow .35s ease;
 }
 
 .feature-card:hover .feature-image-box {
   transform: translateY(-4px);
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.15);
+
+  box-shadow: 0 18px 38px rgba(0,0,0,.15);
 }
 
 .feature-image-box img {
-  width: 78%;
-  height: 78%;
-  display: block;
+  width: 72%;
+  height: 72%;
+
   object-fit: contain;
-  transition: transform 0.35s ease;
+
+  transition: transform .35s ease;
 }
 
 .feature-card:hover .feature-image-box img {
@@ -217,66 +229,83 @@
 ====================================================== */
 
 .feature-card h4 {
-  margin: 18px 0 0;
+  margin: 14px 0 0;
+
   color: #111;
-  font-size: 24px;
+
+  font-size: 19px;
   font-weight: 700;
   line-height: 1.35;
 }
 
 .feature-card p {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
+
   color: #666;
-  font-size: 16px;
-  line-height: 1.6;
+
+  font-size: 14px;
+  line-height: 1.55;
 }
 
 /* ======================================================
-   LAPTOP - 1200PX
+   LARGE DESKTOP
 ====================================================== */
 
-@media (max-width: 1200px) {
+@media (min-width: 1440px) {
+
   .airpods-card {
-    padding: 24px;
+    max-width: 1240px;
   }
 
-  .airpods-title {
-    font-size: 46px;
-  }
-
-  .airpods-subtitle {
-    font-size: 20px;
-  }
-
-  .airpods-image-wrapper {
-    height: 470px;
-  }
-
-  .about-section {
-    max-width: 850px;
-  }
-
-  .about-section h3 {
-    font-size: 44px;
-  }
-
-  .about-section p {
-    font-size: 18px;
-  }
-
-  .feature-grid {
-    gap: 24px;
-  }
-
-  .feature-image-box {
-    height: 210px;
-  }
-
-  .feature-card h4 {
-    font-size: 21px;
-  }
 }
 
+/* ======================================================
+   LAPTOP (1200px)
+====================================================== */
+
+@media (max-width:1200px){
+
+  .airpods-card{
+    padding:22px;
+  }
+
+  .airpods-title{
+    font-size:40px;
+  }
+
+  .airpods-subtitle{
+    font-size:18px;
+  }
+
+  .airpods-image-wrapper{
+    height:390px;
+  }
+
+  .about-section{
+    max-width:760px;
+  }
+
+  .about-section h3{
+    font-size:38px;
+  }
+
+  .about-section p{
+    font-size:17px;
+  }
+
+  .feature-grid{
+    gap:18px;
+  }
+
+  .feature-image-box{
+    height:175px;
+  }
+
+  .feature-card h4{
+    font-size:18px;
+  }
+
+}
 /* ======================================================
    TABLET - 992PX
 ====================================================== */
@@ -417,6 +446,7 @@
 
   .feature-card p {
     font-size: 12px;
+    line-height: 1.45;
   }
 }
 
@@ -494,6 +524,11 @@
     font-size: 10px;
     line-height: 1.2;
   }
+
+  .feature-card p {
+    font-size: 10px;
+    line-height: 1.35;
+  }
 }
 
 /* ======================================================
@@ -539,6 +574,11 @@
 
   .feature-card h4 {
     font-size: 9px;
+  }
+
+  .feature-card p {
+    font-size: 9px;
+    line-height: 1.3;
   }
 }
 

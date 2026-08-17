@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import {
   FiInfo,
   FiEdit2,
@@ -20,68 +20,112 @@ import { IoChevronBack } from "react-icons/io5";
 import Seo from "../../components/common/Seo";
 import { useAuth } from "../../context/AuthContext";
 import "./Profile.css";
+
 import myorderIcon from "../../assets/icons/Icon-fill/myorder.svg";
 import wishlistIcon from "../../assets/icons/Icon-fill/wishlist.svg";
 import changepassIcon from "../../assets/icons/Icon-fill/changepass.svg";
 
 const TRUST_ITEMS = [
-  { icon: "🛡️", title: "Secure Payments", sub: "100% secure payment" },
-  { icon: "🔄", title: "Easy Returns", sub: "7-day return policy" },
-  { icon: "🎧", title: "24/7 Support", sub: "Dedicated support" },
-  { icon: "⭐", title: "Best Quality", sub: "Guaranteed quality" },
+  {
+    icon: "🛡️",
+    title: "Secure Payments",
+    sub: "100% secure payment",
+  },
+  {
+    icon: "🔄",
+    title: "Easy Returns",
+    sub: "7-day return policy",
+  },
+  {
+    icon: "🎧",
+    title: "24/7 Support",
+    sub: "Dedicated support",
+  },
+  {
+    icon: "⭐",
+    title: "Best Quality",
+    sub: "Guaranteed quality",
+  },
 ];
 
-const sidebarNav = [
-  { to: "/orders", icon: <FiShoppingBag />, label: "My Orders", active: false },
-  { to: "/wishlist", icon: <FiHeart />, label: "Wishlist", active: false },
+const SIDEBAR_NAV = [
+  {
+    to: "/orders",
+    icon: <FiShoppingBag />,
+    label: "My Orders",
+  },
+  {
+    to: "/wishlist",
+    icon: <FiHeart />,
+    label: "Wishlist",
+  },
   {
     to: "/change-password",
     icon: <FiLock />,
     label: "Change Password",
-    active: false,
   },
   {
     to: "/settings",
     icon: <FiSettings />,
     label: "Account Settings",
-    active: false,
   },
-  { to: "/address", icon: <FiMapPin />, label: "Address Book", active: false },
-  { to: "/logout", icon: <FiLogOut />, label: "Logout", active: false },
+  {
+    to: "/address",
+    icon: <FiMapPin />,
+    label: "Address Book",
+  },
 ];
 
 export default function Profile() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const mobileFileInputRef = useRef(null);
+  const desktopFileInputRef = useRef(null);
+
   const [profileImage, setProfileImage] = useState(
     user?.image || "/images/profile.png",
   );
-  const fileInputRef = useRef(null);
-  const desktopFileInputRef = useRef(null);
 
   const handleImageChange = (event) => {
     const file = event.target.files?.[0];
+
     if (!file) return;
-    setProfileImage(URL.createObjectURL(file));
-    // TODO: upload to backend
+
+    const temporaryImageUrl = URL.createObjectURL(file);
+    setProfileImage(temporaryImageUrl);
+
+    // TODO: Upload the image to your backend.
+  };
+
+  const handleImageError = (event) => {
+    event.currentTarget.src = "/images/profile.png";
+  };
+
+  const handleBackToHome = () => {
+    navigate("/home");
+  };
+
+  const handleLogout = () => {
+    // Add your logout function here if useAuth provides one.
+    navigate("/login");
   };
 
   const menuItems = [
     {
       to: "/orders",
       label: "My Order",
-      icon: <img src={myorderIcon} alt="My Order" />,
+      icon: <img src={myorderIcon} alt="" />,
     },
     {
       to: "/wishlist",
       label: "Wishlist",
-      icon: <img src={wishlistIcon} alt="Wishlist" />,
+      icon: <img src={wishlistIcon} alt="" />,
     },
     {
       to: "/change-password",
       label: "Change Password",
-      icon: <img src={changepassIcon} alt="Change Password" />,
+      icon: <img src={changepassIcon} alt="" />,
     },
   ];
 
@@ -90,19 +134,19 @@ export default function Profile() {
       to: "/orders",
       icon: <img src={myorderIcon} alt="" />,
       title: "My Orders",
-      desc: "View and track your orders",
+      description: "View and track your orders",
     },
     {
       to: "/wishlist",
       icon: <img src={wishlistIcon} alt="" />,
       title: "Wishlist",
-      desc: "View your saved items",
+      description: "View your saved items",
     },
     {
       to: "/change-password",
       icon: <img src={changepassIcon} alt="" />,
       title: "Change Password",
-      desc: "Update your account password",
+      description: "Update your account password",
     },
   ];
 
@@ -110,160 +154,240 @@ export default function Profile() {
     <main className="profile-page">
       <Seo title="Profile" description="View and manage your profile." />
 
-      {/* ══════ MOBILE HEADER (hidden on desktop) ══════ */}
+      {/* =====================================================
+          MOBILE HEADER
+      ====================================================== */}
+
       <header className="profile-header">
         <button
+          type="button"
           className="profile-header__btn"
-          onClick={() => navigate("/home")}
-          aria-label="Back"
+          onClick={handleBackToHome}
+          aria-label="Back to home"
         >
           <IoChevronBack />
         </button>
+
         <h2>Profile</h2>
-        <button className="profile-header__btn" aria-label="Info">
+
+        <button
+          type="button"
+          className="profile-header__btn"
+          aria-label="Profile information"
+        >
           <FiInfo />
         </button>
       </header>
 
-      {/* ══════ MOBILE HERO (hidden on desktop) ══════ */}
+      {/* =====================================================
+          MOBILE PROFILE HERO
+      ====================================================== */}
+
       <section className="profile-hero">
         <div className="profile-avatar-wrapper">
           <div className="profile-avatar">
             <img
               src={profileImage}
-              alt="Profile"
-              onError={(e) => {
-                e.currentTarget.src = "/images/profile.png";
-              }}
+              alt={`${user?.name || "User"} profile`}
+              onError={handleImageError}
             />
           </div>
+
           <input
-            ref={fileInputRef}
+            ref={mobileFileInputRef}
             type="file"
             accept="image/*"
-            style={{ display: "none" }}
+            hidden
             onChange={handleImageChange}
           />
+
           <button
+            type="button"
             className="profile-edit-btn"
-            onClick={() => fileInputRef.current?.click()}
-            aria-label="Upload Profile"
+            onClick={() => mobileFileInputRef.current?.click()}
+            aria-label="Change profile image"
           >
             <FiEdit2 />
           </button>
         </div>
+
         <h1>{user?.name || "Jhon Rao"}</h1>
         <p>{user?.phone || "+91 6254897524"}</p>
       </section>
 
-      {/* ══════ MOBILE CARD (hidden on desktop) ══════ */}
+      {/* =====================================================
+          MOBILE ACCOUNT CARD
+      ====================================================== */}
+
       <section className="profile-card">
         <h3>Account Overview</h3>
-        {menuItems.map((item) => (
-          <Link key={item.to} to={item.to} className="profile-item">
-            <div className="profile-item__left">
-              <div className="profile-item__icon">{item.icon}</div>
-              <span>{item.label}</span>
-            </div>
-            <FiChevronRight className="profile-item__arrow" />
-          </Link>
-        ))}
+
+        <div className="profile-menu">
+          {menuItems.map((item) => (
+            <Link key={item.to} to={item.to} className="profile-item">
+              <div className="profile-item__left">
+                <div className="profile-item__icon">{item.icon}</div>
+                <span>{item.label}</span>
+              </div>
+
+              <FiChevronRight className="profile-item__arrow" />
+            </Link>
+          ))}
+        </div>
       </section>
 
-      {/* ══════ DESKTOP LAYOUT (hidden on mobile) — mirrors MyOrders' od-sidebar/od-main shell ══════ */}
+      {/* =====================================================
+          DESKTOP LAYOUT
+      ====================================================== */}
+
       <div className="orders-desktop">
-        {/* ── Left sidebar (same structure/classes as MyOrders) ── */}
+        {/* ===================================================
+            DESKTOP SIDEBAR
+        ==================================================== */}
+
         <aside className="od-sidebar">
-          <div className="od-avatar">
-            <img
-              src={profileImage}
-              alt="Profile"
-              onError={(e) => {
-                e.currentTarget.src = "/images/profile.png";
-              }}
-            />
+          {/* Avatar wrapper:
+              The button must be outside .od-avatar so it can
+              overlap the avatar border without being clipped.
+          */}
+
+          <div className="od-avatar-wrapper">
+            <div className="od-avatar">
+              <img
+                src={profileImage}
+                alt={`${user?.name || "User"} profile`}
+                onError={handleImageError}
+              />
+            </div>
+
             <input
               ref={desktopFileInputRef}
               type="file"
               accept="image/*"
-              style={{ display: "none" }}
+              hidden
               onChange={handleImageChange}
             />
+
             <button
+              type="button"
               className="od-avatar-edit-btn"
               onClick={() => desktopFileInputRef.current?.click()}
-              aria-label="Upload Profile"
+              aria-label="Change profile image"
             >
-              <FiEdit2 size={14} />
+              <FiEdit2 />
             </button>
           </div>
-          <h2 className="od-name">{user?.name || "Jhon Rao"}</h2>
-          <p className="od-phone">{user?.phone || "+91 6254897524"}</p>
+
+          {/* Name and phone are separate from the image wrapper */}
+
+          <div className="od-user-details">
+            <h2 className="od-name">{user?.name || "Jhon Rao"}</h2>
+
+            <p className="od-phone">{user?.phone || "+91 6254897524"}</p>
+          </div>
 
           <button
+            type="button"
             className="od-edit-profile-btn"
             onClick={() => navigate("/edit-profile")}
           >
-            <FiUser size={16} />
-            Edit Profile
+            <FiUser />
+            <span>Edit Profile</span>
           </button>
 
-          {/* Nav */}
-          <nav className="od-nav">
-            {sidebarNav.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`od-nav-item${item.active ? " od-nav-item--active" : ""}`}
-              >
+          <nav className="od-nav" aria-label="Profile navigation">
+            {SIDEBAR_NAV.map((item) => (
+              <Link key={item.to} to={item.to} className="od-nav-item">
                 <span className="od-nav-icon">{item.icon}</span>
                 <span>{item.label}</span>
               </Link>
             ))}
+
+            <button
+              type="button"
+              className="od-nav-item od-nav-logout"
+              onClick={handleLogout}
+            >
+              <span className="od-nav-icon">
+                <FiLogOut />
+              </span>
+
+              <span>Logout</span>
+            </button>
           </nav>
 
-          {/* Help box */}
           <div className="od-help">
             <FiHeadphones className="od-help-icon" />
+
             <div>
               <p className="od-help-title">Need Help?</p>
               <p className="od-help-sub">24/7 Customer Support</p>
-              <p className="od-help-email">support@shopkart.com</p>
+
+              <a href="mailto:support@shopkart.com" className="od-help-email">
+                support@shopkart.com
+              </a>
             </div>
           </div>
         </aside>
 
-        {/* ── Right main panel (same structure/classes as MyOrders) ── */}
-        <div className="od-main">
+        {/* ===================================================
+            DESKTOP MAIN CONTENT
+        ==================================================== */}
+
+        <section className="od-main">
           <div className="od-main-header">
-            <h1>My Account</h1>
-            <button className="od-info-btn">
+            <div className="od-main-title">
+              <button
+                type="button"
+                className="od-desktop-back-btn"
+                onClick={handleBackToHome}
+                aria-label="Back to home"
+              >
+                <IoChevronBack />
+              </button>
+
+              <h1>My Account</h1>
+            </div>
+
+            <button type="button" className="od-info-btn">
               <FiInfo />
-              How it works?
+              <span>How it works?</span>
             </button>
           </div>
 
-          <p className="pd-welcome-sub">
-            Welcome back, {user?.name || "Jhon Rao"} 👋
-          </p>
-          <p className="pd-welcome-desc">
-            Manage your orders, wishlist and account settings.
-          </p>
+          <div className="pd-welcome">
+            <p className="pd-welcome-sub">
+              Welcome back, {user?.name || "Jhon Rao"} 👋
+            </p>
+
+            <p className="pd-welcome-desc">
+              Manage your orders, wishlist and account settings.
+            </p>
+          </div>
 
           <div className="pd-info-grid">
             <div className="pd-info-row">
-              <FiMail className="pd-info-icon" />
+              <div className="pd-info-icon-box">
+                <FiMail className="pd-info-icon" />
+              </div>
+
               <div>
                 <p className="pd-info-label">Email</p>
+
                 <p className="pd-info-value">
                   {user?.email || "jhonrao@email.com"}
                 </p>
               </div>
             </div>
+
             <div className="pd-info-row">
-              <FiCalendar className="pd-info-icon" />
+              <div className="pd-info-icon-box">
+                <FiCalendar className="pd-info-icon" />
+              </div>
+
               <div>
                 <p className="pd-info-label">Member Since</p>
+
                 <p className="pd-info-value">
                   {user?.memberSince || "May 20, 2024"}
                 </p>
@@ -271,33 +395,38 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Quick action cards, styled like od-card */}
           <div className="od-list">
-            {quickActions.map((qa) => (
-              <Link key={qa.to} to={qa.to} className="od-card od-card--link">
-                <div className="pd-qa-icon">{qa.icon}</div>
+            {quickActions.map((action) => (
+              <Link
+                key={action.to}
+                to={action.to}
+                className="od-card od-card--link"
+              >
+                <div className="pd-qa-icon">{action.icon}</div>
+
                 <div className="pd-qa-text">
-                  <strong>{qa.title}</strong>
-                  <span>{qa.desc}</span>
+                  <strong>{action.title}</strong>
+                  <span>{action.description}</span>
                 </div>
+
                 <FiChevronRight className="pd-qa-arrow" />
               </Link>
             ))}
           </div>
 
-          {/* Trust bar */}
           <div className="pd-trust-bar">
-            {TRUST_ITEMS.map((t) => (
-              <div key={t.title} className="pd-trust-item">
-                <span className="pd-trust-icon">{t.icon}</span>
+            {TRUST_ITEMS.map((item) => (
+              <div key={item.title} className="pd-trust-item">
+                <span className="pd-trust-icon">{item.icon}</span>
+
                 <div>
-                  <p className="pd-trust-title">{t.title}</p>
-                  <p className="pd-trust-sub">{t.sub}</p>
+                  <p className="pd-trust-title">{item.title}</p>
+                  <p className="pd-trust-sub">{item.sub}</p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </section>
       </div>
     </main>
   );

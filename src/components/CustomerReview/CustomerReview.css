@@ -13,7 +13,6 @@
 .customer-review-title {
   margin: 0 0 36px;
   text-align: center;
-
   font-size: 34px;
   font-weight: 700;
   color: #111;
@@ -27,10 +26,8 @@
 .review-slider {
   overflow-x: auto;
   overflow-y: hidden;
-
   scrollbar-width: none;
   -ms-overflow-style: none;
-
   -webkit-overflow-scrolling: touch;
 }
 
@@ -52,19 +49,17 @@
   flex: 0 0 520px;
   width: 520px;
   min-height: 250px;
-
   background: #fff;
   border: 1px solid #dddddd;
   border-radius: 24px;
-
   padding: 28px;
-
-  transition: .3s ease;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .review-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 40px rgba(0,0,0,.08);
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* ==========================================================
@@ -75,7 +70,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 22px;
 }
 
@@ -88,17 +82,14 @@
 .review-avatar {
   width: 72px;
   height: 72px;
-
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-
   background: #f7e2d2;
 }
 
 .review-name {
   margin: 0;
-
   font-size: 28px;
   font-weight: 600;
   color: #111;
@@ -106,13 +97,12 @@
 
 .review-rating {
   padding: 9px 18px;
-
-  background: #f0f0f0;
+  background: #f4f4f4;
   border-radius: 999px;
-
   color: #666;
   font-size: 14px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 /* ==========================================================
@@ -121,7 +111,6 @@
 
 .review-text {
   margin: 0;
-
   font-size: 17px;
   line-height: 1.75;
   color: #444;
@@ -132,12 +121,10 @@
 ========================================================== */
 
 @media (max-width: 1400px) {
-
   .review-card {
     flex: 0 0 470px;
     width: 470px;
   }
-
 }
 
 /* ==========================================================
@@ -147,45 +134,44 @@
 @media (max-width: 992px) {
 
   .customer-review {
-    padding: 40px 18px;
+    padding: 45px 20px;
   }
 
   .customer-review-title {
-    font-size: 28px;
-    margin-bottom: 28px;
+    font-size: 30px;
+    margin-bottom: 30px;
   }
 
   .review-row {
-    gap: 18px;
+    gap: 20px;
   }
 
   .review-card {
-    flex: 0 0 360px;
-    width: 360px;
-    min-height: 200px;
-
-    padding: 22px;
-    border-radius: 20px;
+    flex: 0 0 390px;
+    width: 390px;
+    min-height: 220px;
+    padding: 24px;
+    border-radius: 22px;
   }
 
   .review-avatar {
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
   }
 
   .review-name {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .review-rating {
-    font-size: 12px;
-    padding: 7px 14px;
+    font-size: 13px;
+    padding: 8px 15px;
   }
 
   .review-text {
     font-size: 15px;
+    line-height: 1.7;
   }
-
 }
 
 /* ==========================================================
@@ -195,55 +181,53 @@
 @media (max-width: 768px) {
 
   .customer-review {
-    padding: 24px 10px;
+    padding: 32px 16px;
   }
 
   .customer-review-title {
-    font-size: 18px;
-    margin-bottom: 16px;
+    font-size: 26px;
+    margin-bottom: 24px;
   }
 
   .review-row {
-    gap: 12px;
+    gap: 18px;
   }
 
   .review-card {
-    flex: 0 0 265px;
-    width: 265px;
-    min-height: 120px;
-
-    padding: 14px;
-    border-radius: 16px;
+    flex: 0 0 330px;
+    width: 330px;
+    min-height: 220px;
+    padding: 22px;
+    border-radius: 20px;
   }
 
   .review-header {
-    margin-bottom: 12px;
+    margin-bottom: 18px;
   }
 
   .review-user {
-    gap: 10px;
+    gap: 14px;
   }
 
   .review-avatar {
-    width: 45px;
-    height: 45px;
+    width: 60px;
+    height: 60px;
   }
 
   .review-name {
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 600;
   }
 
   .review-rating {
-    padding: 5px 10px;
-    font-size: 9px;
+    padding: 8px 14px;
+    font-size: 12px;
   }
 
   .review-text {
-    font-size: 9px;
-    line-height: 1.2;
+    font-size: 14px;
+    line-height: 1.7;
   }
-
 }
 
 /* ==========================================================
@@ -253,12 +237,83 @@
 @media (max-width: 480px) {
 
   .customer-review {
-    padding: 18px 8px;
+    padding: 26px 14px;
+  }
+
+  .customer-review-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .review-row {
+    gap: 16px;
   }
 
   .review-card {
-    flex: 0 0 265px;
-    width: 265px;
+    flex: 0 0 310px;
+    width: 310px;
+    min-height: 210px;
+    padding: 20px;
+    border-radius: 18px;
   }
 
+  .review-header {
+    margin-bottom: 16px;
+  }
+
+  .review-user {
+    gap: 12px;
+  }
+
+  .review-avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  .review-name {
+    font-size: 17px;
+  }
+
+  .review-rating {
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+
+  .review-text {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+}
+
+/* ==========================================================
+   EXTRA SMALL DEVICES
+========================================================== */
+
+@media (max-width: 360px) {
+
+  .review-card {
+    flex: 0 0 285px;
+    width: 285px;
+    min-height: 195px;
+    padding: 18px;
+  }
+
+  .review-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .review-name {
+    font-size: 16px;
+  }
+
+  .review-rating {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+
+  .review-text {
+    font-size: 12px;
+    line-height: 1.6;
+  }
 }

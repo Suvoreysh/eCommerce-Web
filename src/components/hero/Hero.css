@@ -1,3 +1,7 @@
+/* ==========================================
+   HERO SECTION
+========================================== */
+
 .hero {
   position: relative;
   width: 100%;
@@ -6,15 +10,48 @@
   background: #000;
 }
 
+/* ==========================================
+   HERO SLIDES
+========================================== */
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.7s ease,
+    visibility 0.7s ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ==========================================
+   OFFER
+========================================== */
+
 .offer {
   position: absolute;
   top: 18px;
   left: 50%;
-  transform: translateX(-50%);
+  z-index: 20;
+
   color: #fff;
   font-size: 15px;
-  z-index: 20;
   font-weight: 500;
+  white-space: nowrap;
+
+  transform: translateX(-50%);
 }
 
 .offer .old {
@@ -24,7 +61,6 @@
 
 .offer .price {
   color: #fff;
-
 }
 
 .offer a {
@@ -32,51 +68,82 @@
   text-decoration: underline;
 }
 
+/* ==========================================
+   HERO CONTENT
+========================================== */
+
 .hero-content {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
+/* ==========================================
+   HERO IMAGE
+========================================== */
+
 .phone {
   position: absolute;
   left: 50%;
   bottom: -20px;
-  transform: translateX(-50%);
-  width: 1000px;
   z-index: 5;
+
+  display: block;
+  width: 1000px;
+  max-width: none;
+
+  transform: translateX(-50%);
 }
+
+/* ==========================================
+   SUBTITLE / NUMBER
+========================================== */
 
 .number {
   position: absolute;
-  right: 78px;
   top: 257px;
+  right: 78px;
+  z-index: 1;
+
   margin: 0;
+
   color: #ff7a16;
   font-size: 180px;
   font-weight: 900;
   line-height: 0.8;
-  z-index: 1;
 }
+
+/* ==========================================
+   TITLE
+========================================== */
 
 .iphone {
   position: absolute;
   left: 100px;
   bottom: 200px;
+  z-index: 8;
+
   margin: 0;
+
   color: #fff;
   font-size: 52px;
   font-weight: 900;
-  z-index: 8;
   line-height: 1;
 }
 
+/* ==========================================
+   BOTTOM FADE
+========================================== */
+
 .fade {
   position: absolute;
-  left: 0;
   right: 0;
   bottom: 0;
+  left: 0;
+  z-index: 10;
+
   height: 170px;
+
   background: linear-gradient(
     to top,
     white,
@@ -84,36 +151,131 @@
     rgba(255, 255, 255, 0.55),
     rgba(255, 255, 255, 0)
   );
-  z-index: 10;
+
+  pointer-events: none;
 }
+
+/* ==========================================
+   DOT INDICATORS
+========================================== */
+
+.hero-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: 30;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  transform: translateX(-50%);
+}
+
+.hero-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(40, 40, 40, 0.45);
+
+  cursor: pointer;
+
+  transition:
+    width 0.3s ease,
+    border-radius 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+.hero-dot:hover {
+  background: rgba(40, 40, 40, 0.75);
+  transform: scale(1.12);
+}
+
+.hero-dot.active {
+  width: 26px;
+  border-radius: 10px;
+  background: #ff7a16;
+}
+
+/* ==========================================
+   TABLET AND MOBILE
+========================================== */
+
 @media (max-width: 768px) {
   .hero {
     height: 310px;
   }
 
   .phone {
-    width: 511px;
     bottom: 32px;
+    width: 511px;
   }
 
   .number {
-    font-size: 105px;
-    right: 8px;
     top: 145px;
+    right: 8px;
+
+    font-size: 105px;
   }
 
   .iphone {
-    font-size: 26px;
     left: 5px;
     bottom: 120px;
+
+    font-size: 26px;
   }
 
   .offer {
-    font-size: 13px;
     top: 14px;
+    max-width: calc(100% - 24px);
+
+    overflow: hidden;
+    font-size: 13px;
+    text-overflow: ellipsis;
   }
 
   .fade {
     height: 90px;
+  }
+
+  .hero-dots {
+    bottom: 15px;
+    gap: 7px;
+  }
+
+  .hero-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .hero-dot.active {
+    width: 20px;
+  }
+}
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+  .hero-dots {
+    bottom: 12px;
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide,
+  .hero-dot {
+    transition: none;
   }
 }
