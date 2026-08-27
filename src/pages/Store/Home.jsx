@@ -1,6 +1,6 @@
-import Navbar from "../../components/Navbar/Navbar";
-import Hero from "../../components/Hero/Hero";
-import CategorySection from "../../components/CategorySection/CategorySection";
+import Navbar from "../../components/navbar/Navbar";
+import Hero from "../../components/hero/Hero";
+import CategorySection from "../../components/categorySection/CategorySection";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import AirPodsBanner from "../../components/AirPodsBanner/AirPodsBanner";
 import AboutProduct from "../../components/AboutProduct/AboutProduct";
@@ -18,14 +18,14 @@ export default function Home() {
       <Hero />
       <CategorySection />
       <ProductGrid />
-       <AirPodsBanner />
+      <AirPodsBanner />
       <AboutProduct />
       <ProBeyond />
       <BuiltForBold />
       <WhyChooseUs />
       <Partners />
       <FeedbackForm />
-      <Footer /> 
+      <Footer />
     </>
   );
 }

@@ -78,7 +78,7 @@ const SIDEBAR_NAV = [
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const mobileFileInputRef = useRef(null);
   const desktopFileInputRef = useRef(null);
@@ -107,8 +107,8 @@ export default function Profile() {
   };
 
   const handleLogout = () => {
-    // Add your logout function here if useAuth provides one.
-    navigate("/login");
+    logout();
+    navigate("/home", { replace: true });
   };
 
   const menuItems = [

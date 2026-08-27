@@ -36,11 +36,12 @@ export default function AppRoutes() {
         <Route path="/otp" element={<Otp />} />
 
         {/* Store */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
         <Route path="/productdetails/:id" element={<SingleProductpage />} />
         <Route path="/products" element={<ProductListing />} />
         <Route path="/category" element={<ProductCategory />} />
+        <Route path="/category/:categoryId" element={<ProductCategory />} />
         <Route path="/product/:id" element={<SingleProduct />} />
 
         {/* Cart / Checkout */}

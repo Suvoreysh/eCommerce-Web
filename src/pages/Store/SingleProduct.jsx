@@ -1,6 +1,4 @@
-// pages/Product/SingleProduct.jsx
-import { useParams } from "react-router-dom";
-import Navbar from "../../components/Navbar/Navbar";
+import Navbar from "../../components/navbar/Navbar";
 import ProductMulti from "../../components/Productmulti/Productmulti";
 import ProductHighlights from "../../components/ProductHighlights/ProductHighlights";
 import ProductivityDetails from "../../components/ProductivityDetails/ProductivityDetails";
@@ -13,17 +11,14 @@ import CustomerReview from "../../components/CustomerReview/CustomerReview";
 import WhyAppleBest from "../../components/whyapplebest/WhyAppleBest";
 import Footer from "../../components/Footer/Footer";
 
+// ProductMulti reads the :id route param itself and fetches the product,
+// including its own loading skeleton and the shared variant-select modal
+// used for "Add to Cart" (same one used on Home/Category grids).
 export default function SingleProductpage() {
-  const { id } = useParams();
-
-  // TODO: replace with a real fetch, e.g.
-  // const [product, setProduct] = useState(null);
-  // useEffect(() => { apiRequest(`/products/${id}`).then(setProduct); }, [id]);
-
   return (
     <>
       <Navbar />
-      <ProductMulti productId={id} />
+      <ProductMulti />
       <ProductHighlights />
       <ProductivityDetails />
       <BatteryCapacity />
@@ -32,6 +27,7 @@ export default function SingleProductpage() {
       <WhyAppleBest />
       <KeepExploring />
       <CustomerReview />
+      <WhyChooseUs />
       <Footer />
     </>
   );

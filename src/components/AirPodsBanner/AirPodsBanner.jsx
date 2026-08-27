@@ -1,74 +1,171 @@
+import { useEffect, useState } from "react";
+
+import { homeApi } from "../../api/homeApi";
 import "./AirPodsBanner.css";
 
-import bannerImage from "../../assets/images/airpods-model.png";
-import featureImage from "../../assets/icons/category-airpods.jfif";
-
-const features = [
-  {
-    id: 1,
-    title: "Premium Audio",
-    image: featureImage,
-  },
-  {
-    id: 2,
-    title: "Active Noise Cancellation",
-    image: featureImage,
-  },
-  {
-    id: 3,
-    title: "30 Hour Battery",
-    image: featureImage,
-  },
-];
-
 export default function AirPodsBanner() {
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchFocusedProduct = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await homeApi.getHome();
+
+        if (!isMounted) return;
+
+        // Supports both parsed and raw Axios responses
+        const responseData = response?.data?.data ?? response?.data ?? response;
+
+        const aboutBanners = Array.isArray(responseData?.about_banners)
+          ? responseData.about_banners
+          : [];
+
+        const focusedProduct = aboutBanners.find(
+          (item) =>
+            item.placement === "home_focused_product" &&
+            Number(item.status) === 1,
+        );
+
+        setProduct(focusedProduct || null);
+      } catch (err) {
+        if (!isMounted) return;
+
+        console.error("AirPods banner API error:", err);
+
+        setError(
+          err?.response?.data?.message ||
+            err?.message ||
+            "Unable to load product details.",
+        );
+
+        setProduct(null);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchFocusedProduct();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="airpods-banner">
+        <div className="airpods-card airpods-skeleton">
+          <div className="skeleton skeleton-title" />
+          <div className="skeleton skeleton-subtitle" />
+          <div className="skeleton skeleton-banner-image" />
+
+          <div className="about-section">
+            <div className="skeleton skeleton-about-title" />
+            <div className="skeleton skeleton-description" />
+            <div className="skeleton skeleton-description skeleton-short" />
+          </div>
+
+          <div className="skeleton skeleton-feature-heading" />
+
+          <div className="feature-grid">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div className="feature-card" key={index}>
+                <div className="skeleton skeleton-feature-image" />
+                <div className="skeleton skeleton-feature-label" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="airpods-banner">
+        <p className="airpods-message airpods-error" role="alert">
+          {error}
+        </p>
+      </section>
+    );
+  }
+
+  if (!product) {
+    return null;
+  }
+
+  const features = Array.isArray(product.features)
+    ? [...product.features].sort(
+        (first, second) =>
+          Number(first.display_order) - Number(second.display_order),
+      )
+    : [];
+
   return (
     <section className="airpods-banner">
       <div className="airpods-card">
-        {/* Heading */}
+        {product.title && <h2 className="airpods-title">{product.title}</h2>}
 
-        <h2 className="airpods-title">Air Pods</h2>
+        {product.subtitle && (
+          <p className="airpods-subtitle">{product.subtitle}</p>
+        )}
 
-        <p className="airpods-subtitle">Enhance your Sound Experience</p>
+        {product.image && (
+          <div className="airpods-image-wrapper">
+            <img
+              src={product.image}
+              alt={product.title || "Focused product"}
+              className="airpods-banner-image"
+              loading="lazy"
+            />
+          </div>
+        )}
 
-        {/* Banner Image */}
+        {product.description && (
+          <div className="about-section">
+            <h3>About the Product</h3>
+            <p>{product.description}</p>
+          </div>
+        )}
 
-        <div className="airpods-image-wrapper">
-          <img
-            src={bannerImage}
-            alt="AirPods"
-            className="airpods-banner-image"
-          />
-        </div>
+        {features.length > 0 && (
+          <>
+            <div className="feature-heading">Product Features</div>
 
-        {/* About */}
+            <div className="feature-grid">
+              {features.map((feature, index) => (
+                <div className="feature-card" key={feature.id}>
+                  <div className="feature-number">{index + 1}</div>
 
-        <div className="about-section">
-          <h3>About the Product</h3>
+                  <div
+                    className={`feature-image-box ${
+                      !feature.icon ? "feature-image-empty" : ""
+                    }`}
+                  >
+                    {feature.icon && (
+                      <img
+                        src={feature.icon}
+                        alt={feature.label || `Feature ${index + 1}`}
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
 
-          <p>
-            Utrumque satis utrumque audivi audivi nos intellegere quaecum sed
-            conferebamus nihil utrumque probarem Attico quorum utrumque.
-          </p>
-        </div>
-
-        {/* Features */}
-
-        <div className="feature-heading">Product Features</div>
-
-        <div className="feature-grid">
-          {features.map((item) => (
-            <div className="feature-card" key={item.id}>
-              <div className="feature-number">{item.id}</div>
-
-              <div className="feature-image-box">
-                <img src={item.image} alt={item.title} />
-              </div>
-
-              <h4>Features</h4>
+                  <h4>{feature.label || `Feature ${index + 1}`}</h4>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
     </section>
   );

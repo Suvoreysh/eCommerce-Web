@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./CategoryProductGrid.css";
-import { FiHeart, FiBox, FiShield } from "react-icons/fi";
+import { FiHeart, FiBox, FiShield, FiPackage } from "react-icons/fi";
 
 export default function CategoryProductGrid({ title, products = [] }) {
   const navigate = useNavigate();
@@ -15,21 +15,24 @@ export default function CategoryProductGrid({ title, products = [] }) {
     <section className="category-grid-section">
       <div className="category-grid-header">
         <h2>{title}</h2>
-
-        <a href={`/category/${title.toLowerCase()}`} className="see-more-link">
-          See More <span>&raquo;</span>
-        </a>
       </div>
 
       {products.length === 0 ? (
-        <div className="category-empty">No products found.</div>
+        <div className="category-empty">
+          <FiPackage className="category-empty-icon" />
+          <p className="category-empty-title">No products available</p>
+          <p className="category-empty-subtext">
+            {title} doesn't have any products yet — check back soon or browse
+            another category.
+          </p>
+        </div>
       ) : (
         <div className="category-grid">
           {products.map((product) => (
             <article
               className="category-card"
               key={product.id}
-              onClick={() => navigate(`/product/${product.id}`)}
+              onClick={() => navigate(`/productdetails/${product.id}`)}
             >
               <button
                 type="button"

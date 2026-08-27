@@ -6,7 +6,7 @@ import OfferCards from "../../components/OfferCards/OfferCards";
 import SaleProductGrid from "../../components/SaleProductGrid/SaleProductGrid";
 import TaglineBanner from "../../components/TaglineBanner/TaglineBanner";
 import Footer from "../../components/Footer/Footer";
-import Navbar from "../../components/Navbar/Navbar";
+import Navbar from "../../components/navbar/Navbar";
 
 import p1 from "../../assets/images/p1.png";
 import p2 from "../../assets/images/p2.png";

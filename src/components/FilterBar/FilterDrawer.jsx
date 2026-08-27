@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { FiX, FiSliders, FiChevronUp, FiChevronDown, FiStar } from "react-icons/fi";
+import {
+  FiX,
+  FiSliders,
+  FiChevronUp,
+  FiChevronDown,
+  FiStar,
+} from "react-icons/fi";
 import "./FilterDrawer.css";
 
 const SORT_OPTIONS = [
@@ -13,7 +19,7 @@ const PRICE_OPTIONS = ["Under ₹1,000", "₹1,000 - 3,000", "Above - 5,000"];
 
 const RATING_OPTIONS = [4, 3, 2];
 
-export default function FilterDrawer({ isOpen, onClose }) {
+export default function FilterDrawer({ isOpen, onClose, onApply }) {
   const [openSections, setOpenSections] = useState({
     sort: true,
     price: true,
@@ -30,16 +36,23 @@ export default function FilterDrawer({ isOpen, onClose }) {
     setSelectedSort(null);
     setSelectedPrice(null);
     setSelectedRating(null);
+    onApply?.({ sort: null, price: null, rating: null });
+  };
+
+  const handleShowResult = () => {
+    onApply?.({
+      sort: selectedSort,
+      price: selectedPrice,
+      rating: selectedRating,
+    });
+    onClose();
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="filter-drawer-overlay" onClick={onClose}>
-      <aside
-        className="filter-drawer"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <aside className="filter-drawer" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="fd-header">
           <h2>Filters</h2>
@@ -130,7 +143,9 @@ export default function FilterDrawer({ isOpen, onClose }) {
                     {Array.from({ length: 5 }).map((_, i) => (
                       <FiStar
                         key={i}
-                        className={i < stars ? "fd-star fd-star--filled" : "fd-star"}
+                        className={
+                          i < stars ? "fd-star fd-star--filled" : "fd-star"
+                        }
                       />
                     ))}
                     <span className="fd-rating-label">&amp; Above</span>
@@ -143,7 +158,7 @@ export default function FilterDrawer({ isOpen, onClose }) {
 
         {/* Footer */}
         <div className="fd-footer">
-          <button className="fd-show-result-btn" onClick={onClose}>
+          <button className="fd-show-result-btn" onClick={handleShowResult}>
             Show Result
           </button>
         </div>

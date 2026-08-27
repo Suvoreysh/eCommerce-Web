@@ -50,3 +50,111 @@
         font-size: 13px;
     }
 }
+.products-dropdown-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+}
+
+.products-dropdown-wrapper .products-btn {
+    width: 100%;
+}
+
+.products-dropdown-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 500;
+
+    display: flex;
+    gap: 0;
+
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    min-width: 260px;
+    max-width: 90vw;
+}
+
+.products-dropdown-col {
+    width: 220px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 10px 0;
+}
+
+.products-dropdown-col + .products-dropdown-col {
+    border-left: 1px solid #eee;
+}
+
+.products-dropdown-col-title {
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.products-dropdown-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    font-size: 14px;
+    color: #1a1a1a;
+    cursor: pointer;
+}
+
+.products-dropdown-item:hover,
+.products-dropdown-item.active {
+    background: #f2f6f5;
+    color: #123848;
+}
+
+.products-dropdown-message {
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #999;
+}
+
+@media (max-width: 768px) {
+    .products-dropdown-panel {
+        flex-direction: column;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100vw - 32px);
+    }
+
+    .products-dropdown-col {
+        width: 100%;
+        max-height: 220px;
+    }
+
+    .products-dropdown-col + .products-dropdown-col {
+        border-left: none;
+        border-top: 1px solid #eee;
+    }
+}
+
+.products-dropdown-item-all {
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 4px;
+}
+
+.products-dropdown-panel-single {
+    min-width: 220px;
+}
+
+.products-dropdown-panel-single .products-dropdown-col {
+    width: 100%;
+}

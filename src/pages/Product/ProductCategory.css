@@ -375,3 +375,43 @@ font-size:13px;
 }
 
 }
+.subcategory-filter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 16px 24px 0;
+}
+
+.subcategory-chip {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.subcategory-chip.active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.category-breadcrumb {
+  padding: 14px 24px 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.category-breadcrumb span:first-child {
+  cursor: pointer;
+}
+
+.category-breadcrumb span:first-child:hover {
+  text-decoration: underline;
+}
+
+.category-breadcrumb-current {
+  color: #111;
+  font-weight: 600;
+}

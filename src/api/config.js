@@ -1,31 +1,35 @@
-// Central place for API base URL.
 export const BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://spaknit.com/spaknit/api/v1";
 
 export const ENDPOINTS = {
-  // home
   HOME: "/home",
-  // Authentication
+  BANNERS: "/banners",
+  FAQS: "/faqs",
+
   LOGIN: "/login",
   SIGNUP: "/register",
 
-  // Signup OTP
   VERIFY_SIGNUP_OTP: "/otp/verify-signup",
   RESEND_OTP: "/otp/resend",
 
-  // Login with OTP
   REQUEST_LOGIN_OTP: "/login/otp/request",
   VERIFY_LOGIN_OTP: "/login/otp/verify",
 
-  // User
-  PROFILE: "/user/profile",
+  PROFILE: "/me",
 
-  // Products
+  CATEGORIES: "/categories",
+  CATEGORY_SUBCATEGORIES: (categoryId) =>
+    `/categories/${categoryId}/subcategories`,
+  SUBCATEGORIES: "/subcategories",
+  SUBCATEGORY_DETAIL: (id) => `/subcategories/${id}`,
+
+  VARIANTS: "/variants",
+  VARIANT_DETAIL: (id) => `/variants/${id}`,
+
   PRODUCTS: "/products",
   PRODUCT_DETAIL: (id) => `/products/${id}`,
-  CATEGORIES: "/categories",
+  PRODUCT_VARIANTS: (id) => `/products/${id}/variants`,
 
-  // Cart and orders
   CART: "/cart",
   ORDERS: "/orders",
   CHECKOUT: "/orders/checkout",

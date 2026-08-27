@@ -1,19 +1,29 @@
+import { useEffect } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
-import { FiSearch, FiUser, FiHeadphones } from "react-icons/fi";
+import { FiSearch, FiUser, FiLock, FiHeadphones } from "react-icons/fi";
 
 import CartIcon from "../../assets/icons/Icon-fill/cart.svg";
 import Logo from "../../assets/images/logo-small.png";
+import { useCartCount } from "../../context/CartCountContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { cartCount, refreshCartCount } = useCartCount();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    refreshCartCount();
+  }, [refreshCartCount]);
 
   const goToCart = () => {
     navigate("/cart");
   };
 
   const goToProfile = () => {
-    navigate("/profile");
+    const returnTo = encodeURIComponent(window.location.pathname);
+    navigate(user ? "/profile" : `/login?returnTo=${returnTo}`);
   };
 
   return (
@@ -22,7 +32,7 @@ export default function Navbar() {
         {/* Logo */}
         <div
           className="logo"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home")}
           style={{ cursor: "pointer" }}
         >
           <img src={Logo} alt="Logo" />
@@ -30,12 +40,12 @@ export default function Navbar() {
 
         {/* Desktop Search */}
         <div className="nav-center desktop-only">
-          <select>
+          {/* <select>
             <option>All Categories</option>
             <option>Phones</option>
             <option>Laptops</option>
             <option>Accessories</option>
-          </select>
+          </select> */}
 
           <div className="search-box">
             <input type="text" placeholder="Search for products..." />
@@ -48,12 +58,14 @@ export default function Navbar() {
         {/* Desktop Icons */}
         <div className="nav-icons desktop-only">
           <div
-            className="nav-item"
+            className="nav-item nav-item-profile"
             onClick={goToProfile}
+            role="button"
+            tabIndex={0}
             style={{ cursor: "pointer" }}
           >
-            <FiUser />
-            <span>Profile</span>
+            {user ? <FiUser /> : <FiUser />}
+            <span>{user ? "Profile" : "Login"}</span>
           </div>
 
           <div className="nav-item">
@@ -62,11 +74,20 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Cart */}
+        {/* Mobile: profile + cart */}
         <div className="mobile-cart mobile-only">
+          {/* <div
+            className="mobile-profile"
+            onClick={goToProfile}
+            role="button"
+            tabIndex={0}
+          >
+            {user ? <FiLock /> : <FiUser />}
+          </div> */}
+
           <div className="cart" onClick={goToCart} role="button" tabIndex={0}>
             <img src={CartIcon} alt="Cart" />
-            <span className="badge">5</span>
+            {cartCount > 0 && <span className="badge">{cartCount}</span>}
           </div>
         </div>
       </header>

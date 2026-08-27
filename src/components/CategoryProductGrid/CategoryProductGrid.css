@@ -182,3 +182,36 @@
         margin-bottom: 8px;
     }
 }
+.category-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 60px 24px;
+  width: 100%;
+}
+
+.category-empty-icon {
+  font-size: 44px;
+  color: #c7ccd1;
+  background: #f4f6f7;
+  padding: 18px;
+  border-radius: 50%;
+  margin-bottom: 6px;
+}
+
+.category-empty-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
+}
+
+.category-empty-subtext {
+  font-size: 14px;
+  color: #888;
+  max-width: 360px;
+  margin: 0;
+}
