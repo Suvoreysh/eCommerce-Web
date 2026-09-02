@@ -1,37 +1,59 @@
 .offer-cards-section {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 22px 16px 6px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 22px 16px 6px;
 }
-
 .offer-cards-section h2 {
-    font-size: 19px;
-    font-weight: 800;
-    color: #111;
-    margin: 0 0 14px;
-    letter-spacing: -0.2px;
+  margin: 0 0 14px;
+  color: #111;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
 }
-
 .offer-cards-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
-
 .offer-card {
-    border-radius: 14px;
-    overflow: hidden;
+  position: relative;
+  min-height: 180px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #e8edef;
 }
-
 .offer-card img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.45s ease;
 }
-
+.offer-card img.is-loaded {
+  opacity: 1;
+}
+.offer-image-skeleton {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #e8edef;
+}
 @media (max-width: 480px) {
-    .offer-cards-row {
-        gap: 10px;
-    }
+  .offer-cards-row {
+    gap: 10px;
+  }
+  .offer-card {
+    min-height: 120px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .offer-card img {
+    transition: none;
+  }
+  .offer-image-skeleton span {
+    animation: none;
+  }
 }

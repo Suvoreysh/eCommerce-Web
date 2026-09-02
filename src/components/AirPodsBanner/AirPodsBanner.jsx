@@ -17,12 +17,9 @@ export default function AirPodsBanner() {
         setError("");
 
         const response = await homeApi.getHome();
-
         if (!isMounted) return;
 
-        // Supports both parsed and raw Axios responses
         const responseData = response?.data?.data ?? response?.data ?? response;
-
         const aboutBanners = Array.isArray(responseData?.about_banners)
           ? responseData.about_banners
           : [];
@@ -38,18 +35,14 @@ export default function AirPodsBanner() {
         if (!isMounted) return;
 
         console.error("AirPods banner API error:", err);
-
         setError(
           err?.response?.data?.message ||
             err?.message ||
             "Unable to load product details.",
         );
-
         setProduct(null);
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        if (isMounted) setLoading(false);
       }
     };
 
@@ -62,8 +55,8 @@ export default function AirPodsBanner() {
 
   if (loading) {
     return (
-      <section className="airpods-banner">
-        <div className="airpods-card airpods-skeleton">
+      <section className="airpods-banner" aria-label="Loading focused product">
+        <div className="airpods-card airpods-skeleton" aria-hidden="true">
           <div className="skeleton skeleton-title" />
           <div className="skeleton skeleton-subtitle" />
           <div className="skeleton skeleton-banner-image" />
@@ -78,7 +71,7 @@ export default function AirPodsBanner() {
 
           <div className="feature-grid">
             {Array.from({ length: 3 }).map((_, index) => (
-              <div className="feature-card" key={index}>
+              <div className="feature-card" key={`airpods-skeleton-${index}`}>
                 <div className="skeleton skeleton-feature-image" />
                 <div className="skeleton skeleton-feature-label" />
               </div>
@@ -99,14 +92,12 @@ export default function AirPodsBanner() {
     );
   }
 
-  if (!product) {
-    return null;
-  }
+  if (!product) return null;
 
   const features = Array.isArray(product.features)
     ? [...product.features].sort(
         (first, second) =>
-          Number(first.display_order) - Number(second.display_order),
+          Number(first.display_order || 0) - Number(second.display_order || 0),
       )
     : [];
 
@@ -114,7 +105,6 @@ export default function AirPodsBanner() {
     <section className="airpods-banner">
       <div className="airpods-card">
         {product.title && <h2 className="airpods-title">{product.title}</h2>}
-
         {product.subtitle && (
           <p className="airpods-subtitle">{product.subtitle}</p>
         )}
@@ -125,7 +115,9 @@ export default function AirPodsBanner() {
               src={product.image}
               alt={product.title || "Focused product"}
               className="airpods-banner-image"
-              loading="lazy"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           </div>
         )}
@@ -140,26 +132,25 @@ export default function AirPodsBanner() {
         {features.length > 0 && (
           <>
             <div className="feature-heading">Product Features</div>
-
             <div className="feature-grid">
               {features.map((feature, index) => (
-                <div className="feature-card" key={feature.id}>
+                <div
+                  className="feature-card"
+                  key={feature.id ?? `feature-${index}`}
+                >
                   <div className="feature-number">{index + 1}</div>
-
                   <div
-                    className={`feature-image-box ${
-                      !feature.icon ? "feature-image-empty" : ""
-                    }`}
+                    className={`feature-image-box ${!feature.icon ? "feature-image-empty" : ""}`}
                   >
                     {feature.icon && (
                       <img
                         src={feature.icon}
                         alt={feature.label || `Feature ${index + 1}`}
-                        loading="lazy"
+                        loading="eager"
+                        decoding="async"
                       />
                     )}
                   </div>
-
                   <h4>{feature.label || `Feature ${index + 1}`}</h4>
                 </div>
               ))}

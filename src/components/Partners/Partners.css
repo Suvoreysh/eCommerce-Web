@@ -1,79 +1,75 @@
 .partners {
-    width: 100%;
-    background: #fff;
-    padding: 70px 20px;
+  width: 100%;
+  padding: 24px 16px 30px;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #ffffff 55%,
+    #e7ffff 100%
+  );
 }
 
 .partners-wrapper {
-    max-width: 900px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 1180px;
+  margin: auto;
 }
 
 .partners h2 {
-    text-align: center;
-    font-size: 42px;
-    font-weight: 700;
-    color: #111;
-    margin-bottom: 50px;
+  margin: 0 0 22px;
+  color: #111;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .partners-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    justify-items: center;
-    align-items: center;
-    row-gap: 40px;
-    column-gap: 20px;
-}
-
-/* Second row centered (2 logos) */
-.partner-logo:nth-child(5) {
-    grid-column: 2;
-}
-
-.partner-logo:nth-child(6) {
-    grid-column: 3;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 22px;
+  align-items: center;
 }
 
 .partner-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  min-width: 0;
+  height: 90px;
+  align-items: center;
+  justify-content: center;
 }
 
 .partner-logo img {
-    max-width: 120px;
-    max-height: 55px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    transition: transform .25s ease;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 54px;
+  object-fit: contain;
 }
 
-.partner-logo:hover img {
-    transform: scale(1.08);
-}
+/* Exact mobile-style layout: 3 logos per row */
 
-/* Tablet */
 @media (max-width: 768px) {
+  .partners {
+    padding: 18px 12px 24px;
+  }
 
-    .partners {
-        padding: 50px 16px;
-    }
+  .partners h2 {
+    margin-bottom: 14px;
+    font-size: 15px;
+  }
 
-    .partners h2 {
-        font-size: 30px;
-        margin-bottom: 35px;
-    }
+  .partners-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px 18px;
+  }
 
-    .partners-grid {
-        grid-template-columns: repeat(4, 1fr);
-        row-gap: 28px;
-        column-gap: 10px;
-    }
+  .partner-logo {
+    height: 54px;
+  }
 
-    .partner-logo img {
-        max-width: 70px;
-        max-height: 35px;
-    }
+  .partner-logo img {
+    max-width: 70px;
+    max-height: 34px;
+  }
 }

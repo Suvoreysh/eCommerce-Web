@@ -1,10 +1,10 @@
 import "./StoreIntro.css";
 
-export default function StoreIntro() {
+export default function StoreIntro({ title = "Store", subtitle = "" }) {
   return (
     <div className="store-intro">
-      <h1>Store</h1>
-      <p>The Best location to buy the product you loved.</p>
+      <h1>{title}</h1>
+      {subtitle && <p>{subtitle}</p>}
     </div>
   );
 }

@@ -1,3 +1,7 @@
+/* ==========================================
+   CATEGORY SECTION
+========================================== */
+
 .category-section {
   width: 100%;
   padding: 32px 20px;
@@ -13,6 +17,10 @@
   flex-wrap: wrap;
 }
 
+/* ==========================================
+   CATEGORY ITEM
+========================================== */
+
 .category-item {
   display: flex;
   padding: 0;
@@ -26,12 +34,17 @@
 }
 
 .category-item:focus-visible {
+  border-radius: 12px;
   outline: 2px solid #111;
   outline-offset: 6px;
-  border-radius: 12px;
 }
 
+/* ==========================================
+   CATEGORY CIRCLE
+========================================== */
+
 .category-circle {
+  position: relative;
   display: flex;
   width: 210px;
   height: 210px;
@@ -47,10 +60,22 @@
 }
 
 .category-circle img {
+  position: relative;
+  z-index: 2;
+  display: block;
   width: 90%;
   height: 90%;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.category-circle.image-loaded img {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .category-item:hover .category-circle {
@@ -58,11 +83,15 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
-.category-item:hover img {
+.category-item:hover .category-circle.image-loaded img {
   transform: scale(1.05);
 }
 
-.category-item span {
+/* ==========================================
+   CATEGORY NAME
+========================================== */
+
+.category-name {
   max-width: 210px;
   margin-top: 18px;
   overflow: hidden;
@@ -75,7 +104,74 @@
 }
 
 /* ==========================================
-   SKELETON LOADER
+   IMAGE LOADING SKELETON
+========================================== */
+
+.category-image-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(255, 255, 255, 0.9),
+      rgba(235, 237, 240, 0.9) 50%,
+      #e2e5e9 100%
+    );
+}
+
+.category-image-shimmer {
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+  transform: skewX(-18deg);
+  animation: category-image-loading 1.3s ease-in-out infinite;
+}
+
+@keyframes category-image-loading {
+  from {
+    left: -80%;
+  }
+
+  to {
+    left: 140%;
+  }
+}
+
+/* ==========================================
+   IMAGE ERROR FALLBACK
+========================================== */
+
+.category-circle.image-error {
+  border-color: #d9dde2;
+  background: linear-gradient(135deg, #f5f6f7, #e5e8eb);
+}
+
+.category-image-fallback {
+  display: flex;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+/* ==========================================
+   INITIAL API SKELETON
 ========================================== */
 
 .category-skeleton {
@@ -104,13 +200,13 @@
   position: absolute;
   inset: 0;
   content: "";
-  transform: translateX(-100%);
   background: linear-gradient(
     90deg,
     transparent 0%,
     rgba(255, 255, 255, 0.75) 50%,
     transparent 100%
   );
+  transform: translateX(-100%);
   animation: category-shimmer 1.4s infinite;
 }
 
@@ -129,6 +225,22 @@
 }
 
 /* ==========================================
+   MESSAGES
+========================================== */
+
+.category-message {
+  width: 100%;
+  margin: 20px 0;
+  color: #555;
+  text-align: center;
+  font-size: 16px;
+}
+
+.category-error {
+  color: #d32f2f;
+}
+
+/* ==========================================
    TABLET
 ========================================== */
 
@@ -142,7 +254,7 @@
     height: 170px;
   }
 
-  .category-item span {
+  .category-name {
     max-width: 170px;
     font-size: 20px;
   }
@@ -150,6 +262,12 @@
   .skeleton-name {
     width: 105px;
     height: 18px;
+  }
+
+  .category-image-fallback {
+    width: 75px;
+    height: 75px;
+    font-size: 32px;
   }
 }
 
@@ -184,7 +302,7 @@
     height: 120px;
   }
 
-  .category-item span {
+  .category-name {
     max-width: 120px;
     margin-top: 12px;
     font-size: 16px;
@@ -195,11 +313,22 @@
     height: 15px;
     margin-top: 12px;
   }
+
+  .category-image-fallback {
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
+  }
 }
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .skeleton-circle::after,
-  .skeleton-name::after {
+  .skeleton-name::after,
+  .category-image-shimmer {
     animation: none;
   }
 

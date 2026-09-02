@@ -4,7 +4,7 @@ import CategorySection from "../../components/categorySection/CategorySection";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import AirPodsBanner from "../../components/AirPodsBanner/AirPodsBanner";
 import AboutProduct from "../../components/AboutProduct/AboutProduct";
-import ProBeyond from "../../components/ProBeyond/ProBeyond";
+import FocusedProducts from "../../components/FocusedProducts/FocusedProducts";
 import BuiltForBold from "../../components/BuiltForBold/BuiltForBold";
 import WhyChooseUs from "../../components/WhyChooseUs/WhyChooseUs";
 import Partners from "../../components/Partners/Partners";
@@ -19,9 +19,7 @@ export default function Home() {
       <CategorySection />
       <ProductGrid />
       <AirPodsBanner />
-      <AboutProduct />
-      <ProBeyond />
-      <BuiltForBold />
+      <FocusedProducts />
       <WhyChooseUs />
       <Partners />
       <FeedbackForm />

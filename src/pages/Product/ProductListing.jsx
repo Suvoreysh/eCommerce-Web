@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { bannerApi } from "../../api/bannerApi";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import StoreIntro from "../../components/StoreIntro/StoreIntro";
 import PromoBanner from "../../components/PromoBanner/PromoBanner";
@@ -8,11 +10,6 @@ import TaglineBanner from "../../components/TaglineBanner/TaglineBanner";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 
-import p1 from "../../assets/images/p1.png";
-import p2 from "../../assets/images/p2.png";
-import p3 from "../../assets/images/p3.png";
-
-// TODO: replace with real data via apiRequest()
 const macbookAirProducts = [
   {
     id: 101,
@@ -24,19 +21,7 @@ const macbookAirProducts = [
     onSale: true,
     ctaLabel: "View More",
   },
-  {
-    id: 102,
-    name: "MacBook Air 13” and 15”",
-    price: "₹7,29,900",
-    chip: "M5 chip",
-    desc: "Thin. Fast. Powerful and portable.",
-    image: "/assets/products/macbook-air.png",
-    onSale: true,
-    ctaLabel: "Add to Cart",
-  },
-  // ...more
 ];
-
 const iphoneProducts = [
   {
     id: 201,
@@ -48,30 +33,68 @@ const iphoneProducts = [
     onSale: true,
     ctaLabel: "Add to Cart",
   },
-  // ...more
-];
-
-// Offer banners are plain designed images — p1 (top hero) and p2 (exclusive offers row)
-const exclusiveOffers = [
-  { id: 1, image: p1, alt: "iPhone 17 Pro offer" },
-  { id: 2, image: p2, alt: "MacBook Pro offer" },
 ];
 
 export default function ProductListing() {
+  const [topBanner, setTopBanner] = useState(null);
+  const [exclusiveOffers, setExclusiveOffers] = useState([]);
+  const [loadingBanners, setLoadingBanners] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchBanners = async () => {
+      try {
+        const response = await bannerApi.getBanners();
+        const banners = Array.isArray(response?.data) ? response.data : [];
+        const sorted = [...banners].sort(
+          (a, b) => Number(a.display_order || 0) - Number(b.display_order || 0),
+        );
+        if (!mounted) return;
+        setTopBanner(
+          sorted.find((banner) => banner.placement === "all_products_top") ||
+            null,
+        );
+        setExclusiveOffers(
+          sorted.filter((banner) => banner.placement === "exclusive_offers"),
+        );
+      } catch (error) {
+        console.error("Banners API error:", error);
+      } finally {
+        if (mounted) setLoadingBanners(false);
+      }
+    };
+    fetchBanners();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <>
       <Navbar />
       <SearchBar />
-      <StoreIntro />
-      <PromoBanner image={p3} alt="iPhone 17 Pro" />
+      <StoreIntro
+        title="Store"
+        subtitle={
+          topBanner?.title || "The Best location to buy the product you loved."
+        }
+      />
+      <PromoBanner
+        image={topBanner?.image}
+        alt={topBanner?.title || "Top store banner"}
+        loading={loadingBanners}
+      />
       <CategoryScroller />
-      <OfferCards offers={exclusiveOffers} />
+      <OfferCards
+        title={exclusiveOffers[0]?.title || "Exclusive Apple Offers"}
+        offers={exclusiveOffers}
+        loading={loadingBanners}
+      />
       <SaleProductGrid
         title="MacBook Air 13” and 15”"
         products={macbookAirProducts}
       />
       <SaleProductGrid title="Iphone 17 pro" products={iphoneProducts} />
-      <PromoBanner image={p3} alt="iPhone 17 Pro" />
       <TaglineBanner />
       <Footer />
     </>

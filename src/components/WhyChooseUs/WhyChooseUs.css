@@ -1,519 +1,364 @@
 /* =========================================
-   MAIN SECTION
+   MAIN SECTION - soft gradient blends to white
 ========================================= */
-
 .why {
   position: relative;
   overflow: hidden;
+  padding: 72px 20px;
   background: #fff;
 }
-
 .why::before {
-  content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      circle at left center,
-      #b8fffb 0%,
-      #d9fffd 18%,
-      rgba(217,255,253,.45) 32%,
-      rgba(255,255,255,0) 58%
-    );
-
   z-index: 0;
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 85% 72% at -12% 44%,
+    rgba(160, 255, 248, 0.72) 0%,
+    rgba(204, 255, 252, 0.48) 28%,
+    rgba(239, 255, 254, 0.18) 49%,
+    rgba(255, 255, 255, 0) 74%
+  );
 }
-
-.why-container {
-  position: relative;
-  z-index: 2;
+.why::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 180px;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 92%);
 }
-
 .why,
 .why * {
   box-sizing: border-box;
 }
-
 .why-container {
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
 }
-
 .why-title {
   margin: 0 0 34px;
-  color: #111111;
+  color: #111;
   text-align: center;
   font-size: 42px;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -1px;
 }
-
-/* =========================================
-   ACCORDION LIST
-========================================= */
-
 .why-accordion-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
-.why-accordion {
+.why-accordion,
+.why-skeleton {
   width: 100%;
+  overflow: hidden;
   border: 1px solid #8d8d8d;
   border-radius: 22px;
-  background: #ffffff;
-  overflow: hidden;
+  background: #fff;
 }
-
-/* =========================================
-   ACCORDION HEADER
-========================================= */
-
-.why-accordion-header {
+.why-accordion-header,
+.why-skeleton-header {
+  display: flex;
   width: 100%;
   min-height: 76px;
   padding: 18px 26px;
-
-  display: flex;
+  gap: 20px;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-
+}
+.why-accordion-header {
   border: 0;
-  border-radius: 22px;
-  background: #ffffff;
-
+  background: #fff;
   color: #171717;
   font-family: inherit;
   text-align: left;
-
   cursor: pointer;
 }
-
 .why-accordion-title {
-  display: block;
   flex: 1;
-
   font-size: 18px;
   font-weight: 400;
   line-height: 1.45;
 }
-
 .why-accordion-icon {
+  display: inline-flex;
   flex: 0 0 auto;
-
   width: 28px;
   height: 28px;
-
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  color: #111111;
+  color: #111;
   font-size: 31px;
-  font-weight: 500;
   line-height: 1;
 }
-
-.why-accordion-header:focus-visible {
-  outline: 3px solid rgba(0, 166, 255, 0.28);
-  outline-offset: -4px;
-}
-
-/* =========================================
-   ACCORDION ANIMATION
-========================================= */
-
 .why-accordion-panel {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.38s ease;
 }
-
 .why-accordion.is-open .why-accordion-panel {
   grid-template-rows: 1fr;
 }
-
 .why-accordion-body {
-  min-height: 0;
-  overflow: hidden;
-
   display: flex;
-  align-items: center;
-  gap: 28px;
-
+  min-height: 0;
   padding: 0 26px;
+  gap: 28px;
+  overflow: hidden;
+  align-items: center;
   opacity: 0;
-
   transition:
     opacity 0.25s ease,
     padding 0.38s ease;
 }
-
 .why-accordion.is-open .why-accordion-body {
   padding-top: 10px;
   padding-bottom: 28px;
   opacity: 1;
 }
-
-/* =========================================
-   PRODUCT IMAGE
-========================================= */
-
 .why-product-image {
   position: relative;
+  display: flex;
   flex: 0 0 230px;
-
   width: 230px;
   height: 230px;
-
-  display: flex;
+  overflow: hidden;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f4a06b, #ef7c38);
   align-items: center;
   justify-content: center;
-
-  border-radius: 50%;
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      145deg,
-      #f4a06b 0%,
-      #ef7c38 100%
-    );
 }
-
 .why-product-image img {
+  position: relative;
+  z-index: 2;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
 }
-
-/* =========================================
-   POINTS
-========================================= */
-
+.why-product-image.image-loaded img {
+  opacity: 1;
+  transform: scale(1);
+}
+.why-image-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
 .why-points {
+  display: flex;
   flex: 1;
   min-width: 0;
-
-  display: flex;
+  gap: 18px;
   flex-direction: column;
   justify-content: center;
-  gap: 18px;
 }
-
-.why-point {
-  display: flex;
-  align-items: flex-start;
-  gap: 4px;
-}
-
-/*
-   Small black numbered circle.
-   It stays close to the paragraph like the reference.
-*/
-
-.why-point-number {
-  flex: 0 0 20px;
-
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-  background: #050505;
-  color: #ffffff;
-
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1;
-}
-
+.why-answer,
 .why-point p {
-  flex: 1;
   margin: 0;
-
   color: #171717;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.45;
 }
-
-/* =========================================
-   DESKTOP HOVER
-========================================= */
-
-@media (hover: hover) {
-  .why-accordion-header:hover {
-    background: #fafafa;
-  }
-
-  .why-accordion {
-    transition:
-      border-color 0.25s ease,
-      box-shadow 0.25s ease;
-  }
-
-  .why-accordion:hover {
-    border-color: #5d5d5d;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  }
+.why-point {
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+}
+.why-point-number {
+  display: inline-flex;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: #050505;
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+.why-error,
+.why-empty {
+  padding: 32px;
+  text-align: center;
+}
+.why-error {
+  color: #d93025;
 }
 
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 992px) {
-  .why {
-    padding: 60px 20px;
-  }
-
-  .why-container {
-    max-width: 760px;
-  }
-
-  .why-title {
-    font-size: 36px;
-    margin-bottom: 30px;
-  }
-
-  .why-accordion-header {
-    min-height: 70px;
-    padding: 17px 22px;
-  }
-
-  .why-accordion-title {
-    font-size: 17px;
-  }
-
-  .why-accordion-body {
-    gap: 22px;
-    padding-left: 22px;
-    padding-right: 22px;
-  }
-
-  .why-accordion.is-open .why-accordion-body {
-    padding-bottom: 24px;
-  }
-
-  .why-product-image {
-    flex-basis: 190px;
-    width: 190px;
-    height: 190px;
-  }
-
-  .why-point p {
-    font-size: 15px;
+/* Skeleton */
+.why-skeleton {
+  border-color: #d6dde0;
+}
+.why-skeleton-body {
+  display: flex;
+  padding: 10px 26px 28px;
+  gap: 28px;
+  align-items: center;
+}
+.why-shimmer {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #e6ebee;
+}
+.why-shimmer::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: why-shimmer 1.3s infinite;
+}
+.why-skeleton-title {
+  width: 45%;
+  height: 20px;
+}
+.why-skeleton-icon {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+.why-skeleton-image {
+  flex: 0 0 230px;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+}
+.why-skeleton-points {
+  display: flex;
+  flex: 1;
+  gap: 14px;
+  flex-direction: column;
+}
+.why-skeleton-line {
+  width: 100%;
+  height: 16px;
+}
+.why-skeleton-line.short {
+  width: 65%;
+}
+@keyframes why-shimmer {
+  to {
+    transform: translateX(100%);
   }
 }
-
-/* =========================================
-   MOBILE
-   Matches the supplied reference
-========================================= */
 
 @media (max-width: 768px) {
   .why {
     padding: 30px 12px 72px;
   }
-
-  .why-container {
-    max-width: 100%;
+  .why::before {
+    background: radial-gradient(
+      ellipse 130% 70% at -25% 36%,
+      rgba(160, 255, 248, 0.68),
+      rgba(218, 255, 253, 0.32) 43%,
+      rgba(255, 255, 255, 0) 76%
+    );
   }
-
+  .why::after {
+    height: 120px;
+  }
   .why-title {
     margin-bottom: 17px;
     font-size: 25px;
-    line-height: 1.2;
     letter-spacing: -0.4px;
   }
-
   .why-accordion-list {
     gap: 19px;
   }
-
-  .why-accordion {
-    border-color: #7c7c7c;
+  .why-accordion,
+  .why-skeleton {
     border-radius: 16px;
   }
-
-  .why-accordion-header {
+  .why-accordion-header,
+  .why-skeleton-header {
     min-height: 54px;
     padding: 10px 14px;
     gap: 10px;
-    border-radius: 16px;
   }
-
   .why-accordion-title {
     font-size: 14px;
-    font-weight: 400;
     line-height: 1.35;
   }
-
   .why-accordion-icon {
     width: 22px;
     height: 22px;
     font-size: 27px;
   }
-
   .why-accordion-body {
-    align-items: center;
     gap: 0;
     padding: 0;
   }
-
   .why-accordion.is-open .why-accordion-body {
     padding: 14px 10px 14px 4px;
   }
-
-  /*
-     Image overlaps slightly toward the left,
-     like the supplied mobile design.
-  */
-
   .why-product-image {
-    flex: 0 0 116px;
-
+    flex-basis: 116px;
     width: 116px;
     height: 116px;
-
-    margin-left: 0;
-    margin-right: -2px;
-
-    border-radius: 50%;
   }
-
   .why-points {
     gap: 12px;
-    padding-left: 0;
   }
-
-  .why-point {
-    gap: 2px;
-  }
-
-  .why-point-number {
-    flex-basis: 16px;
-
-    width: 16px;
-    height: 16px;
-    margin-top: 1px;
-
-    font-size: 10px;
-  }
-
+  .why-answer,
   .why-point p {
     font-size: 12.5px;
     line-height: 1.28;
   }
-}
-
-/* =========================================
-   SMALL MOBILE
-========================================= */
-
-@media (max-width: 480px) {
-  .why {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .why-title {
-    font-size: 22px;
-  }
-
-  .why-accordion-header {
-    min-height: 52px;
-    padding: 9px 12px;
-  }
-
-  .why-accordion-title {
-    font-size: 13px;
-  }
-
-  .why-accordion.is-open .why-accordion-body {
-    padding: 12px 8px 13px 3px;
-  }
-
-  .why-product-image {
-    flex-basis: 108px;
-    width: 108px;
-    height: 108px;
-  }
-
-  .why-points {
-    gap: 10px;
-  }
-
   .why-point-number {
-    flex-basis: 15px;
-    width: 15px;
-    height: 15px;
-    font-size: 9px;
+    flex-basis: 16px;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
   }
-
-  .why-point p {
-    font-size: 11.5px;
-    line-height: 1.25;
+  .why-skeleton-body {
+    padding: 14px 10px 14px 4px;
+    gap: 0;
   }
-}
-
-/* =========================================
-   VERY SMALL MOBILE
-========================================= */
-
-@media (max-width: 360px) {
-  .why {
-    padding-left: 7px;
-    padding-right: 7px;
+  .why-skeleton-image {
+    flex-basis: 116px;
+    width: 116px;
+    height: 116px;
   }
-
-  .why-title {
-    font-size: 20px;
+  .why-skeleton-points {
+    gap: 11px;
   }
-
-  .why-accordion-title {
-    font-size: 12px;
-  }
-
-  .why-product-image {
-    flex-basis: 96px;
-    width: 96px;
-    height: 96px;
-  }
-
-  .why-point-number {
-    flex-basis: 14px;
-    width: 14px;
-    height: 14px;
-    font-size: 8px;
-  }
-
-  .why-point p {
-    font-size: 10.5px;
+  .why-skeleton-line {
+    height: 12px;
   }
 }
-
-/* =========================================
-   REDUCED MOTION
-========================================= */
-
 @media (prefers-reduced-motion: reduce) {
-  .why-accordion,
   .why-accordion-panel,
-  .why-accordion-body {
+  .why-accordion-body,
+  .why-product-image img {
     transition: none;
+  }
+  .why-shimmer::after {
+    animation: none;
   }
 }

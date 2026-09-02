@@ -1,7 +1,275 @@
 /* ==========================================
    PRODUCT SECTION
 ========================================== */
+/* ==========================================
+   PRODUCT IMAGE SKELETON - ADD ONLY
+========================================== */
 
+.product-image-box {
+  position: relative;
+}
+
+.product-image-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(255, 255, 255, 0.96),
+      rgba(239, 241, 243, 0.96) 48%,
+      #e6e9ec 100%
+    );
+}
+
+.product-image {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity 0.5s ease,
+    transform 0.35s ease;
+}
+
+.product-image-box.image-loaded .product-image {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.product-card:hover .product-image-box.image-loaded .product-image {
+  transform: scale(1.06);
+}
+
+/* ==========================================
+   FULL PRODUCT CARD SKELETON
+========================================== */
+
+.product-card-skeleton {
+  pointer-events: none;
+  cursor: default;
+}
+
+.product-card-skeleton:hover {
+  transform: none;
+}
+
+.product-card-skeleton:hover .product-image-box {
+  box-shadow: none;
+}
+
+.product-skeleton-image {
+  background: #e9ecef;
+}
+
+.product-skeleton-name,
+.product-skeleton-price,
+.product-skeleton-rating,
+.product-skeleton-feature,
+.product-skeleton-button {
+  position: relative;
+  overflow: hidden;
+  background: #e9ecef;
+}
+
+.product-skeleton-name {
+  width: 78%;
+  height: 28px;
+  margin-top: 18px;
+  border-radius: 8px;
+}
+
+.product-skeleton-price {
+  width: 52%;
+  height: 18px;
+  margin-top: 15px;
+  border-radius: 8px;
+}
+
+.product-skeleton-rating {
+  width: 38%;
+  height: 15px;
+  margin-top: 13px;
+  border-radius: 8px;
+}
+
+.product-skeleton-features {
+  display: flex;
+  margin-top: 16px;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.product-skeleton-feature {
+  width: 42%;
+  height: 16px;
+  border-radius: 8px;
+}
+
+.product-skeleton-button {
+  width: 72%;
+  height: 52px;
+  margin-top: 18px;
+  border-radius: 40px;
+  align-self: center;
+}
+
+/* ==========================================
+   SHIMMER ANIMATION
+========================================== */
+
+.product-skeleton-shimmer {
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+  transform: skewX(-18deg);
+  animation: product-skeleton-loading 1.25s ease-in-out infinite;
+}
+
+@keyframes product-skeleton-loading {
+  from {
+    left: -80%;
+  }
+
+  to {
+    left: 140%;
+  }
+}
+
+/* ==========================================
+   SAME HEIGHT FOR EVERY PRODUCT CARD
+========================================== */
+
+.product-grid {
+  align-items: stretch;
+}
+
+.product-card {
+  height: 100%;
+}
+
+.product-name {
+  min-height: 62px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.price-row {
+  min-height: 33px;
+}
+
+.rating-row {
+  min-height: 21px;
+}
+
+.feature-row {
+  min-height: 34px;
+}
+
+.add-cart-btn {
+  margin-top: auto;
+  min-height: 52px;
+}
+
+/* ==========================================
+   RESPONSIVE SKELETON
+========================================== */
+
+@media (max-width: 992px) {
+  .product-skeleton-name {
+    height: 22px;
+  }
+
+  .product-skeleton-button {
+    width: 108.71px;
+    height: 46px;
+  }
+
+  .add-cart-btn {
+    min-height: 46px;
+  }
+
+  .product-name {
+    min-height: 52px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-skeleton-name {
+    height: 18px;
+    margin-top: 14px;
+  }
+
+  .product-skeleton-price {
+    width: 65%;
+    height: 15px;
+    margin-top: 12px;
+  }
+
+  .product-skeleton-rating {
+    height: 13px;
+  }
+
+  .product-skeleton-features {
+    margin-top: 12px;
+    gap: 7px;
+    flex-direction: column;
+  }
+
+  .product-skeleton-feature {
+    width: 70%;
+    height: 13px;
+  }
+
+  .product-skeleton-button {
+    width: 120.71px;
+    height: 42px;
+    margin-top: 14px;
+  }
+
+  .add-cart-btn {
+    min-height: 42px;
+  }
+
+  .product-name {
+    min-height: 44px;
+  }
+
+  .feature-row {
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-skeleton-button {
+    height: 40px;
+  }
+
+  .add-cart-btn {
+    min-height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-skeleton-shimmer {
+    animation: none;
+  }
+
+  .product-image {
+    transition: none;
+  }
+}
 .product-section {
   width: 100%;
   padding: 40px 50px 70px;

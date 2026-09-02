@@ -86,7 +86,7 @@ export default function SingleProduct() {
       <DisplayShowcase />
       <PrivacySecurity />
       <WhyAppleBest />
-      <KeepExploring />
+      {/* <KeepExploring /> */}
       <CustomerReview />
       <Footer />
     </>

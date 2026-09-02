@@ -626,3 +626,122 @@
     width: 154px;
   }
 }
+
+/* Never stretch a single related product on large screens. */
+@media (min-width: 1200px) {
+  .keep-exploring-row {
+    width: max-content;
+  }
+  .explore-card {
+    flex: 0 0 300px;
+    width: 300px;
+  }
+}
+
+/* API loader follows the same fixed card size. */
+.explore-skeleton {
+  pointer-events: none;
+}
+.explore-skeleton > i {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #e7ecee;
+}
+.explore-skeleton > i::after {
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 55%;
+  height: 100%;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+  transform: skewX(-18deg);
+  animation: explore-shimmer 1.25s infinite;
+}
+.explore-skeleton > i:nth-child(1) {
+  height: 155px;
+  margin: 13px 0 18px;
+}
+.explore-skeleton > i:nth-child(2) {
+  width: 56%;
+  height: 16px;
+  margin-bottom: 15px;
+}
+.explore-skeleton > i:nth-child(3) {
+  width: 80%;
+  height: 19px;
+  margin-bottom: 12px;
+}
+.explore-skeleton > i:nth-child(4) {
+  width: 100%;
+  height: 39px;
+  margin-top: auto;
+}
+.explore-wishlist.active {
+  color: #ff101c;
+}
+@keyframes explore-shimmer {
+  to {
+    left: 130%;
+  }
+}
+@media (max-width: 768px) {
+  .explore-skeleton > i:nth-child(1) {
+    height: 75px;
+    margin: 8px 0 9px;
+  }
+  .explore-skeleton > i:nth-child(2) {
+    height: 8px;
+    margin-bottom: 7px;
+  }
+  .explore-skeleton > i:nth-child(3) {
+    height: 10px;
+    margin-bottom: 6px;
+  }
+  .explore-skeleton > i:nth-child(4) {
+    height: 21px;
+  }
+}
+
+/* Bengali and long English names must remain inside compact mobile cards. */
+.explore-card {
+  min-width: 0;
+}
+.explore-name,
+.explore-chip {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .explore-name {
+    display: -webkit-box;
+    height: 24px;
+    margin-bottom: 3px;
+    white-space: normal;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .explore-chip {
+    display: -webkit-box;
+    height: 19px;
+    margin-bottom: 4px;
+    white-space: normal;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}

@@ -13,6 +13,18 @@
   overflow: hidden;
 }
 
+.highlights-error {
+  color: #b3261e;
+  font-size: 14px;
+  margin: 0 0 20px;
+}
+
+.highlights-empty {
+  color: #66666b;
+  font-size: 14px;
+  margin: 0;
+}
+
 /* ==============================
    HIGHLIGHTS GRID
 ============================== */
@@ -85,6 +97,57 @@
   line-height: 1.55;
 
   overflow-wrap: anywhere;
+}
+
+/* ==============================
+   SKELETON LOADER
+============================== */
+
+.highlight-skel-icon {
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  margin-top: 1px;
+  border-radius: 6px;
+
+  background: linear-gradient(90deg, #e9e9eb 25%, #f5f5f7 50%, #e9e9eb 75%);
+  background-size: 400% 100%;
+  animation: highlight-shimmer 1.4s ease infinite;
+}
+
+.highlight-skel-line {
+  display: block;
+  border-radius: 5px;
+
+  background: linear-gradient(90deg, #e9e9eb 25%, #f5f5f7 50%, #e9e9eb 75%);
+  background-size: 400% 100%;
+  animation: highlight-shimmer 1.4s ease infinite;
+}
+
+@keyframes highlight-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.highlight-skel-line--title {
+  width: 70%;
+  height: 15px;
+  margin-bottom: 8px;
+}
+
+.highlight-skel-line--desc {
+  width: 100%;
+  height: 12px;
+  margin-bottom: 6px;
+}
+
+.highlight-skel-line--desc-2 {
+  width: 60%;
+  height: 12px;
 }
 
 /* ==============================

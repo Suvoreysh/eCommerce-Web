@@ -1,23 +1,68 @@
 .promo-banner {
-    max-width: 1400px;
-    margin: 16px auto;
-    padding: 0 16px;
+  position: relative;
+  max-width: 1400px;
+  min-height: 220px;
+  margin: 16px auto;
+  padding: 0 16px;
+  overflow: hidden;
 }
-
 .promo-banner img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 20px;
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.45s ease;
 }
-
+.promo-banner img.is-loaded {
+  opacity: 1;
+}
+.promo-banner-skeleton {
+  position: absolute;
+  inset: 0 16px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #e7edef;
+}
+.promo-banner-skeleton span,
+.offer-image-skeleton span {
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+  transform: skewX(-16deg);
+  animation: banner-shimmer 1.3s ease-in-out infinite;
+}
+@keyframes banner-shimmer {
+  to {
+    left: 130%;
+  }
+}
 @media (max-width: 768px) {
-    .promo-banner {
-        margin: 14px auto;
-        padding: 0 16px;
-    }
-
-    .promo-banner img {
-        border-radius: 16px;
-    }
+  .promo-banner {
+    min-height: 160px;
+    margin: 14px auto;
+    padding: 0 16px;
+  }
+  .promo-banner img,
+  .promo-banner-skeleton {
+    border-radius: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .promo-banner img {
+    transition: none;
+  }
+  .promo-banner-skeleton span {
+    animation: none;
+  }
 }

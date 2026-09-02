@@ -1,0 +1,750 @@
+.focused-products {
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+/* layout:null — exact centered About Product style */
+.focused-center {
+  position: relative;
+  width: 100%;
+  padding: 90px 20px;
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    #fff 0%,
+    #fff 82%,
+    #f8ffff 96%,
+    #fff 100%
+  );
+  text-align: center;
+}
+.focused-copy {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.focused-copy h2 {
+  margin: 0;
+  color: #111;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.focused-subtitle {
+  display: block;
+  margin: 8px 0 28px;
+  color: #7b7b7b;
+  font-size: 18px;
+  font-weight: 500;
+}
+.focused-center .focused-image {
+  max-width: 340px;
+  margin: 0 auto 42px;
+}
+.focused-description {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #444;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.9;
+}
+.focused-description p {
+  margin: 0 0 26px;
+}
+.focused-description p:last-child {
+  margin-bottom: 0;
+}
+/* layout:image_left / image_right — split product style */
+.focused-split {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(350px, 1fr);
+  min-height: 560px;
+  padding: 70px max(28px, calc((100vw - 1180px) / 2));
+  gap: clamp(55px, 8vw, 120px);
+  overflow: hidden;
+  align-items: center;
+  background: linear-gradient(
+    to bottom,
+    #fff 0%,
+    #fff 84%,
+    #f2ffff 96%,
+    #fff 100%
+  );
+}
+.focused-split.image_right .focused-copy {
+  order: 1;
+}
+.focused-split.image_right .focused-image {
+  order: 2;
+}
+.focused-split.image_left .focused-image {
+  order: 1;
+}
+.focused-split.image_left .focused-copy {
+  order: 2;
+}
+.focused-split .focused-copy {
+  max-width: 510px;
+  margin: 0;
+}
+.focused-split .focused-subtitle {
+  max-width: 450px;
+  margin: 16px 0 0;
+  color: #5c676a;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.focused-split .focused-description {
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.focused-image {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 390px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+.focused-split .focused-image::before {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  content: "";
+  background: linear-gradient(
+    135deg,
+    rgba(212, 255, 251, 0.85),
+    rgba(255, 255, 255, 0.15)
+  );
+  filter: blur(12px);
+}
+.focused-image img {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: auto;
+  max-width: min(100%, 350px);
+  max-height: 390px;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.98);
+  filter: drop-shadow(0 24px 24px rgba(8, 38, 48, 0.2));
+  transition:
+    opacity 0.45s ease,
+    transform 0.4s ease,
+    filter 0.4s ease;
+}
+.focused-image.image-loaded img {
+  opacity: 1;
+  transform: scale(1);
+}
+.focused-split:hover .focused-image.image-loaded img {
+  transform: translateY(-8px) scale(1.025);
+  filter: drop-shadow(0 32px 28px rgba(8, 38, 48, 0.26));
+}
+.focused-image-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: #e8eff0;
+}
+.focused-image-skeleton::after,
+.focused-skeleton i::after {
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 55%;
+  height: 100%;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+  transform: skewX(-18deg);
+  animation: focused-shimmer 1.25s infinite;
+}
+@keyframes focused-shimmer {
+  to {
+    left: 130%;
+  }
+}
+.focused-button {
+  position: relative;
+  display: inline-flex;
+  width: 140px;
+  height: 44px;
+  margin-top: 28px;
+  overflow: hidden;
+  border: 1.5px solid #173f4c;
+  border-radius: 9px;
+  background: #173f4c;
+  color: #fff;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+.focused-button span {
+  position: absolute;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+}
+.focused-button span:first-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+.focused-button span:last-child {
+  opacity: 0;
+  transform: translateY(130%);
+}
+.focused-button:hover {
+  background: #fff;
+  color: #173f4c;
+  transform: translateY(-3px);
+}
+.focused-button:hover span:first-child {
+  opacity: 0;
+  transform: translateY(-130%);
+}
+.focused-button:hover span:last-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* API skeleton */
+.focused-skeleton {
+  position: relative;
+  display: flex;
+  min-height: 560px;
+  padding: 70px max(28px, calc((100vw - 1180px) / 2));
+  gap: 70px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #fff 0%, #f5ffff 90%, #fff 100%);
+  align-items: center;
+  justify-content: center;
+}
+.focused-skeleton i,
+.focused-skeleton b {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #e6edef;
+}
+.focused-skeleton i:nth-child(1) {
+  width: 320px;
+  height: 52px;
+}
+.focused-skeleton i:nth-child(2) {
+  width: 240px;
+  height: 20px;
+}
+.focused-skeleton i:nth-child(3) {
+  width: 340px;
+  height: 18px;
+}
+.focused-skeleton b {
+  width: 340px;
+  height: 360px;
+  border-radius: 24px;
+}
+.focused-skeleton.center-skeleton {
+  flex-direction: column;
+  text-align: center;
+}
+.focused-skeleton.center-skeleton b {
+  width: 300px;
+  height: 360px;
+  background: #e6edef;
+}
+.focused-skeleton.split-skeleton {
+  flex-direction: row-reverse;
+}
+@media (max-width: 768px) {
+  .focused-center {
+    padding: 50px 18px;
+  }
+  .focused-copy h2 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+  .focused-subtitle {
+    margin-bottom: 18px;
+    font-size: 15px;
+  }
+  .focused-center .focused-image {
+    max-width: 220px;
+    min-height: 260px;
+    margin-bottom: 26px;
+  }
+  .focused-description {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .focused-description p {
+    margin-bottom: 18px;
+  }
+  .focused-split {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 48px 18px;
+    gap: 28px;
+    text-align: center;
+  }
+  .focused-split.image_left .focused-image,
+  .focused-split.image_right .focused-image {
+    order: 1;
+  }
+  .focused-split.image_left .focused-copy,
+  .focused-split.image_right .focused-copy {
+    order: 2;
+  }
+  .focused-split .focused-copy {
+    margin: auto;
+  }
+  .focused-split .focused-subtitle {
+    margin: 12px auto 0;
+    font-size: 15px;
+  }
+  .focused-image {
+    min-height: 260px;
+  }
+  .focused-image img {
+    max-width: 240px;
+    max-height: 300px;
+  }
+  .focused-button {
+    margin-top: 22px;
+  }
+  .focused-skeleton,
+  .focused-skeleton.split-skeleton {
+    min-height: 430px;
+    padding: 48px 18px;
+    gap: 18px;
+    flex-direction: column;
+  }
+  .focused-skeleton i:nth-child(1) {
+    width: 230px;
+    height: 32px;
+  }
+  .focused-skeleton i:nth-child(2) {
+    width: 170px;
+  }
+  .focused-skeleton i:nth-child(3) {
+    width: 250px;
+  }
+  .focused-skeleton b,
+  .focused-skeleton.center-skeleton b {
+    width: 210px;
+    height: 230px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .focused-image img,
+  .focused-button {
+    transition: none;
+  }
+  .focused-image-skeleton::after,
+  .focused-skeleton i::after {
+    animation: none;
+  }
+}
+
+/* Keep layout:null identical to AboutProduct at every breakpoint. */
+.focused-center .focused-image {
+  min-height: 0;
+  overflow: visible;
+}
+.focused-center .focused-image::before {
+  display: none;
+}
+.focused-center .focused-image img {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  filter: none;
+}
+.focused-center:hover .focused-image.image-loaded img {
+  transform: scale(1.03);
+  filter: none;
+}
+
+/* image_left / image_right stays horizontal even on phones. */
+@media (max-width: 768px) {
+  .focused-split {
+    grid-template-columns: minmax(0, 1.28fr) minmax(0, 0.9fr);
+    min-height: 220px;
+    padding: 22px 16px;
+    gap: 8px;
+    text-align: left;
+    align-items: center;
+  }
+  .focused-split.image_left .focused-image {
+    order: 1;
+  }
+  .focused-split.image_left .focused-copy {
+    order: 2;
+  }
+  .focused-split.image_right .focused-copy {
+    order: 1;
+  }
+  .focused-split.image_right .focused-image {
+    order: 2;
+  }
+  .focused-split .focused-copy {
+    max-width: none;
+    margin: 0;
+  }
+  .focused-split .focused-copy h2 {
+    font-size: 16px;
+    line-height: 1.12;
+    letter-spacing: -0.3px;
+  }
+  .focused-split .focused-subtitle {
+    margin: 4px 0 0;
+    font-size: 10px;
+    line-height: 1.28;
+  }
+  .focused-split .focused-description {
+    display: none;
+  }
+  .focused-split .focused-image {
+    min-height: 176px;
+  }
+  .focused-split .focused-image::before {
+    width: 170px;
+    height: 170px;
+  }
+  .focused-split .focused-image img {
+    max-width: 100%;
+    max-height: 176px;
+  }
+  .focused-button {
+    width: 56px;
+    height: 24px;
+    margin-top: 8px;
+    border-radius: 5px;
+    font-size: 9px;
+  }
+  .focused-center .focused-image {
+    width: 100%;
+    min-height: 0;
+    margin-bottom: 26px;
+  }
+  .focused-center .focused-image img {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .focused-split {
+    min-height: 190px;
+    padding: 18px 12px;
+  }
+  .focused-split .focused-image {
+    min-height: 150px;
+  }
+  .focused-split .focused-image img {
+    max-height: 150px;
+  }
+  .focused-split .focused-copy h2 {
+    font-size: 14px;
+  }
+  .focused-split .focused-subtitle {
+    font-size: 9px;
+  }
+  .focused-center .focused-image img {
+    max-width: 180px;
+  }
+}
+
+/* Final API layout rules: static images and two visible CTA buttons. */
+.focused-center {
+  background:
+    radial-gradient(
+      ellipse 72% 42% at 50% 64%,
+      rgba(173, 255, 250, 0.66) 0%,
+      rgba(225, 255, 253, 0.38) 42%,
+      rgba(255, 255, 255, 0) 76%
+    ),
+    linear-gradient(to bottom, #fff 0%, #fff 87%, #f8ffff 96%, #fff 100%);
+}
+.focused-center .focused-copy {
+  text-align: center;
+}
+.focused-split.image_right .focused-copy {
+  text-align: right;
+}
+.focused-split.image_left .focused-copy {
+  text-align: left;
+}
+.focused-split.image_right .focused-subtitle {
+  margin-left: auto;
+}
+.focused-split.image_left .focused-subtitle {
+  margin-right: auto;
+}
+.focused-split.image_right .focused-description {
+  margin-left: auto;
+}
+.focused-split.image_left .focused-description {
+  margin-right: auto;
+}
+.focused-actions {
+  display: flex;
+  margin-top: 28px;
+  gap: 8px;
+  align-items: center;
+}
+.focused-center .focused-actions {
+  justify-content: center;
+}
+.focused-split.image_right .focused-actions {
+  justify-content: flex-end;
+}
+.focused-split.image_left .focused-actions {
+  justify-content: flex-start;
+}
+.focused-button {
+  position: static;
+  display: inline-flex;
+  width: auto;
+  min-width: 86px;
+  height: 34px;
+  margin: 0;
+  padding: 0 14px;
+  overflow: visible;
+  border-radius: 7px;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  transform: none;
+}
+.focused-button span {
+  position: static;
+}
+.focused-learn {
+  border: 1px solid #173f4c;
+  background: #fff;
+  color: #173f4c;
+}
+.focused-buy {
+  border: 1px solid #173f4c;
+  background: #173f4c;
+  color: #fff;
+}
+.focused-button:hover {
+  transform: none;
+  box-shadow: none;
+}
+.focused-button:hover span:first-child,
+.focused-button:hover span:last-child {
+  opacity: 1;
+  transform: none;
+}
+.focused-buy:hover {
+  background: #0e2e3b;
+  color: #fff;
+}
+.focused-learn:hover {
+  background: #f5fbfb;
+  color: #173f4c;
+}
+.focused-split:hover .focused-image.image-loaded img,
+.focused-center:hover .focused-image.image-loaded img {
+  transform: none;
+  filter: none;
+}
+.focused-image img {
+  transition: opacity 0.4s ease;
+}
+.focused-image.image-loaded img {
+  transform: none;
+}
+.focused-split .focused-image::before {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .focused-split.image_right .focused-copy {
+    text-align: right;
+  }
+  .focused-split.image_left .focused-copy {
+    text-align: left;
+  }
+  .focused-actions {
+    margin-top: 9px;
+    gap: 5px;
+  }
+  .focused-split.image_right .focused-actions {
+    justify-content: flex-end;
+  }
+  .focused-split.image_left .focused-actions {
+    justify-content: flex-start;
+  }
+  .focused-button {
+    min-width: 55px;
+    height: 23px;
+    padding: 0 8px;
+    border-radius: 5px;
+    font-size: 8px;
+  }
+  .focused-center .focused-actions {
+    margin-top: 18px;
+  }
+  .focused-center .focused-button {
+    min-width: 82px;
+    height: 30px;
+    font-size: 12px;
+  }
+}
+
+/* One CTA: Buy Now by default, Learn More on hover. */
+.focused-actions {
+  display: flex;
+}
+.focused-button.focused-buy {
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  background: #173f4c;
+  color: #fff;
+}
+.focused-button.focused-buy span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+.focused-button.focused-buy .button-buy-text {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+.focused-button.focused-buy .button-learn-text {
+  opacity: 0;
+  transform: translate(-50%, 60%);
+}
+.focused-button.focused-buy:hover {
+  border: 1px solid #173f4c;
+  background: #fff;
+  color: #173f4c;
+}
+.focused-button.focused-buy:hover .button-buy-text {
+  opacity: 0;
+  transform: translate(-50%, -160%);
+}
+.focused-button.focused-buy:hover .button-learn-text {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+/* Remove any visible box/border around the image while scrolling/tapping. */
+.focused-image,
+.focused-image::before,
+.focused-image img {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.focused-image {
+  background: transparent;
+}
+
+/* Requested responsive image sizing. */
+@media (max-width: 768px) {
+  .focused-center .focused-image {
+    width: 301px;
+    max-width: 100%;
+    height: 277px;
+    min-height: 277px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .focused-center .focused-image img {
+    width: 301px;
+    max-width: 100%;
+    height: 277px;
+    max-height: 277px;
+    object-fit: contain;
+  }
+  .focused-split .focused-image {
+    width: 223px;
+    max-width: 100%;
+    min-height: 0;
+    height: auto;
+  }
+  .focused-split .focused-image img {
+    width: 223px;
+    max-width: 100%;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+  }
+}
+
+/* Reserve a full image column so the 223px split image cannot shrink. */
+@media (max-width: 768px) {
+  .focused-split.image_right {
+    grid-template-columns: minmax(0, 1fr) 223px !important;
+  }
+  .focused-split.image_left {
+    grid-template-columns: 223px minmax(0, 1fr) !important;
+  }
+  .focused-split .focused-image {
+    width: 223px !important;
+    max-width: 223px !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  .focused-split .focused-image img {
+    display: block;
+    width: 309px !important;
+    max-width: 309px !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain;
+  }
+  .focused-split .focused-button {
+    width: 76px !important;
+    min-width: 76px !important;
+    height: 28px !important;
+    padding: 0 !important;
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .focused-split.image_right {
+    grid-template-columns: minmax(0, 1fr) 195px !important;
+  }
+  .focused-split.image_left {
+    grid-template-columns: 195px minmax(0, 1fr) !important;
+  }
+  .focused-split .focused-image,
+  .focused-split .focused-image img {
+    width: 195px !important;
+    max-width: 195px !important;
+  }
+}

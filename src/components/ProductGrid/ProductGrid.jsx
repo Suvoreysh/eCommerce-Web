@@ -11,6 +11,8 @@ import { useCartCount } from "../../context/CartCountContext";
 import "./ProductGrid.css";
 import "./VariantModal.css";
 
+const PRODUCT_SKELETON_COUNT = 6;
+
 export function VariantModal({
   product,
   variants,
@@ -172,6 +174,7 @@ export default function ProductGrid() {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [imageStatus, setImageStatus] = useState({});
 
   const [variantModalProduct, setVariantModalProduct] = useState(null);
   const [variants, setVariants] = useState([]);
@@ -195,6 +198,7 @@ export default function ProductGrid() {
 
         // Display a maximum of six products
         setProducts(productData.slice(0, 6));
+        setImageStatus({});
       } catch (err) {
         if (!isMounted) return;
 
@@ -222,6 +226,14 @@ export default function ProductGrid() {
         ? previousWishlist.filter((itemId) => itemId !== id)
         : [...previousWishlist, id],
     );
+  };
+
+  const handleProductImageLoad = (id) => {
+    setImageStatus((previous) => ({ ...previous, [id]: "loaded" }));
+  };
+
+  const handleProductImageError = (id) => {
+    setImageStatus((previous) => ({ ...previous, [id]: "error" }));
   };
 
   const renderStars = (rating) => {
@@ -253,13 +265,14 @@ export default function ProductGrid() {
 
       const response = await productApi.getProductVariants(productId);
       const responseData = response?.data;
-      const rawVariants = [
-        responseData,
-        responseData?.variants,
-        responseData?.product_variants,
-        responseData?.data,
-        response?.variants,
-      ].find(Array.isArray) ?? [];
+      const rawVariants =
+        [
+          responseData,
+          responseData?.variants,
+          responseData?.product_variants,
+          responseData?.data,
+          response?.variants,
+        ].find(Array.isArray) ?? [];
 
       const normalizedVariants = rawVariants
         .map((variant) => ({
@@ -343,14 +356,39 @@ export default function ProductGrid() {
         <h2 className="product-heading">Product List</h2>
 
         {loading && (
-          <p
-            style={{
-              textAlign: "center",
-              padding: "40px 0",
-            }}
-          >
-            Loading products...
-          </p>
+          <div className="product-grid" aria-label="Loading products">
+            {Array.from({ length: PRODUCT_SKELETON_COUNT }).map((_, index) => (
+              <div
+                className="product-card product-card-skeleton"
+                key={`product-skeleton-${index}`}
+                aria-hidden="true"
+              >
+                <div className="product-image-box product-skeleton-image">
+                  <div className="product-skeleton-shimmer" />
+                </div>
+                <div className="product-skeleton-name">
+                  <div className="product-skeleton-shimmer" />
+                </div>
+                <div className="product-skeleton-price">
+                  <div className="product-skeleton-shimmer" />
+                </div>
+                <div className="product-skeleton-rating">
+                  <div className="product-skeleton-shimmer" />
+                </div>
+                <div className="product-skeleton-features">
+                  <div className="product-skeleton-feature">
+                    <div className="product-skeleton-shimmer" />
+                  </div>
+                  <div className="product-skeleton-feature">
+                    <div className="product-skeleton-shimmer" />
+                  </div>
+                </div>
+                <div className="product-skeleton-button">
+                  <div className="product-skeleton-shimmer" />
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
         {!loading && error && (
@@ -378,7 +416,13 @@ export default function ProductGrid() {
 
         {!loading && !error && products.length > 0 && (
           <div className="product-grid">
-            {products.map((product) => {
+            {products.map((product, index) => {
+              const productKey =
+                product.id ?? product.product_id ?? `product-${index}`;
+              const productImage =
+                product.image || product.product?.image || "";
+              const status = imageStatus[productKey];
+              const hasImage = Boolean(productImage);
               const rating = Number(
                 product.average_rating ?? product.rating ?? 0,
               );
@@ -388,7 +432,7 @@ export default function ProductGrid() {
               return (
                 <div
                   className="product-card"
-                  key={product.id}
+                  key={productKey}
                   onClick={() => navigate(`/productdetails/${product.id}`)}
                 >
                   <button
@@ -411,13 +455,29 @@ export default function ProductGrid() {
                     )}
                   </button>
 
-                  <div className="product-image-box">
-                    <img
-                      src={product.image || product.product?.image}
-                      alt={product.name}
-                      className="product-image"
-                      loading="lazy"
-                    />
+                  <div
+                    className={`product-image-box ${status === "loaded" ? "image-loaded" : ""}`}
+                  >
+                    {hasImage && status !== "loaded" && status !== "error" && (
+                      <div
+                        className="product-image-skeleton"
+                        aria-hidden="true"
+                      >
+                        <div className="product-skeleton-shimmer" />
+                      </div>
+                    )}
+                    {hasImage && status !== "error" && (
+                      <img
+                        src={productImage}
+                        alt={product.name || "Product"}
+                        className="product-image"
+                        loading="eager"
+                        fetchPriority="high"
+                        decoding="async"
+                        onLoad={() => handleProductImageLoad(productKey)}
+                        onError={() => handleProductImageError(productKey)}
+                      />
+                    )}
                   </div>
 
                   <h3 className="product-name" title={product.name}>

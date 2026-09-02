@@ -23,9 +23,17 @@ export default function Partners() {
         <h2>Our Partner</h2>
 
         <div className="partners-grid">
-          {logos.map((logo) => (
+          {logos.map((logo, index) => (
             <div className="partner-logo" key={logo.alt}>
-              <img src={logo.src} alt={logo.alt} />
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                width="90"
+                height="50"
+                loading="eager"
+                fetchPriority={index < 3 ? "high" : "auto"}
+                decoding="async"
+              />
             </div>
           ))}
         </div>

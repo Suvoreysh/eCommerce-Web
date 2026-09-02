@@ -1,12 +1,27 @@
+// api/productApi.js
 import { apiRequest, ENDPOINTS } from "./config";
 
 export const productApi = {
-  // Products (supports query string e.g. "?featured=1&limit=6")
   getAll: (query = "") =>
     apiRequest(`${ENDPOINTS.PRODUCTS}${query}`, {
       auth: false,
     }),
-
+  getRelated: (id) =>
+    apiRequest(ENDPOINTS.PRODUCT_RELATED(id), {
+      auth: false,
+    }),
+  getFeaturedImageSections: (id) =>
+    apiRequest(ENDPOINTS.PRODUCT_FEATURED_IMAGE_SECTIONS(id), {
+      auth: false,
+    }),
+  getKeyPoints: (id) =>
+    apiRequest(ENDPOINTS.PRODUCT_KEY_POINTS(id), {
+      auth: false,
+    }),
+  getKeynoteSections: (id) =>
+    apiRequest(ENDPOINTS.PRODUCT_KEYNOTE_SECTIONS(id), {
+      auth: false,
+    }),
   getFeatured: (limit = 6) =>
     apiRequest(`${ENDPOINTS.PRODUCTS}?featured=1&limit=${limit}`, {
       auth: false,
@@ -22,18 +37,23 @@ export const productApi = {
       auth: false,
     }),
 
-  // Categories
   getCategories: () =>
     apiRequest(ENDPOINTS.CATEGORIES, {
       auth: false,
     }),
-
+  getProductReviews: (id) =>
+    apiRequest(ENDPOINTS.PRODUCT_REVIEWS(id), {
+      auth: false,
+    }),
   getCategorySubcategories: (categoryId) =>
     apiRequest(ENDPOINTS.CATEGORY_SUBCATEGORIES(categoryId), {
       auth: false,
     }),
-
-  // Subcategories
+  // add to api/productApi.js
+  getFeatures: (id, section) =>
+    apiRequest(ENDPOINTS.PRODUCT_FEATURES(id, section), {
+      auth: false,
+    }),
   getSubcategories: () =>
     apiRequest(ENDPOINTS.SUBCATEGORIES, {
       auth: true,
@@ -44,7 +64,6 @@ export const productApi = {
       auth: false,
     }),
 
-  // Variants
   getVariants: ({ categoryId, subcategoryId } = {}) => {
     const params = new URLSearchParams();
     if (categoryId) params.append("category_id", categoryId);
