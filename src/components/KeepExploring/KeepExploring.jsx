@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FiHeart, FiShoppingCart, FiChevronRight } from "react-icons/fi";
+import { FiShoppingCart, FiChevronRight } from "react-icons/fi";
 import { productApi } from "../../api/productApi";
 import { cartApi } from "../../api/cartApi";
 import { useCartCount } from "../../context/CartCountContext";
+import { useAuth } from "../../context/AuthContext";
 import { VariantModal } from "../ProductGrid/ProductGrid";
+import WishlistButton from "../common/WishlistButton";
 import "./KeepExploring.css";
 
 const SKELETON_COUNT = 4;
@@ -14,11 +16,11 @@ export default function KeepExploring({ productId: passedProductId }) {
   const productId = passedProductId ?? id;
   const navigate = useNavigate();
   const { refreshCartCount } = useCartCount();
+  const { user } = useAuth();
   const sliderRef = useRef(null);
   const [products, setProducts] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [wishlist, setWishlist] = useState([]);
   const [variantModalProduct, setVariantModalProduct] = useState(null);
   const [variants, setVariants] = useState([]);
   const [variantsLoading, setVariantsLoading] = useState(false);
@@ -149,34 +151,42 @@ export default function KeepExploring({ productId: passedProductId }) {
           {!loading &&
             products.map((product) => (
               <article className="explore-card" key={product.id}>
-                <button
-                  type="button"
-                  className={`explore-wishlist ${wishlist.includes(product.id) ? "active" : ""}`}
-                  onClick={() =>
-                    setWishlist((old) =>
-                      old.includes(product.id)
-                        ? old.filter((item) => item !== product.id)
-                        : [...old, product.id],
-                    )
-                  }
-                  aria-label={`Add ${product.name} to wishlist`}
-                >
-                  <FiHeart />
-                </button>
+                <WishlistButton
+                  productId={product.id}
+                  className="explore-wishlist"
+                  activeClassName="active"
+                />
                 <div className="explore-image-box">
                   <img src={product.image} alt={product.name} loading="lazy" />
                 </div>
-                {(product.price_min || product.price_max) && (
-                  <p className="explore-price">
-                    Price:{" "}
-                    <strong>
-                      ₹{product.price_min || product.price_max}
-                      {product.price_min &&
-                      product.price_max &&
-                      product.price_min !== product.price_max
-                        ? ` – ₹${product.price_max}`
-                        : ""}
-                    </strong>
+                {user ? (
+                  (product.price_min || product.price_max) && (
+                    <p className="explore-price">
+                      Price:{" "}
+                      <strong>
+                        ₹{product.price_min || product.price_max}
+                        {product.price_min &&
+                        product.price_max &&
+                        product.price_min !== product.price_max
+                          ? ` – ₹${product.price_max}`
+                          : ""}
+                      </strong>
+                    </p>
+                  )
+                ) : (
+                  <p
+                    className="explore-price explore-price-login-prompt"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      const returnTo = encodeURIComponent(
+                        window.location.pathname,
+                      );
+                      navigate(`/login?returnTo=${returnTo}`);
+                    }}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    Login to see price
                   </p>
                 )}
                 <h3 className="explore-name">{product.name}</h3>

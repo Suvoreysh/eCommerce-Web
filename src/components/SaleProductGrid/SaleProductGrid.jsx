@@ -1,9 +1,82 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SaleProductGrid.css";
-import { FiHeart, FiShoppingCart } from "react-icons/fi";
+import { productApi } from "../../api/productApi";
+import { cartApi } from "../../api/cartApi";
+import { useCartCount } from "../../context/CartCountContext";
+import { VariantModal } from "../ProductGrid/ProductGrid";
+import WishlistButton from "../common/WishlistButton";
 
 export default function SaleProductGrid({ title, products = [] }) {
   const navigate = useNavigate();
+  const { refreshCartCount } = useCartCount();
+
+  const [variantModalProduct, setVariantModalProduct] = useState(null);
+  const [variants, setVariants] = useState([]);
+  const [variantsLoading, setVariantsLoading] = useState(false);
+  const [variantsError, setVariantsError] = useState("");
+  const [adding, setAdding] = useState(false);
+
+  const openVariantModal = async (event, product) => {
+    event.stopPropagation();
+
+    setVariantModalProduct(product);
+    setVariants([]);
+    setVariantsError("");
+    setVariantsLoading(true);
+
+    try {
+      const response = await productApi.getProductVariants(product.id);
+      const rows = Array.isArray(response?.data) ? response.data : [];
+
+      const normalized = rows
+        .map((variant) => ({
+          id: variant.id ?? variant.product_variant_id ?? null,
+          name: product.name,
+          label:
+            variant.label ??
+            variant.storage ??
+            variant.size ??
+            variant.sku ??
+            "Standard",
+          image: variant.image ?? product.image,
+          price: variant.price ?? variant.sale_price ?? variant.regular_price,
+          stock_quantity: variant.stock_quantity,
+        }))
+        .filter((variant) => variant.id !== null);
+
+      setVariants(
+        normalized.length
+          ? normalized
+          : [
+              {
+                id: product.id,
+                name: product.name,
+                label: "Standard",
+                image: product.image,
+                stock_quantity: product.stock_quantity,
+              },
+            ],
+      );
+    } catch (err) {
+      setVariantsError(err.message || "Unable to load variants.");
+    } finally {
+      setVariantsLoading(false);
+    }
+  };
+
+  const addToCart = async (variantId, quantity) => {
+    try {
+      setAdding(true);
+      await cartApi.addItem(variantId, quantity);
+      setVariantModalProduct(null);
+      refreshCartCount();
+    } catch (err) {
+      alert(err.message || "Unable to add item to cart.");
+    } finally {
+      setAdding(false);
+    }
+  };
 
   return (
     <section className="sale-grid-section">
@@ -23,14 +96,11 @@ export default function SaleProductGrid({ title, products = [] }) {
           >
             {p.onSale && <span className="sale-tag">sale</span>}
 
-            <button
-              type="button"
+            <WishlistButton
+              productId={p.id}
               className="sale-wishlist-btn"
-              aria-label="Add to wishlist"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FiHeart />
-            </button>
+              activeClassName="sale-wishlist-btn-active"
+            />
 
             <div className="sale-card-img">
               <img src={p.image} alt={p.name} />
@@ -45,17 +115,28 @@ export default function SaleProductGrid({ title, products = [] }) {
               <button
                 type="button"
                 className="sale-cta-btn"
-                onClick={(e) => e.stopPropagation()}
+                disabled={adding && variantModalProduct?.id === p.id}
+                onClick={(event) => openVariantModal(event, p)}
               >
                 {p.ctaLabel || "Add to Cart"}
               </button>
-              <span className="sale-cart-icon">
-                <FiShoppingCart />
-              </span>
             </div>
           </div>
         ))}
       </div>
+
+      {variantModalProduct && (
+        <VariantModal
+          product={variantModalProduct}
+          variants={variants}
+          loading={variantsLoading}
+          error={variantsError}
+          adding={adding}
+          onClose={() => setVariantModalProduct(null)}
+          onConfirm={addToCart}
+        />
+      )}
     </section>
   );
 }
+

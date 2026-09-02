@@ -1,20 +1,11 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { IoChevronBack, IoInformationCircleOutline } from "react-icons/io5";
-
-import {
-  FiShoppingBag,
-  FiHeart,
-  FiLock,
-  FiSettings,
-  FiMapPin,
-  FiLogOut,
-  FiHeadphones,
-} from "react-icons/fi";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
 import Seo from "../../components/common/Seo";
-import { useAuth } from "../../context/AuthContext";
+import AccountSidebar from "../../components/profile/AccountSidebar";
+import BackHomeButton from "../../components/profile/BackHomeButton";
 
 import "./MyOrders.css";
 
@@ -115,48 +106,8 @@ const orders = [
   },
 ];
 
-const sidebarNav = [
-  {
-    to: "/orders",
-    icon: <FiShoppingBag />,
-    label: "My Orders",
-    active: true,
-  },
-  {
-    to: "/wishlist",
-    icon: <FiHeart />,
-    label: "Wishlist",
-    active: false,
-  },
-  {
-    to: "/change-password",
-    icon: <FiLock />,
-    label: "Change Password",
-    active: false,
-  },
-  {
-    to: "/settings",
-    icon: <FiSettings />,
-    label: "Account Settings",
-    active: false,
-  },
-  {
-    to: "/address",
-    icon: <FiMapPin />,
-    label: "Address Book",
-    active: false,
-  },
-  {
-    to: "/logout",
-    icon: <FiLogOut />,
-    label: "Logout",
-    active: false,
-  },
-];
-
 export default function MyOrders() {
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState("pending");
 
@@ -181,14 +132,7 @@ export default function MyOrders() {
       ======================================== */}
 
       <header className="orders-header">
-        <button
-          type="button"
-          className="orders-header__btn"
-          aria-label="Back to profile"
-          onClick={() => navigate("/profile")}
-        >
-          <IoChevronBack />
-        </button>
+        <BackHomeButton className="orders-header__btn" />
 
         <h1>My Order</h1>
 
@@ -301,53 +245,14 @@ export default function MyOrders() {
       ======================================== */}
 
       <div className="orders-desktop">
-        <aside className="od-sidebar">
-          <div className="od-avatar">
-            {user?.image ? (
-              <img src={user.image} alt={user?.name || "Profile"} />
-            ) : (
-              <div className="od-avatar-placeholder">
-                {(user?.name || "J").charAt(0).toUpperCase()}
-              </div>
-            )}
-          </div>
-
-          <h2 className="od-name">{user?.name || "Jhon Rao"}</h2>
-
-          <p className="od-phone">{user?.phone || "+91 6254897524"}</p>
-
-          <nav className="od-nav">
-            {sidebarNav.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`od-nav-item ${
-                  item.active ? "od-nav-item--active" : ""
-                }`}
-              >
-                <span className="od-nav-icon">{item.icon}</span>
-
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </nav>
-
-          <div className="od-help">
-            <FiHeadphones className="od-help-icon" />
-
-            <div>
-              <p className="od-help-title">Need Help?</p>
-
-              <p className="od-help-sub">24/7 Customer Support</p>
-
-              <p className="od-help-email">support@shopkart.com</p>
-            </div>
-          </div>
-        </aside>
+        <AccountSidebar />
 
         <section className="od-main">
           <div className="od-main-header">
-            <h1>My Orders</h1>
+            <div className="od-main-title">
+              <BackHomeButton className="od-desktop-back-btn" />
+              <h1>My Orders</h1>
+            </div>
 
             <button type="button" className="od-info-btn">
               <IoInformationCircleOutline />

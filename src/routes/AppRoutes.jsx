@@ -12,6 +12,7 @@ import ProductListing from "../pages/Product/ProductListing";
 import ProductCategory from "../pages/Product/ProductCategory";
 import SingleProduct from "../pages/Product/SingleProduct";
 
+import Wishlist from "../pages/Wishlist/Wishlist";
 import CartList from "../pages/Cart/CartList";
 import UserDetail from "../pages/Cart/UserDetail";
 import Delivery from "../pages/Cart/Delivery";
@@ -21,6 +22,7 @@ import OrderSuccess from "../pages/Cart/OrderSuccess";
 import Profile from "../pages/Profile/Profile";
 import MyOrders from "../pages/Profile/MyOrders";
 import OrderDetails from "../pages/Profile/OrderDetails";
+import ChangePassword from "../pages/Profile/ChangePassword";
 
 import Placeholder from "../pages/Placeholder";
 import NotFound from "../pages/NotFound";
@@ -59,12 +61,9 @@ export default function AppRoutes() {
         {/* Placeholders */}
         <Route path="/search" element={<Placeholder title="Search" />} />
         <Route path="/assistant" element={<Placeholder title="Assistant" />} />
-        <Route path="/wishlist" element={<Placeholder title="Wishlist" />} />
+        <Route path="/wishlist" element={<Wishlist />} />
 
-        <Route
-          path="/change-password"
-          element={<Placeholder title="Change Password" />}
-        />
+        <Route path="/change-password" element={<ChangePassword />} />
 
         <Route
           path="/change-language"

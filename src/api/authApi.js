@@ -53,4 +53,13 @@ export const authApi = {
       method: "PUT",
       body: payload,
     }),
+
+  // NOTE: endpoint path/shape is assumed (no change-password request was
+  // captured in the API docs/Postman collection shared so far) — confirm
+  // the real path and payload keys before relying on this in production.
+  changePassword: (payload) =>
+    apiRequest(ENDPOINTS.CHANGE_PASSWORD, {
+      method: "POST",
+      body: payload,
+    }),
 };

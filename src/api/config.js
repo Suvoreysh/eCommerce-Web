@@ -18,6 +18,7 @@ export const ENDPOINTS = {
   VERIFY_LOGIN_OTP: "/login/otp/verify",
 
   PROFILE: "/me",
+  CHANGE_PASSWORD: "/change-password",
   PRODUCT_IMAGES: (id) => `/products/${id}/images`,
   PRODUCT_KEY_POINTS: (id) => `/products/${id}/key-points`,
   PRODUCT_KEYNOTE_SECTIONS: (id) => `/products/${id}/keynote-sections`,
@@ -39,6 +40,10 @@ export const ENDPOINTS = {
   CART: "/cart",
   ORDERS: "/orders",
   CHECKOUT: "/orders/checkout",
+
+  WISHLIST: "/wishlist",
+  WISHLIST_TOGGLE: "/wishlist/toggle",
+  WISHLIST_ITEM: (productId) => `/wishlist/${productId}`,
 };
 
 function getToken() {

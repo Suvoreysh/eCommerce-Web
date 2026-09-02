@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useRef, useState } from "react";
 import {
   FiInfo,
@@ -10,15 +10,15 @@ import {
   FiShoppingBag,
   FiHeart,
   FiLock,
-  FiSettings,
   FiMapPin,
   FiLogOut,
   FiHeadphones,
 } from "react-icons/fi";
-import { IoChevronBack } from "react-icons/io5";
 
 import Seo from "../../components/common/Seo";
+import BackHomeButton from "../../components/profile/BackHomeButton";
 import { useAuth } from "../../context/AuthContext";
+import { useCartCount } from "../../context/CartCountContext";
 import "./Profile.css";
 
 import myorderIcon from "../../assets/icons/Icon-fill/myorder.svg";
@@ -65,11 +65,6 @@ const SIDEBAR_NAV = [
     label: "Change Password",
   },
   {
-    to: "/settings",
-    icon: <FiSettings />,
-    label: "Account Settings",
-  },
-  {
     to: "/address",
     icon: <FiMapPin />,
     label: "Address Book",
@@ -78,7 +73,9 @@ const SIDEBAR_NAV = [
 
 export default function Profile() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { user, logout } = useAuth();
+  const { refreshCartCount } = useCartCount();
 
   const mobileFileInputRef = useRef(null);
   const desktopFileInputRef = useRef(null);
@@ -102,12 +99,9 @@ export default function Profile() {
     event.currentTarget.src = "/images/profile.png";
   };
 
-  const handleBackToHome = () => {
-    navigate("/home");
-  };
-
   const handleLogout = () => {
     logout();
+    refreshCartCount();
     navigate("/home", { replace: true });
   };
 
@@ -159,14 +153,7 @@ export default function Profile() {
       ====================================================== */}
 
       <header className="profile-header">
-        <button
-          type="button"
-          className="profile-header__btn"
-          onClick={handleBackToHome}
-          aria-label="Back to home"
-        >
-          <IoChevronBack />
-        </button>
+        <BackHomeButton className="profile-header__btn" />
 
         <h2>Profile</h2>
 
@@ -297,7 +284,13 @@ export default function Profile() {
 
           <nav className="od-nav" aria-label="Profile navigation">
             {SIDEBAR_NAV.map((item) => (
-              <Link key={item.to} to={item.to} className="od-nav-item">
+              <Link
+                key={item.to}
+                to={item.to}
+                className={`od-nav-item${
+                  pathname === item.to ? " od-nav-item--active" : ""
+                }`}
+              >
                 <span className="od-nav-icon">{item.icon}</span>
                 <span>{item.label}</span>
               </Link>
@@ -337,14 +330,7 @@ export default function Profile() {
         <section className="od-main">
           <div className="od-main-header">
             <div className="od-main-title">
-              <button
-                type="button"
-                className="od-desktop-back-btn"
-                onClick={handleBackToHome}
-                aria-label="Back to home"
-              >
-                <IoChevronBack />
-              </button>
+              <BackHomeButton className="od-desktop-back-btn" />
 
               <h1>My Account</h1>
             </div>

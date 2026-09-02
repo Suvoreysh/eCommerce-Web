@@ -84,6 +84,10 @@
     font-size: 13px;
 }
 
+.sale-wishlist-btn-active {
+    color: #f23a3a;
+}
+
 .sale-card-img {
     height: 110px;
     display: flex;

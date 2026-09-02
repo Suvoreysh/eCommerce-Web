@@ -1,64 +1,28 @@
-import { useLocation, useNavigate, useParams, Link } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import {
-  IoCallOutline,
-  IoChevronBack,
-  IoInformationCircleOutline,
-} from "react-icons/io5";
-
-import {
-  FiShoppingBag,
-  FiHeart,
-  FiLock,
-  FiSettings,
-  FiMapPin,
-  FiLogOut,
-  FiHeadphones,
-} from "react-icons/fi";
+import { IoCallOutline, IoInformationCircleOutline } from "react-icons/io5";
 
 import Seo from "../../components/common/Seo";
-import { useAuth } from "../../context/AuthContext";
+import AccountSidebar from "../../components/profile/AccountSidebar";
 import "./OrderDetails.css";
+
+const backIcon = (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M15 6l-6 6 6 6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 const steps = [
   { id: 1, label: "Processing" },
   { id: 2, label: "Picking" },
   { id: 3, label: "Shipping" },
   { id: 4, label: "Delivered" },
-];
-
-const sidebarNav = [
-  {
-    to: "/orders",
-    icon: <FiShoppingBag />,
-    label: "My Orders",
-    active: true,
-  },
-  {
-    to: "/wishlist",
-    icon: <FiHeart />,
-    label: "Wishlist",
-  },
-  {
-    to: "/change-password",
-    icon: <FiLock />,
-    label: "Change Password",
-  },
-  {
-    to: "/settings",
-    icon: <FiSettings />,
-    label: "Account Settings",
-  },
-  {
-    to: "/address",
-    icon: <FiMapPin />,
-    label: "Address Book",
-  },
-  {
-    to: "/logout",
-    icon: <FiLogOut />,
-    label: "Logout",
-  },
 ];
 
 const fallbackOrder = {
@@ -118,7 +82,7 @@ function OrderDetailsContent({ order }) {
           onClick={() => navigate("/orders")}
           aria-label="Back to orders"
         >
-          <IoChevronBack />
+          {backIcon}
         </button>
 
         <h1>Order Details</h1>
@@ -260,7 +224,6 @@ function OrderDetailsContent({ order }) {
 export default function OrderDetails() {
   const location = useLocation();
   const { orderId } = useParams();
-  const { user } = useAuth();
 
   const receivedOrder = location.state?.order;
 
@@ -296,45 +259,7 @@ export default function OrderDetails() {
 
       {/* Desktop */}
       <div className="order-details-desktop">
-        <aside className="order-details-sidebar">
-          <div className="order-details-avatar">
-            {user?.image && <img src={user.image} alt="Profile" />}
-          </div>
-
-          <h2 className="order-details-user-name">
-            {user?.name || "Shuvendu Ghosh"}
-          </h2>
-
-          <p className="order-details-user-phone">
-            {user?.phone || "7908979021"}
-          </p>
-
-          <nav className="order-details-nav">
-            {sidebarNav.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`order-details-nav-item ${
-                  item.active ? "order-details-nav-item-active" : ""
-                }`}
-              >
-                <span>{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </nav>
-
-          <div className="order-details-help">
-            <FiHeadphones />
-
-            <div>
-              <p className="order-details-help-title">Need Help?</p>
-
-              <p>24/7 Customer Support</p>
-              <p>support@shopkart.com</p>
-            </div>
-          </div>
-        </aside>
+        <AccountSidebar />
 
         <section className="order-details-main-panel">
           <OrderDetailsContent order={order} />

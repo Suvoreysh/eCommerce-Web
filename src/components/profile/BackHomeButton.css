@@ -1,0 +1,4 @@
+/* No rules here on purpose — BackHomeButton is styled entirely by the
+   className passed in (e.g. "back-btn" or "od-desktop-back-btn"), so it
+   matches whichever page's header it renders inside without fighting
+   that page's own CSS. */

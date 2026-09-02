@@ -402,7 +402,8 @@
 
 }
 
-.heart-active {
+.heart-active,
+.wishlist-btn-active svg {
 
   color: red;
 
@@ -905,4 +906,9 @@
 .wishlist-btn,
 .add-cart-btn{
     transition:.3s;
+}
+.price-login-prompt {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #11485b;
 }

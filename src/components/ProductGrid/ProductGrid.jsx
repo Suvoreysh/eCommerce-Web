@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 
-import { FiHeart, FiHome, FiShield, FiX } from "react-icons/fi";
-import { FaHeart, FaStar } from "react-icons/fa";
+import { FiHome, FiShield, FiX } from "react-icons/fi";
+import { FaStar } from "react-icons/fa";
 
 import { productApi } from "../../api/productApi";
 import { cartApi } from "../../api/cartApi";
 import { useCartCount } from "../../context/CartCountContext";
+import { useAuth } from "../../context/AuthContext";
+import WishlistButton from "../common/WishlistButton";
 import "./ProductGrid.css";
 import "./VariantModal.css";
 
@@ -169,9 +171,9 @@ export function VariantModal({
 export default function ProductGrid() {
   const navigate = useNavigate();
   const { refreshCartCount } = useCartCount();
+  const { user } = useAuth();
 
   const [products, setProducts] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [imageStatus, setImageStatus] = useState({});
@@ -219,14 +221,6 @@ export default function ProductGrid() {
       isMounted = false;
     };
   }, []);
-
-  const toggleWishlist = (id) => {
-    setWishlist((previousWishlist) =>
-      previousWishlist.includes(id)
-        ? previousWishlist.filter((itemId) => itemId !== id)
-        : [...previousWishlist, id],
-    );
-  };
 
   const handleProductImageLoad = (id) => {
     setImageStatus((previous) => ({ ...previous, [id]: "loaded" }));
@@ -435,25 +429,11 @@ export default function ProductGrid() {
                   key={productKey}
                   onClick={() => navigate(`/productdetails/${product.id}`)}
                 >
-                  <button
-                    type="button"
+                  <WishlistButton
+                    productId={product.id}
                     className="wishlist-btn"
-                    aria-label={
-                      wishlist.includes(product.id)
-                        ? "Remove from wishlist"
-                        : "Add to wishlist"
-                    }
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      toggleWishlist(product.id);
-                    }}
-                  >
-                    {wishlist.includes(product.id) ? (
-                      <FaHeart className="heart-active" />
-                    ) : (
-                      <FiHeart />
-                    )}
-                  </button>
+                    activeClassName="wishlist-btn-active"
+                  />
 
                   <div
                     className={`product-image-box ${status === "loaded" ? "image-loaded" : ""}`}
@@ -484,11 +464,30 @@ export default function ProductGrid() {
                     {product.name}
                   </h3>
 
-                  <div className="price-row">
-                    <span className="price">
-                      ₹ {product.price_min} – ₹ {product.price_max}
-                    </span>
-                  </div>
+                  {user ? (
+                    <div className="price-row">
+                      <span className="price">
+                        ₹ {product.price_min} – ₹ {product.price_max}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="price-row">
+                      <span
+                        className="price price-login-prompt"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          const returnTo = encodeURIComponent(
+                            window.location.pathname,
+                          );
+                          navigate(`/login?returnTo=${returnTo}`);
+                        }}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        Login to see price
+                      </span>
+                    </div>
+                  )}
 
                   <div className="rating-row">
                     <div className="stars">{renderStars(rating)}</div>

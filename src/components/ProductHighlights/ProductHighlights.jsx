@@ -7,8 +7,9 @@ import icon2 from "../../assets/icons/Icon-fill/2.svg";
 import icon3 from "../../assets/icons/Icon-fill/3.svg";
 import icon4 from "../../assets/icons/Icon-fill/4.svg";
 
-import { FiHeart, FiShoppingCart } from "react-icons/fi";
+import { FiShoppingCart } from "react-icons/fi";
 import { productApi } from "../../api/productApi";
+import WishlistButton from "../common/WishlistButton";
 
 const fallbackIcons = [icon1, icon2, icon3, icon4];
 
@@ -101,11 +102,22 @@ export default function ProductHighlights({ productId: passedProductId }) {
       )}
 
       <div className="action-bar">
-        <button className="wishlist-bar-btn">
-          <FiHeart /> Wishlist
-        </button>
+        <WishlistButton
+          productId={productId}
+          className="wishlist-bar-btn"
+          activeClassName="wishlist-bar-btn-active"
+          label="Wishlist"
+        />
 
-        <button className="cart-bar-btn">
+        <button
+          className="cart-bar-btn"
+          type="button"
+          onClick={() =>
+            document
+              .querySelector(".product-multi, .product-hero, [data-add-to-cart]")
+              ?.scrollIntoView({ behavior: "smooth", block: "start" })
+          }
+        >
           <FiShoppingCart /> Cart
         </button>
       </div>

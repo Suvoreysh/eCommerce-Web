@@ -1,17 +1,10 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoInformationCircleOutline } from "react-icons/io5";
-import {
-  FiShoppingBag,
-  FiHeart,
-  FiLock,
-  FiSettings,
-  FiMapPin,
-  FiLogOut,
-  FiHeadphones,
-} from "react-icons/fi";
 import { cartApi } from "../../api/cartApi";
 import { useCartCount } from "../../context/CartCountContext";
+import AccountSidebar from "../../components/profile/AccountSidebar";
+import BackHomeButton from "../../components/profile/BackHomeButton";
 import "./Cart.css";
 
 const IMAGE_BASE =
@@ -28,25 +21,6 @@ const backIcon = (
     />
   </svg>
 );
-
-const sidebarNav = [
-  { to: "/orders", icon: <FiShoppingBag />, label: "My Orders", active: false },
-  { to: "/wishlist", icon: <FiHeart />, label: "Wishlist", active: false },
-  {
-    to: "/change-password",
-    icon: <FiLock />,
-    label: "Change Password",
-    active: false,
-  },
-  {
-    to: "/settings",
-    icon: <FiSettings />,
-    label: "Account Settings",
-    active: false,
-  },
-  { to: "/address", icon: <FiMapPin />, label: "Address Book", active: false },
-  { to: "/logout", icon: <FiLogOut />, label: "Logout", active: false },
-];
 
 function resolveImage(image) {
   if (!image) return "";
@@ -248,37 +222,14 @@ export default function CartList() {
 
           {/* ---------- Desktop view — sidebar layout (matches My Orders) ---------- */}
           <div className="cd-desktop">
-            <aside className="od-sidebar">
-              <div className="od-avatar" />
-              <h2 className="od-name">Jhon Rao</h2>
-              <p className="od-phone">+91 6254897524</p>
-
-              <nav className="od-nav">
-                {sidebarNav.map((item) => (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    className={`od-nav-item${item.active ? " od-nav-item--active" : ""}`}
-                  >
-                    <span className="od-nav-icon">{item.icon}</span>
-                    <span>{item.label}</span>
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="od-help">
-                <FiHeadphones className="od-help-icon" />
-                <div>
-                  <p className="od-help-title">Need Help?</p>
-                  <p className="od-help-sub">24/7 Customer Support</p>
-                  <p className="od-help-email">support@shopkart.com</p>
-                </div>
-              </div>
-            </aside>
+            <AccountSidebar />
 
             <div className="od-main">
               <div className="od-main-header">
-                <h1>My Cart</h1>
+                <div className="od-main-title">
+                  <BackHomeButton className="od-desktop-back-btn" />
+                  <h1>My Cart</h1>
+                </div>
                 <button className="od-info-btn">
                   <IoInformationCircleOutline />
                   How checkout works?
