@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FiLock } from "react-icons/fi";
+import { useMemo, useState } from "react";
+import { FiLock, FiShield, FiCheck } from "react-icons/fi";
 import Seo from "../../components/common/Seo";
 import { authApi } from "../../api/authApi";
 import AccountSidebar from "../../components/profile/AccountSidebar";
@@ -13,6 +13,13 @@ const initialForm = {
   confirmPassword: "",
 };
 
+const RULES = [
+  { key: "length", label: "At least 6 characters", test: (v) => v.length >= 6 },
+  { key: "upper", label: "One uppercase letter", test: (v) => /[A-Z]/.test(v) },
+  { key: "number", label: "One number", test: (v) => /\d/.test(v) },
+  { key: "match", label: "Matches confirmation", test: (v, all) => v && v === all.confirmPassword },
+];
+
 export default function ChangePassword() {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
@@ -24,6 +31,15 @@ export default function ChangePassword() {
     setError("");
     setSuccess("");
   };
+
+  const checklist = useMemo(
+    () =>
+      RULES.map((rule) => ({
+        ...rule,
+        met: rule.test(form.newPassword, form),
+      })),
+    [form],
+  );
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -72,38 +88,40 @@ export default function ChangePassword() {
         Choose a strong password you don't use elsewhere.
       </p>
 
-      <label className="change-password-field">
-        <span>Current Password</span>
-        <input
-          type="password"
-          value={form.currentPassword}
-          onChange={handleChange("currentPassword")}
-          autoComplete="current-password"
-          placeholder="Enter current password"
-        />
-      </label>
+      <div className="cp-form-grid">
+        <label className="change-password-field cp-field--full">
+          <span>Current Password</span>
+          <input
+            type="password"
+            value={form.currentPassword}
+            onChange={handleChange("currentPassword")}
+            autoComplete="current-password"
+            placeholder="Enter current password"
+          />
+        </label>
 
-      <label className="change-password-field">
-        <span>New Password</span>
-        <input
-          type="password"
-          value={form.newPassword}
-          onChange={handleChange("newPassword")}
-          autoComplete="new-password"
-          placeholder="Enter new password"
-        />
-      </label>
+        <label className="change-password-field">
+          <span>New Password</span>
+          <input
+            type="password"
+            value={form.newPassword}
+            onChange={handleChange("newPassword")}
+            autoComplete="new-password"
+            placeholder="Enter new password"
+          />
+        </label>
 
-      <label className="change-password-field">
-        <span>Confirm New Password</span>
-        <input
-          type="password"
-          value={form.confirmPassword}
-          onChange={handleChange("confirmPassword")}
-          autoComplete="new-password"
-          placeholder="Re-enter new password"
-        />
-      </label>
+        <label className="change-password-field">
+          <span>Confirm New Password</span>
+          <input
+            type="password"
+            value={form.confirmPassword}
+            onChange={handleChange("confirmPassword")}
+            autoComplete="new-password"
+            placeholder="Re-enter new password"
+          />
+        </label>
+      </div>
 
       {error && <p className="change-password-error">{error}</p>}
       {success && <p className="change-password-success">{success}</p>}
@@ -116,6 +134,35 @@ export default function ChangePassword() {
         {submitting ? "Updating..." : "Update Password"}
       </button>
     </form>
+  );
+
+  const tipsPanel = (
+    <aside className="cp-tips-panel">
+      <div className="cp-tips-icon">
+        <FiShield />
+      </div>
+
+      <h3>Password strength</h3>
+      <p>Your new password should meet these guidelines:</p>
+
+      <ul className="cp-tips-list">
+        {checklist.map((rule) => (
+          <li key={rule.key} className={rule.met ? "cp-tip--met" : ""}>
+            <span className="cp-tip-check">
+              <FiCheck />
+            </span>
+            {rule.label}
+          </li>
+        ))}
+      </ul>
+
+      <div className="cp-tips-note">
+        <p>
+          Avoid reusing passwords from other sites, and never share your
+          password with anyone — our support team will never ask for it.
+        </p>
+      </div>
+    </aside>
   );
 
   return (
@@ -143,7 +190,10 @@ export default function ChangePassword() {
             </div>
           </div>
 
-          {formCard}
+          <div className="cp-desktop-layout">
+            {formCard}
+            {tipsPanel}
+          </div>
         </div>
       </div>
     </div>

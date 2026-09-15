@@ -1,0 +1,408 @@
+.addr-form-mobile {
+  padding: 20px 16px 60px;
+}
+
+/* Card: full width of whatever container it's in (mobile screen width
+   minus page padding, or the desktop .od-main content column) — no
+   artificial max-width capping it down. */
+.addr-form-card {
+  width: 100%;
+
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 22px 18px;
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.05),
+    0 10px 28px rgba(0, 0, 0, 0.04);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.addr-form-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.addr-form-head-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #eef2f4;
+  color: #143d4a;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.addr-form-head h2 {
+  margin: 0 0 4px;
+  color: #111111;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.addr-form-head p {
+  margin: 0;
+  color: #6b6b6b;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.addr-locate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  height: 48px;
+  margin-bottom: 6px;
+
+  border: 1.5px dashed #143d4a;
+  border-radius: 12px;
+  background: #eef2f4;
+  color: #143d4a;
+
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.addr-locate-btn:hover:not(:disabled) {
+  background: #143d4a;
+  color: #ffffff;
+}
+
+.addr-locate-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.addr-locate-note {
+  margin: 8px 0 4px;
+  color: #1a7f37;
+  font-size: 12.5px;
+}
+
+.addr-form-type-group {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0 20px;
+}
+
+.addr-type-chip {
+  flex: 1;
+
+  padding: 10px 13px;
+  border: 1px solid #e2e6e8;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #333333;
+
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.addr-type-chip--active {
+  background: #143d4a;
+  border-color: #143d4a;
+  color: #ffffff;
+}
+
+/* ==================================================
+   FIELD GRID — the core of the "full width, best
+   responsive" ask: fields flow into as many columns
+   as the available width comfortably allows, instead
+   of a fixed 1/2-column split.
+================================================== */
+
+.addr-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px 18px;
+  margin-bottom: 4px;
+}
+
+.addr-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.addr-field span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.addr-field input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #e2e6e8;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #111111;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.addr-field input:focus {
+  border-color: #143d4a;
+}
+
+.addr-field--full {
+  grid-column: 1 / -1;
+}
+
+.addr-form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 20px 0 18px;
+  color: #333333;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.addr-form-checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: #143d4a;
+  cursor: pointer;
+}
+
+.addr-form-error {
+  margin: 0 0 14px;
+  color: #f23a3a;
+  font-size: 13px;
+}
+
+.addr-form-submit {
+  height: 52px;
+padding: 0 24px;
+  border: none;
+  border-radius: 30px;
+  background: #143d4a;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.addr-form-submit:hover:not(:disabled) {
+  background: #0d2c36;
+}
+
+.addr-form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==================================================
+   RESPONSIVE BREAKPOINTS
+   Small tablets and up: two columns.
+   Wide desktop: three columns, still spanning the
+   entire content width (no centered narrow card).
+================================================== */
+
+@media (min-width: 560px) {
+  .addr-form-card {
+    padding: 28px 26px;
+  }
+
+  .addr-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  /* Desktop: form + live preview side-by-side, filling the entire content
+     column next to the account sidebar instead of a narrow floating card. */
+
+  .addr-form-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+    width: 100%;
+  }
+
+  .addr-form-card {
+    width: auto;
+    flex: 1 1 auto;
+    padding: 34px 36px;
+    border-radius: 24px;
+  }
+
+  .addr-form-head-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  .addr-form-head h2 {
+    font-size: 22px;
+  }
+
+  .addr-form-head p {
+    font-size: 14px;
+    max-width: 560px;
+  }
+
+  .addr-form-type-group {
+    max-width: 420px;
+  }
+
+  .addr-form-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .addr-form-submit {
+    max-width: 280px;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+  .addr-preview-panel {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .addr-preview-panel {
+    flex: 0 0 320px;
+
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 28px 26px;
+    position: sticky;
+    top: 24px;
+
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.05),
+      0 10px 28px rgba(0, 0, 0, 0.04);
+  }
+
+  .addr-preview-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 14px;
+
+    border-radius: 50%;
+    background: #eef2f4;
+    color: #143d4a;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .addr-preview-panel h3 {
+    margin: 0 0 6px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #111111;
+  }
+
+  .addr-preview-panel > p {
+    margin: 0 0 18px;
+    color: #6b6b6b;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .addr-preview-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    padding: 18px;
+    margin-bottom: 18px;
+    border-radius: 16px;
+    background: #f5f8f9;
+    border: 1px solid #e2e6e8;
+  }
+
+  .addr-preview-type {
+    align-self: flex-start;
+    margin-bottom: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #eef2f4;
+    color: #143d4a;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .addr-preview-card strong {
+    font-size: 15px;
+    color: #111111;
+  }
+
+  .addr-preview-phone {
+    color: #6b6b6b;
+    font-size: 12.5px;
+    margin-bottom: 6px;
+  }
+
+  .addr-preview-card p {
+    margin: 0;
+    color: #333333;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+
+  .addr-preview-empty {
+    padding: 18px;
+    margin-bottom: 18px;
+    border-radius: 16px;
+    border: 1px dashed #dce4e7;
+    color: #9aa1a5;
+    font-size: 12.5px;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .addr-preview-note {
+    padding: 14px;
+    border-radius: 14px;
+    background: #eef2f4;
+  }
+
+  .addr-preview-note p {
+    margin: 0;
+    color: #143d4a;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+}
+
+@media (min-width: 1500px) {
+  .addr-form-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

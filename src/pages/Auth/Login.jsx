@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Seo from "../../components/common/Seo";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
@@ -22,6 +22,27 @@ const schema = {
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Two ways a page can ask to be returned to after login:
+  //  1. ProtectedRoute redirects here with router state: { from: location }
+  //  2. Some action buttons (wishlist, add-to-cart prompts, etc.) link
+  //     straight to `/login?returnTo=/some/path` with a query param.
+  // Support both so every "please log in first" flow in the app lands back
+  // where the person actually was.
+  const queryReturnTo = new URLSearchParams(location.search).get("returnTo");
+  const fromState = location.state?.from;
+
+  const redirectTo = fromState
+    ? `${fromState.pathname || "/home"}${fromState.search || ""}`
+    : queryReturnTo
+      ? decodeURIComponent(queryReturnTo)
+      : "/home";
+
+  // Normalized so it can be threaded through to /login-with-otp -> /otp via
+  // router state, regardless of which of the two forms brought us here.
+  const fromForNextStep = fromState || (queryReturnTo ? { pathname: decodeURIComponent(queryReturnTo) } : undefined);
+
   const { login } = useAuth();
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
@@ -54,7 +75,7 @@ export default function Login() {
       }
 
       login(res?.user || { email: values.email }, res?.access_token);
-      navigate("/home");
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       setApiError(err.message || "Login failed. Please try again.");
     } finally {
@@ -134,7 +155,9 @@ export default function Login() {
                 type="button"
                 className="otp-btn-login"
                 fullWidth
-                onClick={() => navigate("/login-with-otp")}
+                onClick={() =>
+                  navigate("/login-with-otp", { state: { from: fromForNextStep } })
+                }
               >
                 Login with OTP
               </Button>

@@ -264,7 +264,7 @@ export default function Otp() {
 
         login(user, accessToken);
 
-        navigate("/home", {
+        navigate(location.state?.from?.pathname || "/home", {
           replace: true,
         });
       }

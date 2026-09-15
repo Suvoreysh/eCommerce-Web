@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Footer.css";
 
 import {
@@ -13,6 +14,7 @@ import {
 import isoCert from "../../assets/images/airpods-model.png";
 
 export default function Footer() {
+  const navigate = useNavigate();
   const [productsOpen, setProductsOpen] = useState(false);
   const [touchOpen, setTouchOpen] = useState(true);
 
@@ -66,10 +68,12 @@ export default function Footer() {
 
           <ul className={touchOpen ? "show" : ""}>
             <li>Contact Us</li>
-            <li>Privacy Policy</li>
-            <li>Shipping Policy</li>
-            <li>Return Policy</li>
-            <li>Terms & Conditions</li>
+            <li onClick={() => navigate("/policy/privacy")}>Privacy Policy</li>
+            <li onClick={() => navigate("/policy/privacy")}>Shipping Policy</li>
+            <li onClick={() => navigate("/policy/return")}>Return Policy</li>
+            <li onClick={() => navigate("/policy/terms")}>
+              Terms & Conditions
+            </li>
           </ul>
         </div>
 

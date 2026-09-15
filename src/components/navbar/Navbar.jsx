@@ -22,8 +22,7 @@ export default function Navbar() {
   };
 
   const goToProfile = () => {
-    const returnTo = encodeURIComponent(window.location.pathname);
-    navigate(user ? "/profile" : `/login?returnTo=${returnTo}`);
+    navigate("/profile");
   };
 
   return (

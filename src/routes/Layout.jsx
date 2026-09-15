@@ -10,13 +10,16 @@ const NAV_VISIBLE_PREFIXES = [
   "/productdetails",
   "/category",
   "/product",
+  "/policy",
 ];
 
 export default function Layout() {
   const { pathname } = useLocation();
-  const showNav = !pathname.startsWith("/cart") && NAV_VISIBLE_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-  );
+  const showNav =
+    !pathname.startsWith("/cart") &&
+    NAV_VISIBLE_PREFIXES.some(
+      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+    );
 
   return (
     <div className="app-shell">

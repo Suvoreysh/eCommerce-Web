@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoChevronBack } from "react-icons/io5";
 
 import Seo from "../../components/common/Seo";
@@ -46,6 +46,7 @@ function extractOtp(response) {
 
 export default function LoginWithOtp() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [values, setValues] = useState({
     phone: "",
@@ -101,6 +102,7 @@ export default function LoginWithOtp() {
           mode: "login",
           phone,
           developmentOtp,
+          from: location.state?.from,
         },
       });
     } catch (error) {
