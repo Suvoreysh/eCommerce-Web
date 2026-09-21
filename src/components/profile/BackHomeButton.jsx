@@ -13,12 +13,7 @@ const backIcon = (
   </svg>
 );
 
-/**
- * Same chevron used on the Cart page's back button, but this one always
- * routes to /home rather than history.back() — used across the account
- * pages (Profile, Orders, Wishlist, Change Password) so "back" behaves the
- * same everywhere no matter how the person got there.
- */
+
 export default function BackHomeButton({ className = "" }) {
   const navigate = useNavigate();
 

@@ -11,7 +11,7 @@ import "../Cart/Cart.css";
 import "./AddressBook.css";
 import "./AddressForm.css";
 
-const ADDRESS_TYPES = ["home", "work", "other"];
+const ADDRESS_TYPES = ["home", "office", "other"];
 
 const emptyForm = {
   address_type: "home",

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { FiLock, FiShield, FiCheck } from "react-icons/fi";
+import { FiLock, FiShield, FiCheck, FiEye, FiEyeOff } from "react-icons/fi";
 import Seo from "../../components/common/Seo";
 import { authApi } from "../../api/authApi";
 import AccountSidebar from "../../components/profile/AccountSidebar";
@@ -17,19 +17,53 @@ const RULES = [
   { key: "length", label: "At least 6 characters", test: (v) => v.length >= 6 },
   { key: "upper", label: "One uppercase letter", test: (v) => /[A-Z]/.test(v) },
   { key: "number", label: "One number", test: (v) => /\d/.test(v) },
-  { key: "match", label: "Matches confirmation", test: (v, all) => v && v === all.confirmPassword },
+  {
+    key: "match",
+    label: "Matches confirmation",
+    test: (v, all) => v && v === all.confirmPassword,
+  },
 ];
+
+// Turns the API's { success:false, errors: { field: ["msg", ...] } } shape
+// into a single readable string. Falls back gracefully for any other
+// error shape (network error, generic message, etc).
+function extractErrorMessage(err, fallback) {
+  const fieldErrors = err?.errors;
+
+  if (fieldErrors && typeof fieldErrors === "object") {
+    const firstMessage = Object.values(fieldErrors)
+      .flat()
+      .find((msg) => typeof msg === "string");
+
+    if (firstMessage) return firstMessage;
+  }
+
+  if (err?.message && !/^Request failed/i.test(err.message)) {
+    return err.message;
+  }
+
+  return fallback;
+}
 
 export default function ChangePassword() {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [visible, setVisible] = useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false,
+  });
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
     setError("");
     setSuccess("");
+  };
+
+  const toggleVisible = (field) => {
+    setVisible((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   const checklist = useMemo(
@@ -61,6 +95,11 @@ export default function ChangePassword() {
       return;
     }
 
+    if (form.newPassword === form.currentPassword) {
+      setError("The new password and current password must be different.");
+      return;
+    }
+
     try {
       setSubmitting(true);
       await authApi.changePassword({
@@ -71,11 +110,41 @@ export default function ChangePassword() {
       setSuccess("Password updated successfully.");
       setForm(initialForm);
     } catch (err) {
-      setError(err.message || "Unable to change password.");
+      setError(extractErrorMessage(err, "Unable to change password."));
     } finally {
       setSubmitting(false);
     }
   };
+
+  const passwordField = (
+    field,
+    label,
+    placeholder,
+    autoComplete,
+    extraClass = "",
+  ) => (
+    <label className={`change-password-field ${extraClass}`}>
+      <span>{label}</span>
+      <div className="cp-input-wrap">
+        <input
+          type={visible[field] ? "text" : "password"}
+          value={form[field]}
+          onChange={handleChange(field)}
+          autoComplete={autoComplete}
+          placeholder={placeholder}
+        />
+        <button
+          type="button"
+          className="cp-eye-toggle"
+          onClick={() => toggleVisible(field)}
+          tabIndex={-1}
+          aria-label={visible[field] ? "Hide password" : "Show password"}
+        >
+          {visible[field] ? <FiEyeOff /> : <FiEye />}
+        </button>
+      </div>
+    </label>
+  );
 
   const formCard = (
     <form className="change-password-card" onSubmit={handleSubmit}>
@@ -89,38 +158,27 @@ export default function ChangePassword() {
       </p>
 
       <div className="cp-form-grid">
-        <label className="change-password-field cp-field--full">
-          <span>Current Password</span>
-          <input
-            type="password"
-            value={form.currentPassword}
-            onChange={handleChange("currentPassword")}
-            autoComplete="current-password"
-            placeholder="Enter current password"
-          />
-        </label>
+        {passwordField(
+          "currentPassword",
+          "Current Password",
+          "Enter current password",
+          "current-password",
+          "cp-field--full",
+        )}
 
-        <label className="change-password-field">
-          <span>New Password</span>
-          <input
-            type="password"
-            value={form.newPassword}
-            onChange={handleChange("newPassword")}
-            autoComplete="new-password"
-            placeholder="Enter new password"
-          />
-        </label>
+        {passwordField(
+          "newPassword",
+          "New Password",
+          "Enter new password",
+          "new-password",
+        )}
 
-        <label className="change-password-field">
-          <span>Confirm New Password</span>
-          <input
-            type="password"
-            value={form.confirmPassword}
-            onChange={handleChange("confirmPassword")}
-            autoComplete="new-password"
-            placeholder="Re-enter new password"
-          />
-        </label>
+        {passwordField(
+          "confirmPassword",
+          "Confirm New Password",
+          "Re-enter new password",
+          "new-password",
+        )}
       </div>
 
       {error && <p className="change-password-error">{error}</p>}

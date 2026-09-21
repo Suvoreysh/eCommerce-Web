@@ -27,7 +27,7 @@ export const ENDPOINTS = {
     `/categories/${categoryId}/subcategories`,
   SUBCATEGORIES: "/subcategories",
   SUBCATEGORY_DETAIL: (id) => `/subcategories/${id}`,
-
+  OPINION: "/opinion",
   VARIANTS: "/variants",
   VARIANT_DETAIL: (id) => `/variants/${id}`,
   // add to api/config.js ENDPOINTS
@@ -47,7 +47,7 @@ export const ENDPOINTS = {
 
   ADDRESSES: "/addresses",
   ADDRESS_DETAIL: (id) => `/addresses/${id}`,
-  ADDRESS_UPDATE: (id) => `/addresses/${id}/update`,
+  ADDRESS_UPDATE: (id) => `/addresses/${id}`,
   ADDRESS_SET_DEFAULT: (id) => `/addresses/${id}/set-default`,
   ADDRESS_DELETE: (id) => `/addresses/${id}/delete`,
   ADDRESS_DEFAULT: "/addresses/default",
