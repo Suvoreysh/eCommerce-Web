@@ -1,72 +1,69 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
-import { apiRequest, ENDPOINTS } from "../../api/config";
+
+import { productApi } from "../../api/productApi";
+import {
+  resolveSubcategoryCategoryId,
+  toList,
+} from "../../utils/catalog";
+import LazyImage from "../common/LazyImage";
 import "./CategoryScroller.css";
 
 const SKELETON_COUNT = 4;
 
-function SubcategoryImage({ category }) {
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    setLoaded(false);
-    setFailed(false);
-  }, [category.image]);
-
-  return (
-    <div className="category-scroll-circle">
-      {category.image && !loaded && !failed && (
-        <span className="category-image-skeleton" aria-hidden="true" />
-      )}
-
-      {category.image && !failed && (
-        <img
-          src={category.image}
-          alt={category.name}
-          loading="lazy"
-          decoding="async"
-          className={loaded ? "is-loaded" : ""}
-          onLoad={() => setLoaded(true)}
-          onError={() => setFailed(true)}
-        />
-      )}
-    </div>
-  );
-}
-
 export default function CategoryScroller() {
+  const navigate = useNavigate();
   const trackRef = useRef(null);
-  const [categories, setCategories] = useState([]);
+
+  const [subcategories, setSubcategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [busyId, setBusyId] = useState(null);
+  const [navError, setNavError] = useState("");
 
   useEffect(() => {
     let mounted = true;
 
-    const fetchSubcategories = async () => {
+    (async () => {
       try {
-        const response = await apiRequest(ENDPOINTS.SUBCATEGORIES, {
-          method: "GET",
-          auth: false,
-        });
+        const response = await productApi.getSubcategories();
 
-        if (mounted) {
-          setCategories(Array.isArray(response?.data) ? response.data : []);
-        }
+        if (mounted) setSubcategories(toList(response?.data));
       } catch (error) {
         console.error("Subcategories API error:", error);
-        if (mounted) setCategories([]);
+
+        if (mounted) setSubcategories([]);
       } finally {
         if (mounted) setLoading(false);
       }
-    };
-
-    fetchSubcategories();
+    })();
 
     return () => {
       mounted = false;
     };
   }, []);
+
+  // Subcategory -> find its parent category -> /category/:id with that
+  // subcategory pre-selected.
+  const openSubcategory = async (subcategory) => {
+    if (busyId !== null) return;
+
+    setNavError("");
+    setBusyId(subcategory.id);
+
+    try {
+      const categoryId = await resolveSubcategoryCategoryId(subcategory);
+
+      navigate(`/category/${categoryId}?sub=${subcategory.id}`);
+    } catch (error) {
+      console.error("Resolve subcategory failed:", error);
+      setNavError(
+        error?.message || "Unable to open this subcategory. Please try again.",
+      );
+    } finally {
+      setBusyId(null);
+    }
+  };
 
   const scrollNext = () => {
     const track = trackRef.current;
@@ -87,10 +84,10 @@ export default function CategoryScroller() {
     });
   };
 
-  if (!loading && categories.length === 0) return null;
+  if (!loading && subcategories.length === 0) return null;
 
   return (
-    <section className="category-scroller">
+    <section className="category-scroller" aria-label="Browse by subcategory">
       <div className="category-track" ref={trackRef}>
         {loading &&
           Array.from({ length: SKELETON_COUNT }).map((_, index) => (
@@ -105,11 +102,24 @@ export default function CategoryScroller() {
           ))}
 
         {!loading &&
-          categories.map((category) => (
-            <div className="category-scroll-item" key={category.id}>
-              <SubcategoryImage category={category} />
-              <span title={category.name}>{category.name}</span>
-            </div>
+          subcategories.map((subcategory) => (
+            <button
+              type="button"
+              className="category-scroll-item"
+              key={subcategory.id}
+              disabled={busyId === subcategory.id}
+              aria-busy={busyId === subcategory.id}
+              onClick={() => openSubcategory(subcategory)}
+            >
+              <span className="category-scroll-circle">
+                <LazyImage
+                  src={subcategory.image}
+                  alt=""
+                  fit="contain"
+                />
+              </span>
+              <span title={subcategory.name}>{subcategory.name}</span>
+            </button>
           ))}
       </div>
 
@@ -121,6 +131,12 @@ export default function CategoryScroller() {
       >
         <FiChevronRight />
       </button>
+
+      {navError && (
+        <p className="category-scroller-error" role="alert">
+          {navError}
+        </p>
+      )}
     </section>
   );
 }

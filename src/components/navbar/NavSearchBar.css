@@ -1,0 +1,151 @@
+.nsb {
+  position: relative;
+  flex: 1;
+  max-width: 520px;
+}
+
+/* .search-box itself is the original navbar pill+button style, shared with
+   Navbar.css — this file only styles the live-results dropdown under it. */
+.nsb .search-box input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.nsb__dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 50;
+  overflow: hidden;
+  overflow-y: auto;
+  max-height: 70vh;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.16);
+}
+
+.nsb__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px 4px;
+}
+
+.nsb__chip {
+  padding: 6px 14px;
+  border: 1px solid #e2e2e2;
+  border-radius: 999px;
+  background: #f6f7f9;
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nsb__chip:hover {
+  border-color: #123848;
+  color: #123848;
+}
+
+.nsb__list {
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+}
+
+.nsb__result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nsb__result:hover,
+.nsb__result--active {
+  background: #f2f4f5;
+}
+
+.nsb__thumb {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.nsb__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nsb__name {
+  overflow: hidden;
+  color: #1a1a1a;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nsb__meta {
+  overflow: hidden;
+  color: #8a8a8a;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nsb__price {
+  flex-shrink: 0;
+  color: #123848;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nsb__view-all {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-top: 1px solid #eee;
+  background: #fff;
+  color: #123848;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nsb__view-all:hover {
+  background: #f6f7f9;
+}
+
+.nsb__message {
+  padding: 16px;
+  color: #6b6b6b;
+  font-size: 13px;
+}
+
+.nsb__message button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #123848;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Only meant for the desktop navbar */
+@media (max-width: 768px) {
+  .nsb {
+    display: none;
+  }
+}

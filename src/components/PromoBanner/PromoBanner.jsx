@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import LazyImage from "../common/LazyImage";
 import "./PromoBanner.css";
 
 export default function PromoBanner({
@@ -6,26 +7,24 @@ export default function PromoBanner({
   alt = "Promo banner",
   loading = false,
 }) {
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => setLoaded(false), [image]);
-  if (!loading && !image) return null;
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => setFailed(false), [image]);
+
+  if (!loading && (!image || failed)) return null;
+
   return (
     <section className="promo-banner">
-      {(loading || !loaded) && (
-        <div className="promo-banner-skeleton" aria-hidden="true">
-          <span />
-        </div>
-      )}
-      {image && (
-        <img
+      {loading || !image ? (
+        <span className="lazy-img" data-status="loading" aria-hidden="true">
+          <span className="lazy-img__skeleton" />
+        </span>
+      ) : (
+        <LazyImage
           src={image}
           alt={alt}
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
-          className={loaded ? "is-loaded" : ""}
-          onLoad={() => setLoaded(true)}
-          onError={() => setLoaded(true)}
+          eager
+          onError={() => setFailed(true)}
         />
       )}
     </section>

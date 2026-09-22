@@ -22,6 +22,11 @@
   display: none;
 }
 .category-scroll-item {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
   display: flex;
   flex: 0 0 clamp(170px, 16vw, 225px);
   min-width: 0;
@@ -42,19 +47,6 @@
   background: #f4f6f7;
   align-items: center;
   justify-content: center;
-}
-.category-scroll-circle img {
-  position: relative;
-  z-index: 2;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.category-scroll-circle img.is-loaded {
-  opacity: 1;
 }
 .category-scroll-item > span {
   max-width: 100%;
@@ -158,12 +150,30 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .category-scroll-circle img {
-    transition: none;
-  }
   .category-image-skeleton::after,
   .category-scroll-skeleton .category-scroll-circle::after,
   .category-scroll-skeleton > span::after {
     animation: none;
   }
+}
+
+.category-scroll-item:hover .category-scroll-circle,
+.category-scroll-item:focus-visible .category-scroll-circle {
+  border-color: #123848;
+}
+
+.category-scroll-item:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.category-scroll-skeleton {
+  cursor: default;
+}
+
+.category-scroller-error {
+  margin: 8px 0 0;
+  padding: 0 8px;
+  color: #d92d20;
+  font-size: 13px;
 }

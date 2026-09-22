@@ -264,9 +264,12 @@ export default function Otp() {
 
         login(user, accessToken);
 
-        navigate(location.state?.from?.pathname || "/home", {
-          replace: true,
-        });
+        const from = location.state?.from;
+
+        navigate(
+          from?.pathname ? `${from.pathname}${from.search || ""}` : "/home",
+          { replace: true },
+        );
       }
     } catch (requestError) {
       setError(requestError?.message || "Invalid OTP. Please try again.");

@@ -1,3 +1,7 @@
+/* =========================================================
+   PRODUCT HERO
+========================================================= */
+
 .product-hero {
   display: flex;
   width: 100%;
@@ -6,9 +10,15 @@
   margin: 0 auto;
   padding: 40px 25px;
   gap: 60px;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
+
+
+/* =========================================================
+   PRODUCT MEDIA
+========================================================= */
+
 .product-hero-media {
   display: flex;
   flex: 1;
@@ -16,6 +26,25 @@
   flex-direction: column;
   align-items: center;
 }
+
+
+/* =========================================================
+   PRODUCT IMAGE AREA
+========================================================= */
+
+.product-image-area {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   IMAGE TRACK WRAPPER
+========================================================= */
+
 .image-track-wrapper {
   position: relative;
   width: 100%;
@@ -24,228 +53,1030 @@
   border-radius: 12px;
   aspect-ratio: 1;
 }
+
+
+/* =========================================================
+   IMAGE TRACK
+========================================================= */
+
 .image-track {
   display: flex;
   width: 100%;
   height: 100%;
-  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+
+  transition:
+    transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
+
+
+/* =========================================================
+   IMAGE SLIDE
+========================================================= */
+
 .image-slide {
   display: flex;
+
   flex: 0 0 100%;
+
   width: 100%;
   height: 100%;
+
   align-items: center;
   justify-content: center;
 }
+
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
+
 .image-slide img {
   display: block;
+
   width: 100%;
   height: 100%;
+
   object-fit: contain;
-  filter: drop-shadow(0 18px 35px rgba(0, 0, 0, 0.15));
+
+  filter: drop-shadow(
+    0 18px 35px rgba(0, 0, 0, 0.15)
+  );
 }
+
+
+/* =========================================================
+   PRODUCT IMAGE SKELETON
+========================================================= */
+
 .product-image-skeleton {
   position: absolute;
+
   inset: 0;
+
   z-index: 4;
+
   overflow: hidden;
+
   background: #e8edef;
 }
+
+
 .product-image-skeleton span,
 .ph-skeleton-image::after,
 .ph-skeleton-bar::after,
 .ph-skeleton-btn::after {
   position: absolute;
+
   top: 0;
   left: -70%;
+
   width: 55%;
   height: 100%;
+
   content: "";
+
   background: linear-gradient(
     90deg,
     transparent,
     rgba(255, 255, 255, 0.9),
     transparent
   );
+
   transform: skewX(-18deg);
+
   animation: product-shimmer 1.25s infinite;
 }
+
+
 @keyframes product-shimmer {
   to {
     left: 130%;
   }
 }
+
+
+/* =========================================================
+   IMAGE SLIDER
+========================================================= */
+
 .image-slider {
   display: flex;
+
   margin-top: 18px;
+
   gap: 14px;
+
   align-items: center;
 }
+
+
+/* Previous / Next */
+
 .image-slider > button {
   display: flex;
+
   width: 30px;
   height: 30px;
+
   border: 1px solid #ddd;
   border-radius: 50%;
+
   background: #fff;
   color: #555;
+
   align-items: center;
   justify-content: center;
+
   font-size: 18px;
+
   cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
+
+
+.image-slider > button:hover {
+  border-color: #ccc;
+
+  background: #f8f8f8;
+}
+
+
+/* =========================================================
+   SLIDER DOTS
+========================================================= */
+
 .slider-dots {
   display: flex;
+
   gap: 8px;
+
   align-items: center;
 }
+
+
 .slider-dots button {
   width: 8px;
   height: 8px;
+
   padding: 0;
+
   border: 0;
   border-radius: 50%;
+
   background: #d7d7d7;
+
   cursor: pointer;
+
+  transition:
+    width 0.2s ease,
+    background 0.2s ease;
 }
+
+
 .slider-dots button.active {
   width: 22px;
+
   border-radius: 20px;
+
   background: #123848;
 }
+
+
+/* =========================================================
+   PRODUCT INFORMATION
+========================================================= */
+
 .product-hero-info {
   flex: 1;
+
   max-width: 480px;
 }
+
+
 .product-hero-info h1 {
   margin: 0 0 16px;
+
   color: #111;
+
   font-size: 32px;
+
   font-weight: 700;
 }
+
+
 .product-hero-price {
   margin: 0 0 16px;
+
   color: #333;
+
   font-size: 15px;
+
   line-height: 1.7;
 }
+
+
 .product-hero-desc {
   margin: 0 0 30px;
+
   color: #666;
+
   font-size: 15px;
+
   line-height: 1.7;
 }
+
+
+/* =========================================================
+   ADD TO CART
+========================================================= */
+
+.desktop-cart-action {
+  display: flex;
+
+  width: 100%;
+
+  margin-top: 4px;
+
+  align-items: center;
+}
+
+
+/* =========================================================
+   ADD TO CART BUTTON
+========================================================= */
+
 .add-cart-btn-multi {
   display: flex;
+
   width: 165px;
   height: 50px;
+
   border: 0;
+
   border-radius: 8px;
+
   background: #123848;
+
   color: #fff;
+
   align-items: center;
   justify-content: center;
+
   font-size: 15px;
+
   font-weight: 600;
+
   cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
+
+
+.add-cart-btn-multi:hover {
+  background: #0d2732;
+
+  box-shadow:
+    0 5px 15px rgba(18, 56, 72, 0.15);
+}
+
+
+.add-cart-btn-multi:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================================================
+   DESKTOP ADD TO CART
+   FIXED FOR ENTIRE PAGE
+========================================================= */
+
+@media (min-width: 769px) {
+
+  .desktop-cart-action {
+    /*
+      Fixed means it is attached to the viewport,
+      not restricted by product-hero height.
+    */
+
+    position: fixed;
+
+    right: 30px;
+
+    bottom: 30px;
+
+    width: auto;
+
+    margin: 0;
+
+    z-index: 9999;
+
+    padding: 0;
+  }
+
+
+  .desktop-cart-action .add-cart-btn-multi {
+    width: 165px;
+
+    height: 50px;
+
+    border-radius: 999px;
+
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.16);
+  }
+
+
+  .desktop-cart-action
+    .add-cart-btn-multi:hover {
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+/* =========================================================
+   DESKTOP WISHLIST
+   BESIDE IMAGE
+========================================================= */
+
+.desktop-wishlist {
+  position: absolute;
+
+  top: 16px;
+
+  right: -58px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  z-index: 20;
+}
+
+
+/* =========================================================
+   WISHLIST BUTTON
+========================================================= */
+
+.desktop-wishlist button {
+  display: flex;
+
+  width: 44px;
+  height: 44px;
+
+  padding: 0;
+
+  border: 1px solid #ececec;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  color: #9aa1a6;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.06);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.desktop-wishlist button:hover {
+  transform: translateY(-2px);
+
+  border-color: #ddd;
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.1);
+}
+
+
+/* =========================================================
+   WISHLIST SVG
+========================================================= */
+
+.desktop-wishlist svg {
+  width: 21px;
+  height: 21px;
+
+  transition:
+    color 0.2s ease,
+    fill 0.2s ease;
+}
+
+
+/* =========================================================
+   ACTIVE / SELECTED WISHLIST
+   RED COLOR
+========================================================= */
+
+.desktop-wishlist .active,
+.desktop-wishlist .wishlist-active,
+.desktop-wishlist .is-active,
+.desktop-wishlist button.active,
+.desktop-wishlist button[aria-pressed="true"] {
+  border-color: #f23a3a;
+
+  background: #fff;
+
+  color: #f23a3a;
+}
+
+
+.desktop-wishlist .active svg,
+.desktop-wishlist .wishlist-active svg,
+.desktop-wishlist .is-active svg,
+.desktop-wishlist button.active svg,
+.desktop-wishlist button[aria-pressed="true"] svg {
+  color: #f23a3a;
+
+  fill: #f23a3a;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
 .ph-error {
   width: 100%;
+
   padding: 60px;
+
   color: #d93025;
+
   text-align: center;
 }
+
+
+/* =========================================================
+   PRODUCT LOADING
+========================================================= */
+
 .product-hero-loading {
   min-height: 520px;
 }
+
+
 .ph-skeleton-image,
 .ph-skeleton-bar,
 .ph-skeleton-btn {
   position: relative;
+
   display: block;
+
   overflow: hidden;
+
   background: #e8edef;
 }
+
+
 .ph-skeleton-image {
   flex: 1;
+
   width: min(100%, 520px);
+
   border-radius: 12px;
+
   aspect-ratio: 1;
 }
+
+
 .product-hero-loading .product-hero-info {
   display: flex;
+
   gap: 18px;
+
   flex-direction: column;
 }
+
+
 .ph-skeleton-bar {
   width: 100%;
+
   height: 17px;
+
   border-radius: 8px;
 }
+
+
 .ph-skeleton-title {
   width: 72%;
+
   height: 38px;
 }
+
+
 .ph-skeleton-short {
   width: 60%;
 }
+
+
 .ph-skeleton-btn {
   width: 165px;
+
   height: 50px;
+
   border-radius: 8px;
 }
+
+
+/* =========================================================
+   NO IMAGE
+========================================================= */
+
 .product-no-image {
   display: flex;
+
   width: 100%;
   height: 100%;
+
   background: #f2f4f5;
+
   color: #777;
+
   align-items: center;
   justify-content: center;
 }
+
+
+/* =========================================================
+   RICH DESCRIPTION
+========================================================= */
+
+.rich-description {
+  color: #4a4f54;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+.rich-description p {
+  margin: 0 0 12px;
+}
+
+
+.rich-description ul,
+.rich-description ol {
+  margin: 0 0 14px;
+
+  padding-left: 20px;
+}
+
+
+.rich-description li {
+  margin-bottom: 6px;
+}
+
+
+.rich-description b,
+.rich-description strong {
+  color: #1a1a1a;
+
+  font-weight: 700;
+}
+
+
+.rich-description a {
+  color: #123848;
+
+  font-weight: 600;
+
+  text-decoration: underline;
+}
+
+
+.rich-description table {
+  width: 100%;
+
+  margin: 0 0 14px;
+
+  border-collapse: collapse;
+}
+
+
+.rich-description td,
+.rich-description th {
+  padding: 6px 10px;
+
+  border: 1px solid #e5e5e5;
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   DESCRIPTION CLAMP
+========================================================= */
+
+.rich-description--clamped {
+  position: relative;
+
+  max-height: 9.5em;
+
+  overflow: hidden;
+}
+
+
+.rich-description--clamped::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 2.6em;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0),
+    #fff 85%
+  );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SEE MORE / SEE LESS
+========================================================= */
+
+.desc-toggle-btn {
+  display: inline-flex;
+
+  margin: 6px 0 28px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: none;
+
+  color: #123848;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.desc-toggle-btn:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   DESKTOP IMAGE STICKY
+========================================================= */
+
+@media (min-width: 769px) {
+
+  .product-hero-media {
+    position: sticky;
+
+    top: calc(
+      var(--ph-sticky-offset, 88px) + 16px
+    );
+
+    align-self: flex-start;
+  }
+
+}
+
+
+/* =========================================================
+   EXISTING ACTION BAR
+========================================================= */
+
+.ph-action-bar {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  z-index: 60;
+}
+
+
+.ph-action-bar__wish {
+  display: flex;
+
+  flex: 0 0 auto;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  height: 50px;
+
+  padding: 0 18px;
+
+  border: 1.5px solid #ececec;
+
+  border-radius: 999px;
+
+  background: #fff;
+
+  color: #9aa1a6;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.ph-action-bar__wish-label {
+  display: none;
+
+  color: #4a4f54;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ACTIVE ACTION BAR WISHLIST
+========================================================= */
+
+.ph-action-bar__wish--active {
+  border-color: #f23a3a;
+
+  color: #f23a3a;
+}
+
+
+.ph-action-bar__wish--active svg {
+  color: #f23a3a;
+
+  fill: #f23a3a;
+}
+
+
+/* =========================================================
+   ACTION BAR CTA
+========================================================= */
+
+.ph-action-bar__cta {
+  flex: 1;
+
+  height: 50px;
+
+  border: 0;
+
+  border-radius: 999px;
+
+  background: #123848;
+
+  color: #fff;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.ph-action-bar__cta:hover {
+  background: #0d2732;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 768px) {
+
   .product-hero {
     min-height: auto;
+
     padding: 24px 16px;
+
     gap: 26px;
+
     flex-direction: column;
+
     text-align: center;
   }
+
+
+  /* Product media */
+
   .product-hero-media,
   .product-hero-info {
     width: 100%;
+
     max-width: 100%;
   }
+
+
+  /* Product image */
+
   .image-track-wrapper {
     max-width: 320px;
   }
+
+
+  /* Product information */
+
   .product-hero-info {
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
   }
+
+
   .product-hero-info h1 {
     margin-bottom: 14px;
+
     font-size: 24px;
   }
+
+
   .product-hero-desc {
     margin-bottom: 0;
+
     font-size: 14px;
   }
-  .add-cart-btn-multi {
+
+
+  /* =====================================================
+     MOBILE ADD TO CART HIDDEN
+  ===================================================== */
+
+  .desktop-cart-action {
     display: none;
   }
+
+
+  /* =====================================================
+     MOBILE DESKTOP WISHLIST HIDDEN
+  ===================================================== */
+
+  .desktop-wishlist {
+    display: none;
+  }
+
+
+  /* =====================================================
+     EXISTING MOBILE ACTION BAR
+  ===================================================== */
+
+  .ph-action-bar {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+
+    bottom: var(--bottomnav-height, 64px);
+
+    padding:
+      12px 16px
+      calc(12px + env(safe-area-inset-bottom));
+
+    background: #fff;
+
+    box-shadow:
+      0 -6px 20px rgba(0, 0, 0, 0.08);
+  }
+
+
+  .ph-action-bar__wish {
+    border-radius: 14px;
+  }
+
+
+  .ph-action-bar__cta {
+    border-radius: 14px;
+  }
+
 }
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
 @media (max-width: 480px) {
+
   .image-track-wrapper {
     max-width: 280px;
   }
+
+
   .product-hero-info h1 {
     font-size: 22px;
   }
+
+
   .product-hero-price,
   .product-hero-desc {
     font-size: 13px;
   }
+
+
+  /* Keep desktop controls hidden */
+
+  .desktop-cart-action {
+    display: none;
+  }
+
+
+  .desktop-wishlist {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1200px) {
+
+  .desktop-wishlist {
+    right: -62px;
+  }
+
+}
+
+
+/* =========================================================
+   MEDIUM DESKTOP
+========================================================= */
+
+@media (min-width: 769px) and (max-width: 1100px) {
+
+  .desktop-wishlist {
+    right: -45px;
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.add-cart-btn-multi:focus-visible,
+.desktop-wishlist button:focus-visible,
+.image-slider button:focus-visible,
+.desc-toggle-btn:focus-visible {
+  outline: 2px solid #123848;
+
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .image-track,
+  .product-image-skeleton span,
+  .add-cart-btn-multi,
+  .desktop-wishlist button,
+  .slider-dots button {
+    animation: none;
+
+    transition: none;
+  }
+
 }

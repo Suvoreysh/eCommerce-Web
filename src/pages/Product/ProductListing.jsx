@@ -1,73 +1,37 @@
-import { useEffect, useState } from "react";
-import { bannerApi } from "../../api/bannerApi";
+import useStoreBanners from "../../hooks/useStoreBanners";
+import useCategorySections from "../../hooks/useCategorySections";
+import useVariantCart from "../../hooks/useVariantCart";
+
 import SearchBar from "../../components/SearchBar/SearchBar";
 import StoreIntro from "../../components/StoreIntro/StoreIntro";
 import PromoBanner from "../../components/PromoBanner/PromoBanner";
 import CategoryScroller from "../../components/CategoryScroller/CategoryScroller";
 import OfferCards from "../../components/OfferCards/OfferCards";
-import SaleProductGrid from "../../components/SaleProductGrid/SaleProductGrid";
+import CategoryProductSection from "../../components/store/CategoryProductSection";
+import CategoryOffersGrid from "../../components/store/CategoryOffersGrid";
 import TaglineBanner from "../../components/TaglineBanner/TaglineBanner";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 
-const macbookAirProducts = [
-  {
-    id: 101,
-    name: "MacBook Air 13” and 15”",
-    price: "₹7,29,900",
-    chip: "M5 chip",
-    desc: "Thin. Fast. Powerful and portable.",
-    image: "/assets/products/macbook-air.png",
-    onSale: true,
-    ctaLabel: "View More",
-  },
-];
-const iphoneProducts = [
-  {
-    id: 201,
-    name: "Iphone 17 pro Cosmic Orange",
-    price: "₹7,29,900",
-    chip: "",
-    desc: "Thin. Fast. Powerful and portable.",
-    image: "/assets/products/iphone-orange.png",
-    onSale: true,
-    ctaLabel: "Add to Cart",
-  },
-];
-
 export default function ProductListing() {
-  const [topBanner, setTopBanner] = useState(null);
-  const [exclusiveOffers, setExclusiveOffers] = useState([]);
-  const [loadingBanners, setLoadingBanners] = useState(true);
+  const { topBanner, exclusiveOffers, loading: bannersLoading } =
+    useStoreBanners(["all_products_top", "store_top"]);
+  const {
+    status,
+    error,
+    categories,
+    sections,
+    reload,
+    retrySection,
+  } = useCategorySections(4);
+  const { open: openVariants, modal: variantModal } = useVariantCart();
 
-  useEffect(() => {
-    let mounted = true;
-    const fetchBanners = async () => {
-      try {
-        const response = await bannerApi.getBanners();
-        const banners = Array.isArray(response?.data) ? response.data : [];
-        const sorted = [...banners].sort(
-          (a, b) => Number(a.display_order || 0) - Number(b.display_order || 0),
-        );
-        if (!mounted) return;
-        setTopBanner(
-          sorted.find((banner) => banner.placement === "all_products_top") ||
-            null,
-        );
-        setExclusiveOffers(
-          sorted.filter((banner) => banner.placement === "exclusive_offers"),
-        );
-      } catch (error) {
-        console.error("Banners API error:", error);
-      } finally {
-        if (mounted) setLoadingBanners(false);
-      }
-    };
-    fetchBanners();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  // A category whose products finished loading and came back empty is
+  // dropped from the page entirely — nothing useful to show for it here.
+  const visibleCategories = categories.filter((category) => {
+    const section = sections[category.id];
+    return !section || section.status !== "ready" || section.products.length > 0;
+  });
 
   return (
     <>
@@ -82,21 +46,80 @@ export default function ProductListing() {
       <PromoBanner
         image={topBanner?.image}
         alt={topBanner?.title || "Top store banner"}
-        loading={loadingBanners}
+        loading={bannersLoading}
       />
       <CategoryScroller />
       <OfferCards
-        title={exclusiveOffers[0]?.title || "Exclusive Apple Offers"}
+        title={
+          exclusiveOffers[0]?.title
+            ? `Exclusive ${exclusiveOffers[0].title} Offers`
+            : "Exclusive Offers"
+        }
         offers={exclusiveOffers}
-        loading={loadingBanners}
+        loading={bannersLoading}
       />
-      <SaleProductGrid
-        title="MacBook Air 13” and 15”"
-        products={macbookAirProducts}
-      />
-      <SaleProductGrid title="Iphone 17 pro" products={iphoneProducts} />
+
+      {status === "loading" &&
+        Array.from({ length: 2 }).map((_, index) => (
+          <CategoryProductSection
+            key={`store-section-skeleton-${index}`}
+            category={{ id: `skeleton-${index}`, name: "" }}
+            section={{ status: "loading", products: [] }}
+            onAddToCart={openVariants}
+            onRetry={() => {}}
+          />
+        ))}
+
+      {status === "error" && (
+        <section className="store-section" role="alert">
+          <p style={{ color: "red", textAlign: "center", padding: "40px 0" }}>
+            {error}
+          </p>
+          <button
+            type="button"
+            onClick={reload}
+            style={{
+              display: "block",
+              margin: "0 auto",
+              padding: "10px 22px",
+              borderRadius: 999,
+              border: "1.5px solid #123848",
+              background: "#fff",
+              color: "#123848",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            Try again
+          </button>
+        </section>
+      )}
+
+      {status === "ready" &&
+        visibleCategories.map((category) => {
+          const section = sections[category.id] || {
+            status: "loading",
+            products: [],
+          };
+
+          return (
+            <div key={category.id}>
+              <CategoryProductSection
+                category={category}
+                section={section}
+                onAddToCart={openVariants}
+                onRetry={retrySection}
+              />
+              {section.status === "ready" && (
+                <CategoryOffersGrid category={category} offers={section.offers || []} />
+              )}
+            </div>
+          );
+        })}
+
       <TaglineBanner />
       <Footer />
+      {variantModal}
     </>
   );
 }

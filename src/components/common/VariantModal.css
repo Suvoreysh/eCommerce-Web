@@ -307,3 +307,35 @@
   .variant-modal-overlay,
   .variant-modal { animation: none; }
 }
+/* ---- loading / sold-out states ---- */
+
+.variant-card-skeleton {
+  pointer-events: none;
+  min-height: 190px;
+}
+
+.variant-card-soldout {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.variant-card-stock {
+  display: block;
+  margin-top: 4px;
+  color: #b42318;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* LazyImage wrapper inside a variant card (specificity beats .lazy-img) */
+.variant-card .lazy-img.variant-card-image {
+  display: flex;
+  height: 122px;
+  border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+  .variant-card .lazy-img.variant-card-image {
+    height: 108px;
+  }
+}

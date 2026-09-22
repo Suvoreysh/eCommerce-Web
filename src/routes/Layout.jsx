@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import BottomNav from "../components/common/BottomNav";
+import SearchModal from "../components/search/SearchModal";
 
 const NAV_VISIBLE_PREFIXES = [
   "/home",
@@ -11,10 +12,12 @@ const NAV_VISIBLE_PREFIXES = [
   "/category",
   "/product",
   "/policy",
+  "/address"
 ];
 
 export default function Layout() {
   const { pathname } = useLocation();
+
   const showNav =
     !pathname.startsWith("/cart") &&
     NAV_VISIBLE_PREFIXES.some(
@@ -24,7 +27,10 @@ export default function Layout() {
   return (
     <div className="app-shell">
       <Outlet />
+
       {showNav && <BottomNav />}
+
+      <SearchModal />
     </div>
   );
 }

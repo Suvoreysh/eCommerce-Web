@@ -27,8 +27,8 @@ export default function SingleProductpage() {
         productId={productId}
       />
       <ProductivityDetails />
-      <BatteryCapacity />
-      <DisplayShowcase />
+      <BatteryCapacity key={`battery-${productId}`} productId={productId} />
+      {/* <DisplayShowcase /> */}
       <PrivacySecurity key={`privacy-${productId}`} productId={productId} />
       <WhyAppleBest key={`why-${productId}`} productId={productId} />
 

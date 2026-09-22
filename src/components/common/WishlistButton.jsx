@@ -34,7 +34,9 @@ export default function WishlistButton({
     try {
       const result = await toggle(productId);
       if (result?.requiresLogin) {
-        const returnTo = encodeURIComponent(window.location.pathname);
+        const returnTo = encodeURIComponent(
+          window.location.pathname + window.location.search,
+        );
         navigate(`/login?returnTo=${returnTo}`);
       }
     } catch {

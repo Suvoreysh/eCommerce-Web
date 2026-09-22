@@ -29,10 +29,16 @@ export const cartApi = {
 };
 
 export const orderApi = {
-  checkout: (payload) =>
-    apiRequest(ENDPOINTS.CHECKOUT, { method: "POST", body: payload }),
-  getOrders: (status = "") =>
-    apiRequest(`${ENDPOINTS.ORDERS}${status ? `?status=${status}` : ""}`, {
+  // GET /orders?page= -> { data: { orders: [...], current_page, last_page, total } }
+  getOrders: (page = 1) =>
+    apiRequest(`${ENDPOINTS.ORDERS}${page > 1 ? `?page=${page}` : ""}`, {
       method: "GET",
     }),
+
+  getOrderDetail: (orderId) =>
+    apiRequest(`${ENDPOINTS.ORDERS}/${orderId}`, { method: "GET" }),
+
+  // POST /orders/:id/cancel
+  cancelOrder: (orderId) =>
+    apiRequest(`${ENDPOINTS.ORDERS}/${orderId}/cancel`, { method: "POST" }),
 };

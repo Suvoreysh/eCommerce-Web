@@ -23,21 +23,45 @@
     flex-shrink: 0;
 }
 
-.search-bar input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    outline: none;
+/* The bar is a button that opens the global search modal */
+.search-bar--trigger {
+    width: 100%;
+    border: 0;
+    color: #999;
+    font-family: inherit;
     font-size: 15px;
-    color: #1a1a1a;
+    text-align: left;
+    cursor: text;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.search-bar input::placeholder {
-    color: #999;
+.search-bar--trigger span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search-bar--trigger:hover {
+    background: #eef1f2;
+}
+
+.search-bar--trigger:focus-visible {
+    outline: 2px solid #123848;
+    outline-offset: 2px;
 }
 
 @media (max-width: 768px) {
     .search-bar-wrap {
         padding: 14px 16px 0;
     }
+}
+
+/* Desktop already has the always-visible NavSearchBar in the navbar; this
+   pill (which opens the full-screen modal) is for mobile/responsive only. */
+@media (min-width: 769px) {
+  .search-bar-wrap {
+    display: none;
+  }
 }

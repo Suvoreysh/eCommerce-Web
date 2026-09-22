@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FiInfo,
   FiEdit2,
@@ -13,6 +13,7 @@ import {
   FiMapPin,
   FiLogOut,
   FiHeadphones,
+  FiX,
 } from "react-icons/fi";
 
 import Seo from "../../components/common/Seo";
@@ -74,6 +75,7 @@ const SIDEBAR_NAV = [
 export default function Profile() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
   const { user, logout } = useAuth();
   const { refreshCartCount } = useCartCount();
 
@@ -84,27 +86,120 @@ export default function Profile() {
     user?.image || "/images/profile.png",
   );
 
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  /*
+   * ---------------------------------------------------------
+   * UPDATE PROFILE IMAGE WHEN USER DATA CHANGES
+   * ---------------------------------------------------------
+   */
+  useEffect(() => {
+    setProfileImage(user?.image || "/images/profile.png");
+  }, [user?.image]);
+
+  /*
+   * ---------------------------------------------------------
+   * PREVENT BODY SCROLL WHEN LOGOUT MODAL IS OPEN
+   * ---------------------------------------------------------
+   */
+  useEffect(() => {
+    if (showLogoutModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showLogoutModal]);
+
+  /*
+   * ---------------------------------------------------------
+   * ESC KEY CLOSES LOGOUT MODAL
+   * ---------------------------------------------------------
+   */
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setShowLogoutModal(false);
+      }
+    };
+
+    if (showLogoutModal) {
+      document.addEventListener("keydown", handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [showLogoutModal]);
+
+  /*
+   * ---------------------------------------------------------
+   * IMAGE CHANGE
+   * ---------------------------------------------------------
+   */
   const handleImageChange = (event) => {
     const file = event.target.files?.[0];
 
     if (!file) return;
 
     const temporaryImageUrl = URL.createObjectURL(file);
+
     setProfileImage(temporaryImageUrl);
 
     // TODO: Upload the image to your backend.
   };
 
+  /*
+   * ---------------------------------------------------------
+   * IMAGE ERROR
+   * ---------------------------------------------------------
+   */
   const handleImageError = (event) => {
     event.currentTarget.src = "/images/profile.png";
   };
 
-  const handleLogout = () => {
-    logout();
-    refreshCartCount();
-    navigate("/home", { replace: true });
+  /*
+   * ---------------------------------------------------------
+   * OPEN LOGOUT CONFIRMATION
+   * ---------------------------------------------------------
+   */
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
   };
 
+  /*
+   * ---------------------------------------------------------
+   * CANCEL LOGOUT
+   * ---------------------------------------------------------
+   */
+  const handleCancelLogout = () => {
+    setShowLogoutModal(false);
+  };
+
+  /*
+   * ---------------------------------------------------------
+   * CONFIRM LOGOUT
+   * ---------------------------------------------------------
+   */
+  const handleConfirmLogout = () => {
+    setShowLogoutModal(false);
+
+    logout();
+    refreshCartCount();
+
+    navigate("/home", {
+      replace: true,
+    });
+  };
+
+  /*
+   * ---------------------------------------------------------
+   * MOBILE MENU
+   * ---------------------------------------------------------
+   */
   const menuItems = [
     {
       to: "/orders",
@@ -123,6 +218,11 @@ export default function Profile() {
     },
   ];
 
+  /*
+   * ---------------------------------------------------------
+   * DESKTOP QUICK ACTIONS
+   * ---------------------------------------------------------
+   */
   const quickActions = [
     {
       to: "/orders",
@@ -199,6 +299,7 @@ export default function Profile() {
         </div>
 
         <h1>{user?.name || "Jhon Rao"}</h1>
+
         <p>{user?.phone || "+91 6254897524"}</p>
       </section>
 
@@ -214,12 +315,30 @@ export default function Profile() {
             <Link key={item.to} to={item.to} className="profile-item">
               <div className="profile-item__left">
                 <div className="profile-item__icon">{item.icon}</div>
+
                 <span>{item.label}</span>
               </div>
 
               <FiChevronRight className="profile-item__arrow" />
             </Link>
           ))}
+
+          {/* MOBILE LOGOUT */}
+          <button
+            type="button"
+            className="profile-item profile-logout-item"
+            onClick={handleLogoutClick}
+          >
+            <div className="profile-item__left">
+              <div className="profile-item__icon profile-logout-icon">
+                <FiLogOut />
+              </div>
+
+              <span>Logout</span>
+            </div>
+
+            <FiChevronRight className="profile-item__arrow" />
+          </button>
         </div>
       </section>
 
@@ -233,10 +352,7 @@ export default function Profile() {
         ==================================================== */}
 
         <aside className="od-sidebar">
-          {/* Avatar wrapper:
-              The button must be outside .od-avatar so it can
-              overlap the avatar border without being clipped.
-          */}
+          {/* AVATAR */}
 
           <div className="od-avatar-wrapper">
             <div className="od-avatar">
@@ -265,7 +381,7 @@ export default function Profile() {
             </button>
           </div>
 
-          {/* Name and phone are separate from the image wrapper */}
+          {/* USER DETAILS */}
 
           <div className="od-user-details">
             <h2 className="od-name">{user?.name || "Jhon Rao"}</h2>
@@ -273,14 +389,19 @@ export default function Profile() {
             <p className="od-phone">{user?.phone || "+91 6254897524"}</p>
           </div>
 
+          {/* EDIT PROFILE */}
+
           <button
             type="button"
             className="od-edit-profile-btn"
             onClick={() => navigate("/edit-profile")}
           >
             <FiUser />
+
             <span>Edit Profile</span>
           </button>
+
+          {/* SIDEBAR NAVIGATION */}
 
           <nav className="od-nav" aria-label="Profile navigation">
             {SIDEBAR_NAV.map((item) => (
@@ -292,14 +413,17 @@ export default function Profile() {
                 }`}
               >
                 <span className="od-nav-icon">{item.icon}</span>
+
                 <span>{item.label}</span>
               </Link>
             ))}
 
+            {/* DESKTOP LOGOUT */}
+
             <button
               type="button"
               className="od-nav-item od-nav-logout"
-              onClick={handleLogout}
+              onClick={handleLogoutClick}
             >
               <span className="od-nav-icon">
                 <FiLogOut />
@@ -309,11 +433,14 @@ export default function Profile() {
             </button>
           </nav>
 
+          {/* SUPPORT */}
+
           <div className="od-help">
             <FiHeadphones className="od-help-icon" />
 
             <div>
               <p className="od-help-title">Need Help?</p>
+
               <p className="od-help-sub">24/7 Customer Support</p>
 
               <a href="mailto:support@shopkart.com" className="od-help-email">
@@ -337,9 +464,12 @@ export default function Profile() {
 
             <button type="button" className="od-info-btn">
               <FiInfo />
+
               <span>How it works?</span>
             </button>
           </div>
+
+          {/* WELCOME */}
 
           <div className="pd-welcome">
             <p className="pd-welcome-sub">
@@ -350,6 +480,8 @@ export default function Profile() {
               Manage your orders, wishlist and account settings.
             </p>
           </div>
+
+          {/* USER INFORMATION */}
 
           <div className="pd-info-grid">
             <div className="pd-info-row">
@@ -381,6 +513,8 @@ export default function Profile() {
             </div>
           </div>
 
+          {/* QUICK ACTIONS */}
+
           <div className="od-list">
             {quickActions.map((action) => (
               <Link
@@ -392,6 +526,7 @@ export default function Profile() {
 
                 <div className="pd-qa-text">
                   <strong>{action.title}</strong>
+
                   <span>{action.description}</span>
                 </div>
 
@@ -400,6 +535,8 @@ export default function Profile() {
             ))}
           </div>
 
+          {/* TRUST BAR */}
+
           <div className="pd-trust-bar">
             {TRUST_ITEMS.map((item) => (
               <div key={item.title} className="pd-trust-item">
@@ -407,6 +544,7 @@ export default function Profile() {
 
                 <div>
                   <p className="pd-trust-title">{item.title}</p>
+
                   <p className="pd-trust-sub">{item.sub}</p>
                 </div>
               </div>
@@ -414,6 +552,67 @@ export default function Profile() {
           </div>
         </section>
       </div>
+
+      {/* =====================================================
+          LOGOUT CONFIRMATION MODAL
+      ====================================================== */}
+
+      {showLogoutModal && (
+        <div className="logout-modal-overlay" onClick={handleCancelLogout}>
+          <div
+            className="logout-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="logout-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {/* CLOSE BUTTON */}
+
+            <button
+              type="button"
+              className="logout-modal-close"
+              onClick={handleCancelLogout}
+              aria-label="Close logout confirmation"
+            >
+              <FiX />
+            </button>
+
+            {/* ICON */}
+
+            <div className="logout-modal-icon">
+              <FiLogOut />
+            </div>
+
+            {/* CONTENT */}
+
+            <div className="logout-modal-content">
+              <h2 id="logout-modal-title">Are you sure?</h2>
+
+              <p>Are you sure you want to logout from your account?</p>
+            </div>
+
+            {/* ACTIONS */}
+
+            <div className="logout-modal-actions">
+              <button
+                type="button"
+                className="logout-cancel-btn"
+                onClick={handleCancelLogout}
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                className="logout-confirm-btn"
+                onClick={handleConfirmLogout}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

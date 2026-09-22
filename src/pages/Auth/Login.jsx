@@ -4,6 +4,7 @@ import Seo from "../../components/common/Seo";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import { rules, validateForm } from "../../utils/validation";
+import { safeInternalPath } from "../../utils/format";
 import { authApi } from "../../api/authApi";
 import { useAuth } from "../../context/AuthContext";
 import "./Auth.css";
@@ -30,18 +31,25 @@ export default function Login() {
   //     straight to `/login?returnTo=/some/path` with a query param.
   // Support both so every "please log in first" flow in the app lands back
   // where the person actually was.
-  const queryReturnTo = new URLSearchParams(location.search).get("returnTo");
+  // URLSearchParams.get() already URL-decodes the value, so it must NOT be
+  // decoded a second time (a "%" inside a search query would throw).
+  // Only in-app paths are accepted, which rules out open redirects.
+  const rawReturnTo = new URLSearchParams(location.search).get("returnTo");
+  const queryReturnTo = rawReturnTo ? safeInternalPath(rawReturnTo, "") : "";
   const fromState = location.state?.from;
 
   const redirectTo = fromState
     ? `${fromState.pathname || "/home"}${fromState.search || ""}`
-    : queryReturnTo
-      ? decodeURIComponent(queryReturnTo)
-      : "/home";
+    : queryReturnTo || "/home";
 
   // Normalized so it can be threaded through to /login-with-otp -> /otp via
   // router state, regardless of which of the two forms brought us here.
-  const fromForNextStep = fromState || (queryReturnTo ? { pathname: decodeURIComponent(queryReturnTo) } : undefined);
+  const [returnPath, returnSearch = ""] = queryReturnTo.split("?");
+  const fromForNextStep =
+    fromState ||
+    (queryReturnTo
+      ? { pathname: returnPath, search: returnSearch ? `?${returnSearch}` : "" }
+      : undefined);
 
   const { login } = useAuth();
   const [values, setValues] = useState({ email: "", password: "" });
@@ -141,7 +149,11 @@ export default function Login() {
                   Remember
                 </label>
 
-                <Link to="/forgot-password" className="auth-link">
+                <Link
+                  to="/forgot-password"
+                  state={{ email: values.email }}
+                  className="auth-link"
+                >
                   Forgot Password
                 </Link>
               </div>

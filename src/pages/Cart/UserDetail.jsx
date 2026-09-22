@@ -1,27 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { cartApi } from "../../api/cartApi";
+import { checkoutApi } from "../../api/checkoutApi";
+import { useCheckout } from "../../context/CheckoutContext";
+import { resolveImageUrl } from "../../utils/image";
+import { firstErrorMessage, formatINR } from "../../utils/format";
+import Stepper from "../../components/cart/Stepper";
 import "./Checkout.css";
 
-const productImg =
-  "https://images.unsplash.com/photo-1592286927505-1def25115481?q=80&w=300&auto=format&fit=crop";
 const fallbackImg =
   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect width='120' height='120' rx='14' fill='%23f0f1f3'/></svg>";
-
-const cartItems = [
-  { id: 1, name: "Iphone 17pro", image: productImg },
-  { id: 2, name: "Iphone 17pro", image: productImg },
-  { id: 3, name: "Iphone 17pro", image: productImg },
-];
 
 const steps = [
   { num: 1, label: "Personal Details" },
   { num: 2, label: "Delivery Address" },
-  { num: 3, label: "Payment" },
-];
-
-const mobileSteps = [
-  { num: 1, label: "User Detail" },
-  { num: 2, label: "Delivery" },
   { num: 3, label: "Payment" },
 ];
 
@@ -49,49 +42,12 @@ const backIcon = (
   </svg>
 );
 
-function MobileStepper({ current }) {
-  return (
-    <div className="mstepper-track">
-      {mobileSteps.map((s, i) => (
-        <div key={s.num} className="mstep-group">
-          <div className="mstep">
-            <div
-              className={`mstep-dot ${
-                s.num < current ? "done" : s.num === current ? "active" : ""
-              }`}
-            />
-            <span
-              className={`mstep-label ${s.num === current ? "active" : ""}`}
-            >
-              {s.label}
-            </span>
-          </div>
-
-          {i < mobileSteps.length - 1 && (
-            <div
-              className={`mstep-connector ${s.num <= current ? "done" : ""}`}
-            />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // ---------- Validation ----------
-const NAME_TYPE_RE = /^[A-Za-z\s]*$/; // characters allowed while typing
-const NAME_VALID_RE = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/; // full-value validity
-const DIGIT_TYPE_RE = /^[0-9]*$/;
-const PHONE_VALID_RE = /^[0-9]{10}$/;
 const EMAIL_VALID_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+const PHONE_VALID_RE = /^[0-9]{10}$/;
 
 const validators = {
-  fullName: (v) => {
-    if (!v.trim()) return "Full name is required";
-    if (!NAME_VALID_RE.test(v.trim()))
-      return "Only letters and spaces are allowed";
-    return "";
-  },
+  fullName: (v) => (!v.trim() ? "Full name is required" : ""),
   email: (v) => {
     if (!v.trim()) return "Email is required";
     if (!EMAIL_VALID_RE.test(v.trim())) return "Enter a valid email address";
@@ -102,16 +58,13 @@ const validators = {
     if (!PHONE_VALID_RE.test(v)) return "Enter a valid 10-digit phone number";
     return "";
   },
-  country: (v) => {
-    if (!v.trim()) return "Country is required";
-    if (!NAME_VALID_RE.test(v.trim()))
-      return "Only letters and spaces are allowed";
-    return "";
-  },
+  country: (v) => (!v.trim() ? "Country is required" : ""),
 };
 
 export default function UserDetail() {
   const navigate = useNavigate();
+  const { userDetails, setUserDetails } = useCheckout();
+
   const [personal, setPersonal] = useState({
     fullName: "",
     email: "",
@@ -120,19 +73,79 @@ export default function UserDetail() {
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [loadingDetails, setLoadingDetails] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
-  // Block invalid keystrokes at the source, then run full validation.
+  const [cartItems, setCartItems] = useState([]);
+  const [cartMeta, setCartMeta] = useState({ subtotal: 0, discount: 0, totalItems: 0 });
+  const [cartLoading, setCartLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+
+    (async () => {
+      try {
+        setLoadingDetails(true);
+        setLoadError("");
+        const response = await checkoutApi.getUserDetails();
+        if (!active) return;
+
+        const data = response?.data || {};
+        const prefilled = {
+          fullName:
+            data.full_name ||
+            [data.first_name, data.last_name].filter(Boolean).join(" "),
+          email: data.email_id || "",
+          phone: data.phone_number || "",
+          country: data.country || "India",
+        };
+
+        setPersonal(prefilled);
+        setUserDetails(data);
+      } catch (err) {
+        if (!active) return;
+        console.error("Get checkout user details failed:", err);
+        setLoadError(firstErrorMessage(err, "Unable to load your details."));
+      } finally {
+        if (active) setLoadingDetails(false);
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    (async () => {
+      try {
+        const response = await cartApi.getCart();
+        if (!active) return;
+
+        const data = response?.data;
+        setCartItems(Array.isArray(data?.items) ? data.items : []);
+        setCartMeta({
+          subtotal: Number(data?.subtotal ?? 0),
+          discount: Number(data?.discount ?? 0),
+          totalItems: Number(data?.total_items ?? 0),
+        });
+      } catch (err) {
+        console.error("Get cart failed:", err);
+      } finally {
+        if (active) setCartLoading(false);
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const update = (key) => (e) => {
-    let value = e.target.value;
-
-    if (key === "fullName" || key === "country") {
-      if (!NAME_TYPE_RE.test(value)) return; // reject digits/symbols entirely
-    }
-    if (key === "phone") {
-      if (!DIGIT_TYPE_RE.test(value)) return; // reject non-digits entirely
-      value = value.slice(0, 10);
-    }
-
+    const value = e.target.value;
     setPersonal((p) => ({ ...p, [key]: value }));
     if (touched[key]) {
       setErrors((er) => ({ ...er, [key]: validators[key](value) }));
@@ -163,35 +176,54 @@ export default function UserDetail() {
 
   const handleContinue = () => {
     if (!runAllValidation()) return;
-    navigate("/cart/delivery", { state: { personal } });
+    setUserDetails((previous) => ({ ...previous, ...personal }));
+    navigate("/cart/delivery");
   };
+
+  const payable = cartMeta.subtotal - cartMeta.discount;
 
   const formContent = (
     <div className="content">
       <div className="card">
         <div className="items-card-head">
-          <span>{cartItems.length} Total Items</span>
+          <span>{cartMeta.totalItems} Total Items</span>
           <button className="edit-pill" onClick={() => navigate("/cart")}>
             Edit
           </button>
         </div>
-        <div className="thumb-row">
-          {cartItems.map((it) => (
-            <img
-              key={it.id}
-              src={it.image}
-              alt={it.name}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = fallbackImg;
-              }}
-            />
-          ))}
-        </div>
-        <p className="saved-text">You saved ₹ 297!</p>
-        <div className="price-line">
-          ₹ 1,197 <span className="strike">₹ 1,497</span>
-        </div>
+
+        {cartLoading ? (
+          <p className="saved-text" style={{ color: "#6b6b6b" }}>
+            Loading your cart…
+          </p>
+        ) : (
+          <>
+            <div className="thumb-row">
+              {cartItems.map((it) => (
+                <img
+                  key={it.id}
+                  src={resolveImageUrl(it.image)}
+                  alt={it.name}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = fallbackImg;
+                  }}
+                />
+              ))}
+            </div>
+            {cartMeta.discount > 0 && (
+              <p className="saved-text">
+                You saved {formatINR(cartMeta.discount)}!
+              </p>
+            )}
+            <div className="price-line">
+              {formatINR(payable)}
+              {cartMeta.discount > 0 && (
+                <span className="strike">{formatINR(cartMeta.subtotal)}</span>
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       <div className="field-label">
@@ -199,11 +231,14 @@ export default function UserDetail() {
         Personal Details
       </div>
 
+      {loadError && <p className="error-text">{loadError}</p>}
+
       <input
         placeholder="Full Name"
         value={personal.fullName}
         onChange={update("fullName")}
         onBlur={handleBlur("fullName")}
+        disabled={loadingDetails}
         className={touched.fullName && errors.fullName ? "input-error" : ""}
       />
       {touched.fullName && errors.fullName && (
@@ -216,6 +251,7 @@ export default function UserDetail() {
         value={personal.email}
         onChange={update("email")}
         onBlur={handleBlur("email")}
+        disabled={loadingDetails}
         className={touched.email && errors.email ? "input-error" : ""}
       />
       {touched.email && errors.email && (
@@ -233,10 +269,10 @@ export default function UserDetail() {
           value={personal.phone}
           onChange={update("phone")}
           onBlur={handleBlur("phone")}
+          disabled={loadingDetails}
           inputMode="numeric"
           maxLength={10}
         />
-        <span className="qmark">?</span>
       </div>
       {touched.phone && errors.phone && (
         <p className="error-text">{errors.phone}</p>
@@ -247,6 +283,7 @@ export default function UserDetail() {
         value={personal.country}
         onChange={update("country")}
         onBlur={handleBlur("country")}
+        disabled={loadingDetails}
         className={touched.country && errors.country ? "input-error" : ""}
       />
       {touched.country && errors.country && (
@@ -255,7 +292,7 @@ export default function UserDetail() {
 
       <button
         className="full-continue-btn"
-        disabled={!canContinue}
+        disabled={!canContinue || loadingDetails}
         onClick={handleContinue}
       >
         Continue
@@ -265,7 +302,6 @@ export default function UserDetail() {
 
   return (
     <div className="checkout-page">
-      {/* ---------- Mobile ---------- */}
       <div className="checkout-mobile">
         <div className="top-bar">
           <button className="icon-btn" onClick={() => navigate("/cart")}>
@@ -275,12 +311,11 @@ export default function UserDetail() {
           <div className="info-circle">i</div>
         </div>
         <div className="stepper-wrap">
-          <MobileStepper current={1} />
+          <Stepper current={1} />
         </div>
         {formContent}
       </div>
 
-      {/* ---------- Desktop — sidebar layout ---------- */}
       <div className="cd-desktop">
         <aside className="od-sidebar">
           <div className="od-avatar" />
@@ -289,10 +324,7 @@ export default function UserDetail() {
 
           <nav className="od-steps">
             {steps.map((s) => (
-              <div
-                key={s.num}
-                className={`od-step ${s.num === 1 ? "active" : ""}`}
-              >
+              <div key={s.num} className={`od-step ${s.num === 1 ? "active" : ""}`}>
                 <span className="od-step-num">{s.num}</span>
                 <span>{s.label}</span>
               </div>

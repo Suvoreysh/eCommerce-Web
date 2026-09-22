@@ -6,6 +6,7 @@ import Login from "../pages/Auth/Login";
 import Signup from "../pages/Auth/Signup";
 import Otp from "../pages/Auth/Otp";
 import LoginWithOtp from "../pages/Auth/login_with_otp";
+import ForgotPassword from "../pages/Auth/ForgotPassword";
 
 import Home from "../pages/Store/Home";
 import SingleProductpage from "../pages/Store/SingleProduct";
@@ -91,10 +92,7 @@ export default function AppRoutes() {
           element={<Placeholder title="Change Language" />}
         />
 
-        <Route
-          path="/forgot-password"
-          element={<Placeholder title="Forgot Password" />}
-        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route path="*" element={<NotFound />} />
       </Route>

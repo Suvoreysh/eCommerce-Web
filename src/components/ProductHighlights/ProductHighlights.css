@@ -207,7 +207,8 @@
 }
 
 .wishlist-bar-btn-active {
-  background: #11485b;
+  background: #f23a3a;
+  border-color: #f23a3a;
   color: #ffffff;
 }
 
@@ -362,27 +363,42 @@
 
   /* Fixed mobile action bar */
 
-  .action-bar {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
+.action-bar {
+  position: fixed;
+  right: 0;
+  bottom: 75px;
+  left: 0;
+  z-index: 1000;
 
-    width: 100%;
-    max-width: none;
+  width: 100%;
+  max-width: none;
 
-    margin: 0;
-    padding:
-      11px 15px
-      calc(11px + env(safe-area-inset-bottom));
+  margin: 0;
+  padding:
+    11px 15px
+    calc(11px + env(safe-area-inset-bottom));
 
-    gap: 12px;
+  gap: 12px;
 
-    background: #ffffff;
-    box-shadow: 0 -5px 18px rgba(0, 0, 0, 0.1);
-  }
+  background: #ffffff;
+  box-shadow: 0 -5px 18px rgba(0, 0, 0, 0.1);
 
+  transition:
+    transform 0.3s ease,
+    opacity 0.25s ease;
+}
+
+.action-bar-show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.action-bar-hide {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+}
   .wishlist-bar-btn,
   .cart-bar-btn {
     height: 52px;
@@ -456,6 +472,17 @@
   .cart-bar-btn {
     height: 50px;
     font-size: 15px;
+  }
+}
+
+/* ==============================
+   DESKTOP — hide the in-page action bar
+   (the sticky bar under the navbar on the product page covers this)
+============================== */
+
+@media (min-width: 769px) {
+  .action-bar {
+    display: none;
   }
 }
 

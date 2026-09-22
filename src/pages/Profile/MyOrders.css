@@ -1082,3 +1082,74 @@
     padding: 0 20px;
   }
 }
+/* ---- preview thumbnails, cancel, load more (real-API order cards) ---- */
+
+.order-preview-row {
+  display: flex;
+  gap: 8px;
+}
+
+.order-preview-thumb {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f0f1f3;
+}
+
+.order-preview-thumb--more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.order-placed-on {
+  margin: 10px 0 0;
+  color: #8a8a8a;
+  font-size: 12px;
+}
+
+.order-card__action-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cancel-btn {
+  padding: 9px 16px;
+  border: 1.3px solid #e03d3d;
+  border-radius: 999px;
+  background: #fff;
+  color: #e03d3d;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.orders-load-more {
+  display: block;
+  width: fit-content;
+  margin: 16px auto 0;
+  padding: 10px 24px;
+  border: 1.5px solid #123848;
+  border-radius: 999px;
+  background: #fff;
+  color: #123848;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.orders-load-more:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

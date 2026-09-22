@@ -1,8 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-import { bannerApi } from "../../api/bannerApi";
+import useStoreBanners from "../../hooks/useStoreBanners";
 import { productApi } from "../../api/productApi";
+import {
+  applyProductFilters,
+  loadCatalog,
+  normalizeListResponse,
+  searchProducts,
+  toList,
+} from "../../utils/catalog";
+
 import CategoryProductGrid from "../../components/CategoryProductGrid/CategoryProductGrid";
 import CategorySidebar from "../../components/CategorySidebar/CategorySidebar";
 import FilterBar from "../../components/FilterBar/FilterBar";
@@ -14,273 +22,230 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import StoreIntro from "../../components/StoreIntro/StoreIntro";
 import "./ProductCategory.css";
 
-function normalizeProduct(row) {
-  const product = row?.product || row;
-  return {
-    id:
-      product?.product_id ??
-      product?.product?.id ??
-      row?.product_id ??
-      product?.id ??
-      row?.id,
-    name: product?.name ?? row?.name ?? "Untitled product",
-    image:
-      product?.image ??
-      product?.product?.image ??
-      row?.image ??
-      row?.product?.image,
-    price:
-      row?.price ??
-      product?.price ??
-      product?.price_min ??
-      row?.price_min ??
-      product?.price_max,
-    originalPrice:
-      row?.mrp ??
-      product?.mrp ??
-      product?.old_price ??
-      row?.old_price ??
-      row?.price ??
-      product?.price,
-    tag1: product?.category?.name,
-    tag2: product?.subcategory?.name,
-    rating: Number(
-      row?.average_rating ?? product?.average_rating ?? row?.rating ?? 0,
-    ),
-  };
-}
-
-function applyFilters(list, filters) {
-  let result = [...list];
-  const ranges = {
-    "Under ₹1,000": [0, 1000],
-    "₹1,000 - 3,000": [1000, 3000],
-    "Above - 5,000": [5000, Infinity],
-  };
-
-  if (filters.price) {
-    const [min, max] = ranges[filters.price] || [0, Infinity];
-    result = result.filter((product) => {
-      const price = Number(product.price) || 0;
-      return price >= min && price <= max;
-    });
-  }
-  if (filters.rating)
-    result = result.filter((product) => product.rating >= filters.rating);
-  if (filters.sort === "Price : Low To High")
-    result.sort((a, b) => (Number(a.price) || 0) - (Number(b.price) || 0));
-  if (filters.sort === "Price : High To Low")
-    result.sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
-  if (filters.sort === "New Collection")
-    result.sort((a, b) => (b.id || 0) - (a.id || 0));
-  return result;
-}
+const ALL_SUBCATEGORY_ID = "all";
 
 export default function ProductCategory() {
   const { categoryId } = useParams();
   const location = useLocation();
-  const selectedCategory = Number(categoryId) || null;
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const selectedCategory = categoryId ? Number(categoryId) : null;
+  const query = searchParams.get("q") || "";
+  const subFromUrl = searchParams.get("sub");
+
   const [categoryName, setCategoryName] = useState(
     location.state?.categoryName ?? "",
   );
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState(
-    location.state?.subcategoryId ?? null,
+    subFromUrl ? Number(subFromUrl) : ALL_SUBCATEGORY_ID,
   );
-  const [subcategoriesLoading, setSubcategoriesLoading] = useState(true);
+  const [subcategoriesLoading, setSubcategoriesLoading] = useState(
+    Boolean(selectedCategory),
+  );
+
   const [products, setProducts] = useState([]);
   const [productsLoading, setProductsLoading] = useState(true);
   const [error, setError] = useState("");
+
   const [activeFilters, setActiveFilters] = useState({
     sort: null,
     price: null,
     rating: null,
   });
-  const [topBanner, setTopBanner] = useState(null);
-  const [exclusiveOffers, setExclusiveOffers] = useState([]);
-  const [bannersLoading, setBannersLoading] = useState(true);
+
+  const { topBanner, exclusiveOffers, loading: bannersLoading } =
+    useStoreBanners(["category_top", "all_products_top"]);
+
+  // When the URL's category id changes, reset the sidebar selection unless
+  // the URL itself names a subcategory (deep link from CategoryScroller).
+  useEffect(() => {
+    setSelectedSubcategory(subFromUrl ? Number(subFromUrl) : ALL_SUBCATEGORY_ID);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
+
+  /* ---- category name + subcategory list (skipped in search mode) ---- */
 
   useEffect(() => {
-    let active = true;
-    const fetchBanners = async () => {
-      try {
-        setBannersLoading(true);
-        const response = await bannerApi.getBanners();
-        if (!active) return;
-        const banners = (Array.isArray(response?.data) ? response.data : [])
-          .filter(
-            (banner) => banner.status == null || Number(banner.status) === 1,
-          )
-          .sort((a, b) => Number(a.display_order) - Number(b.display_order));
+    if (query || !selectedCategory) return undefined;
 
-        setTopBanner(
-          banners.find((banner) =>
-            ["category_top", "all_products_top"].includes(banner.placement),
-          ) || null,
-        );
-        setExclusiveOffers(
-          banners
-            .filter((banner) => banner.placement === "exclusive_offers")
-            .map((banner) => ({
-              id: banner.id,
-              image: banner.image,
-              alt: banner.title || "Exclusive offer",
-            })),
-        );
-      } catch (err) {
-        console.error("Get category banners failed:", err);
-        if (active) {
-          setTopBanner(null);
-          setExclusiveOffers([]);
-        }
-      } finally {
-        if (active) setBannersLoading(false);
-      }
-    };
-    fetchBanners();
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  useEffect(() => {
     let active = true;
-    const loadCategory = async () => {
+
+    (async () => {
       try {
         const response = await productApi.getCategories();
         if (!active) return;
-        const match = (response?.data || []).find(
+
+        const match = toList(response?.data).find(
           (category) => Number(category.id) === selectedCategory,
         );
-        setCategoryName(
-          location.state?.categoryName || match?.name || "Products",
-        );
+
+        setCategoryName(location.state?.categoryName || match?.name || "Products");
       } catch (err) {
         console.error("Get categories failed:", err);
       }
-    };
-    loadCategory();
+    })();
+
     return () => {
       active = false;
     };
-  }, [selectedCategory, location.state]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory, query]);
 
   useEffect(() => {
+    if (query || !selectedCategory) return undefined;
+
     let active = true;
-    const loadSubcategories = async () => {
-      if (!selectedCategory) return;
+
+    (async () => {
       try {
         setSubcategoriesLoading(true);
-        const response =
-          await productApi.getCategorySubcategories(selectedCategory);
+        const response = await productApi.getCategorySubcategories(selectedCategory);
         if (!active) return;
-        const list = Array.isArray(response?.data) ? response.data : [];
-        setSubcategories(list);
-        setSelectedSubcategory(
-          location.state?.subcategoryId ?? list[0]?.id ?? null,
-        );
-      } catch (err) {
+        setSubcategories(toList(response?.data));
+      } catch {
         if (active) setSubcategories([]);
       } finally {
         if (active) setSubcategoriesLoading(false);
       }
-    };
-    loadSubcategories();
+    })();
+
     return () => {
       active = false;
     };
-  }, [selectedCategory, location.state]);
+  }, [selectedCategory, query]);
+
+  /* ---- products: category / subcategory / whole-catalogue search ---- */
 
   useEffect(() => {
     let active = true;
-    const loadProducts = async () => {
-      if (!selectedCategory) return;
+
+    (async () => {
+      setProductsLoading(true);
+      setError("");
+
       try {
-        setProductsLoading(true);
-        setError("");
-        const response = await productApi.getVariants({
-          categoryId: selectedCategory,
-          subcategoryId: selectedSubcategory,
-        });
-        if (!active) return;
-        setProducts(
-          (Array.isArray(response?.data) ? response.data : [])
-            .map(normalizeProduct)
-            .filter((product) => product.id),
-        );
-      } catch (err) {
-        if (active) {
-          setError(err.message || "Unable to load products.");
-          setProducts([]);
+        if (query) {
+          // Search mode: query the cached whole-catalogue search index.
+          const { products: catalogProducts } = await loadCatalog();
+          if (!active) return;
+          setProducts(searchProducts(catalogProducts, query));
+          return;
         }
+
+        if (!selectedCategory) {
+          setProducts([]);
+          return;
+        }
+
+        const response =
+          selectedSubcategory === ALL_SUBCATEGORY_ID
+            ? await productApi.getCategoryProducts(selectedCategory)
+            : await productApi.getSubcategoryProducts(selectedSubcategory);
+
+        if (!active) return;
+        setProducts(normalizeListResponse(response).items);
+      } catch (err) {
+        if (!active) return;
+        console.error("Get products failed:", err);
+        setError(err.message || "Unable to load products.");
+        setProducts([]);
       } finally {
         if (active) setProductsLoading(false);
       }
-    };
-    loadProducts();
+    })();
+
     return () => {
       active = false;
     };
-  }, [selectedCategory, selectedSubcategory]);
+  }, [selectedCategory, selectedSubcategory, query]);
 
-  const sidebarItems = useMemo(
-    () =>
-      subcategories.map((item) => ({
+  const sidebarItems = useMemo(() => {
+    if (subcategories.length === 0) return [];
+    return [
+      { id: ALL_SUBCATEGORY_ID, label: "All", image: null },
+      ...subcategories.map((item) => ({
         id: item.id,
         label: item.name,
         image: item.image,
       })),
-    [subcategories],
-  );
-  const activeTitle =
-    subcategories.find((item) => item.id === selectedSubcategory)?.name ||
-    categoryName ||
-    "Products";
-  const filteredProducts = useMemo(
-    () => applyFilters(products, activeFilters),
+    ];
+  }, [subcategories]);
+
+  const selectSubcategory = (id) => {
+    setSelectedSubcategory(id);
+    if (id === ALL_SUBCATEGORY_ID) {
+      navigate(`/category/${selectedCategory}`, { replace: true });
+    } else {
+      navigate(`/category/${selectedCategory}?sub=${id}`, { replace: true });
+    }
+  };
+
+  const activeTitle = query
+    ? `Results for “${query}”`
+    : sidebarItems.find((item) => item.id === selectedSubcategory)?.label !==
+        "All"
+      ? subcategories.find((item) => item.id === selectedSubcategory)?.name ||
+        categoryName ||
+        "Products"
+      : categoryName || "Products";
+
+  const displayProducts = useMemo(
+    () => applyProductFilters(products, activeFilters),
     [products, activeFilters],
   );
-  const offersTitle = exclusiveOffers[0]?.alt
-    ? `Exclusive ${exclusiveOffers[0].alt} Offers`
+
+  const offersTitle = exclusiveOffers[0]?.title
+    ? `Exclusive ${exclusiveOffers[0].title} Offers`
     : "Exclusive Offers";
 
   return (
     <>
       <Navbar />
       <SearchBar />
-      <StoreIntro title={topBanner?.title || "Store"} />
-      <PromoBanner
-        image={topBanner?.image}
-        alt={topBanner?.title || "Category banner"}
-        loading={bannersLoading}
-      />
+      <StoreIntro title={query ? "Search" : topBanner?.title || "Store"} />
+
+      {!query && (
+        <PromoBanner
+          image={topBanner?.image}
+          alt={topBanner?.title || "Category banner"}
+          loading={bannersLoading}
+        />
+      )}
+
       <FilterBar
         onFiltersApply={setActiveFilters}
-        categoryName={categoryName}
+        categoryName={query ? "" : categoryName}
       />
+
       <div className="category-layout">
-        <CategorySidebar
-          items={sidebarItems}
-          activeId={selectedSubcategory}
-          loading={subcategoriesLoading}
-          onSelect={setSelectedSubcategory}
-        />
+        {!query && (
+          <CategorySidebar
+            items={sidebarItems}
+            activeId={selectedSubcategory}
+            loading={subcategoriesLoading}
+            onSelect={selectSubcategory}
+          />
+        )}
+
         {productsLoading ? (
           <p className="category-page-message">Loading products...</p>
         ) : error ? (
           <p className="category-page-message category-page-error">{error}</p>
         ) : (
-          <CategoryProductGrid
-            title={activeTitle}
-            products={filteredProducts}
-          />
+          <CategoryProductGrid title={activeTitle} products={displayProducts} />
         )}
       </div>
-      <OfferCards
-        title={offersTitle}
-        offers={exclusiveOffers}
-        loading={bannersLoading}
-      />
+
+      {!query && (
+        <OfferCards
+          title={offersTitle}
+          offers={exclusiveOffers}
+          loading={bannersLoading}
+        />
+      )}
+
       <Footer />
     </>
   );

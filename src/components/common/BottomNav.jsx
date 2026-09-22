@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useSearch } from "../../context/SearchContext";
 import "./BottomNav.css";
-import Search from "./Search"; // adjust path to match your folder structure
 
 // Home
 import HomeIcon from "../../assets/icons/Navigation-bar-icon/Static/home.svg";
@@ -47,104 +46,54 @@ const items = [
   },
 ];
 
-const ANIMATION_MS = 280;
-
 export default function BottomNav() {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchClosing, setSearchClosing] = useState(false);
-
-  const closeTimeoutRef = useRef(null);
-
-  const openSearch = () => {
-    setSearchClosing(false);
-    setSearchOpen(true);
-  };
-
-  const closeSearch = () => {
-    setSearchClosing(true);
-    closeTimeoutRef.current = setTimeout(() => {
-      setSearchOpen(false);
-      setSearchClosing(false);
-    }, ANIMATION_MS);
-  };
-
-  useEffect(() => {
-    return () => clearTimeout(closeTimeoutRef.current);
-  }, []);
-
-  useEffect(() => {
-    if (!searchOpen) return;
-
-    const handleResize = () => {
-      if (window.innerWidth >= 769) {
-        clearTimeout(closeTimeoutRef.current);
-        setSearchOpen(false);
-        setSearchClosing(false);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [searchOpen]);
+  const { isOpen: searchOpen, openSearch, closeSearch } = useSearch();
 
   return (
-    <>
-      <nav className="bottom-nav">
-        {items.map((item) =>
-          item.isModal ? (
-            <button
-              key={item.to}
-              type="button"
-              className={`bottom-nav__item ${
-                searchOpen ? "bottom-nav__item--active" : ""
-              }`}
-              onClick={searchOpen ? closeSearch : openSearch}
-            >
-              <img
-                src={searchOpen ? item.activeIcon : item.icon}
-                alt={item.label}
-                className="bottom-nav__icon"
-              />
-              <span className="bottom-nav__label">{item.label}</span>
-            </button>
-          ) : (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              onClick={() => {
-                if (searchOpen) closeSearch();
-              }}
-              className={({ isActive }) =>
-                `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <img
-                    src={isActive ? item.activeIcon : item.icon}
-                    alt={item.label}
-                    className="bottom-nav__icon"
-                  />
-                  <span className="bottom-nav__label">{item.label}</span>
-                </>
-              )}
-            </NavLink>
-          ),
-        )}
-      </nav>
-
-      {searchOpen && (
-        <div className="search-modal-backdrop" onClick={closeSearch}>
-          <div
-            className={`search-modal-panel ${
-              searchClosing ? "search-modal-panel--closing" : ""
+    <nav className="bottom-nav" aria-label="Primary">
+      {items.map((item) =>
+        item.isModal ? (
+          <button
+            key={item.to}
+            type="button"
+            className={`bottom-nav__item ${
+              searchOpen ? "bottom-nav__item--active" : ""
             }`}
-            onClick={(e) => e.stopPropagation()}
+            aria-haspopup="dialog"
+            aria-expanded={searchOpen}
+            onClick={searchOpen ? closeSearch : openSearch}
           >
-            <Search onClose={closeSearch} />
-          </div>
-        </div>
+            <img
+              src={searchOpen ? item.activeIcon : item.icon}
+              alt=""
+              className="bottom-nav__icon"
+            />
+            <span className="bottom-nav__label">{item.label}</span>
+          </button>
+        ) : (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            onClick={() => {
+              if (searchOpen) closeSearch();
+            }}
+            className={({ isActive }) =>
+              `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <img
+                  src={isActive ? item.activeIcon : item.icon}
+                  alt=""
+                  className="bottom-nav__icon"
+                />
+                <span className="bottom-nav__label">{item.label}</span>
+              </>
+            )}
+          </NavLink>
+        ),
       )}
-    </>
+    </nav>
   );
 }

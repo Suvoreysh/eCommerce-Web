@@ -19,18 +19,21 @@ export const ENDPOINTS = {
 
   PROFILE: "/me",
   CHANGE_PASSWORD: "/change-password",
+  FORGOT_PASSWORD: "/forgot-password",
   PRODUCT_IMAGES: (id) => `/products/${id}/images`,
   PRODUCT_KEY_POINTS: (id) => `/products/${id}/key-points`,
   PRODUCT_KEYNOTE_SECTIONS: (id) => `/products/${id}/keynote-sections`,
   CATEGORIES: "/categories",
   CATEGORY_SUBCATEGORIES: (categoryId) =>
     `/categories/${categoryId}/subcategories`,
+  CATEGORY_PRODUCTS: (categoryId) => `/categories/${categoryId}/products`,
+  CATEGORY_OFFERS: (categoryId) => `/categories/${categoryId}/offers`,
   SUBCATEGORIES: "/subcategories",
   SUBCATEGORY_DETAIL: (id) => `/subcategories/${id}`,
+  SUBCATEGORY_PRODUCTS: (id) => `/subcategories/${id}/products`,
   OPINION: "/opinion",
   VARIANTS: "/variants",
   VARIANT_DETAIL: (id) => `/variants/${id}`,
-  // add to api/config.js ENDPOINTS
   PRODUCT_FEATURES: (id, section) =>
     `/products/${id}/features${section ? `?section=${section}` : ""}`,
   PRODUCTS: "/products",
@@ -39,7 +42,14 @@ export const ENDPOINTS = {
 
   CART: "/cart",
   ORDERS: "/orders",
-  CHECKOUT: "/orders/checkout",
+
+  // Checkout flow
+  PAYMENT_TYPES: "/payment-types",
+  CHECKOUT_USER_DETAILS: "/checkout/user-details",
+  CHECKOUT_DELIVERY_ADDRESS: "/checkout/delivery-address",
+  CHECKOUT_PAYMENT_METHOD: "/checkout/payment-method",
+  CHECKOUT_ORDER_SUMMARY: "/checkout/order-summary",
+  CHECKOUT_PLACE_ORDER: "/checkout/place-order",
 
   WISHLIST: "/wishlist",
   WISHLIST_TOGGLE: "/wishlist/toggle",
@@ -55,6 +65,25 @@ export const ENDPOINTS = {
 
 function getToken() {
   return localStorage.getItem("authToken");
+}
+
+/**
+ * Append query-string params to a path, skipping empty values.
+ *   withQuery("/products", { page: 2, q: "" }) -> "/products?page=2"
+ */
+export function withQuery(path, params = {}) {
+  const search = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === "") return;
+    search.append(key, String(value));
+  });
+
+  const queryString = search.toString();
+
+  if (!queryString) return path;
+
+  return `${path}${path.includes("?") ? "&" : "?"}${queryString}`;
 }
 
 export async function apiRequest(

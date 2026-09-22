@@ -1,20 +1,28 @@
+import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useCartCount } from "../../context/CartCountContext";
+import { useCheckout } from "../../context/CheckoutContext";
+import { paymentLabel } from "../../utils/format";
 import "./Checkout.css";
-
-const productImg =
-  "https://images.unsplash.com/photo-1592286927505-1def25115481?q=80&w=300&auto=format&fit=crop";
-
-const cartItems = [
-  { id: 1, name: "Iphone 17pro", image: productImg },
-  { id: 2, name: "Iphone 17pro", image: productImg },
-  { id: 3, name: "Iphone 17pro", image: productImg },
-];
 
 export default function OrderSuccess() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { refreshCartCount } = useCartCount();
+  const { reset } = useCheckout();
+
   const orderId = location.state?.orderId || "#000000000";
-  const email = location.state?.personal?.email;
+  const email = location.state?.personal?.email || location.state?.personal?.email_id;
+  const paymentType = location.state?.paymentType;
+  const address = location.state?.address;
+
+  // The order is placed — clear the checkout wizard state and refresh the
+  // cart badge (place-order empties the server-side cart).
+  useEffect(() => {
+    refreshCartCount();
+    reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const successBody = (
     <>
@@ -36,25 +44,27 @@ export default function OrderSuccess() {
           Email {email ? email.replace(/(?<=.).(?=.*@)/g, "x") : "xxxxxxx"}
         </p>
         <div className="success-meta">
-          <span>Est Arrival: Jun 23</span>
-          <span>•</span>
           <span>Order {orderId}</span>
+          {paymentType && (
+            <>
+              <span>•</span>
+              <span>{paymentLabel(paymentType.name)}</span>
+            </>
+          )}
         </div>
-        <div className="success-thumbs">
-          {cartItems.map((it) => (
-            <img key={it.id} src={it.image} alt={it.name} />
-          ))}
-        </div>
+        {address && (
+          <p style={{ color: "#6b6b6b", fontSize: 13, lineHeight: 1.5 }}>
+            Delivering to {address.full_name} —{" "}
+            {[address.city, address.state, address.pincode].filter(Boolean).join(", ")}
+          </p>
+        )}
       </div>
 
       <div className="success-actions">
         <button className="invoice-btn" onClick={() => navigate("/orders")}>
           See Invoice 📄
         </button>
-        <button
-          className="order-details-btn"
-          onClick={() => navigate("/orders")}
-        >
+        <button className="order-details-btn" onClick={() => navigate("/orders")}>
           See Order Details 🕓
         </button>
       </div>
@@ -63,12 +73,10 @@ export default function OrderSuccess() {
 
   return (
     <div className="checkout-page">
-      {/* ---------- Mobile ---------- */}
       <div className="checkout-mobile">
         <div className="success-wrap">{successBody}</div>
       </div>
 
-      {/* ---------- Desktop — sidebar layout ---------- */}
       <div className="cd-desktop">
         <aside className="od-sidebar">
           <div className="od-avatar" />

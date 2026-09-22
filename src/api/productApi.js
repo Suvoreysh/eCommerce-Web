@@ -1,5 +1,5 @@
 // api/productApi.js
-import { apiRequest, ENDPOINTS } from "./config";
+import { apiRequest, ENDPOINTS, withQuery } from "./config";
 
 export const productApi = {
   getAll: (query = "") =>
@@ -41,6 +41,25 @@ export const productApi = {
     apiRequest(ENDPOINTS.CATEGORIES, {
       auth: false,
     }),
+
+  // GET /categories/:id/products?page=  -> { data: [...], meta: { current_page, last_page, per_page, total } }
+  getCategoryProducts: (categoryId, { page = 1 } = {}) =>
+    apiRequest(
+      withQuery(ENDPOINTS.CATEGORY_PRODUCTS(categoryId), {
+        page: page > 1 ? page : undefined,
+      }),
+      { auth: false },
+    ),
+
+  // GET /subcategories/:id/products?page=  (same response shape as above)
+  getSubcategoryProducts: (subcategoryId, { page = 1 } = {}) =>
+    apiRequest(
+      withQuery(ENDPOINTS.SUBCATEGORY_PRODUCTS(subcategoryId), {
+        page: page > 1 ? page : undefined,
+      }),
+      { auth: false },
+    ),
+
   getProductReviews: (id) =>
     apiRequest(ENDPOINTS.PRODUCT_REVIEWS(id), {
       auth: false,
@@ -49,14 +68,21 @@ export const productApi = {
     apiRequest(ENDPOINTS.CATEGORY_SUBCATEGORIES(categoryId), {
       auth: false,
     }),
-  // add to api/productApi.js
+
+  // GET /categories/:id/offers -> { data: [{ id, image, title, ... }] }
+  getCategoryOffers: (categoryId) =>
+    apiRequest(ENDPOINTS.CATEGORY_OFFERS(categoryId), {
+      auth: false,
+    }),
   getFeatures: (id, section) =>
     apiRequest(ENDPOINTS.PRODUCT_FEATURES(id, section), {
       auth: false,
     }),
+
+  // Subcategories are public catalogue data — no token required.
   getSubcategories: () =>
     apiRequest(ENDPOINTS.SUBCATEGORIES, {
-      auth: true,
+      auth: false,
     }),
 
   getSubcategoryDetail: (id) =>

@@ -1,49 +1,47 @@
 import { useEffect, useState } from "react";
+import LazyImage from "../common/LazyImage";
 import "./OfferCards.css";
 
 function OfferCard({ offer }) {
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => setLoaded(false), [offer.image]);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => setFailed(false), [offer.image]);
+
+  if (failed) return null;
+
   return (
     <div className="offer-card">
-      {!loaded && (
-        <div className="offer-image-skeleton" aria-hidden="true">
-          <span />
-        </div>
-      )}
-      {offer.image && (
-        <img
-          src={offer.image}
-          alt={offer.title || "Exclusive offer"}
-          loading="eager"
-          decoding="async"
-          className={loaded ? "is-loaded" : ""}
-          onLoad={() => setLoaded(true)}
-          onError={() => setLoaded(true)}
-        />
-      )}
+      <LazyImage
+        src={offer.image}
+        alt={offer.title || "Exclusive offer"}
+        eager
+        onError={() => setFailed(true)}
+      />
     </div>
   );
 }
 
 export default function OfferCards({
-  title = "Exclusive Apple Offers",
+  title = "Exclusive Offers",
   offers = [],
   loading = false,
 }) {
   if (!loading && !offers.length) return null;
+
   return (
     <section className="offer-cards-section">
-      <h2> {title} </h2>
+      {title && <h2>{title}</h2>}
+
       <div className="offer-cards-row">
         {loading &&
           Array.from({ length: 2 }).map((_, index) => (
-            <div className="offer-card" key={index}>
-              <div className="offer-image-skeleton">
-                <span />
-              </div>
+            <div className="offer-card" key={index} aria-hidden="true">
+              <span className="lazy-img" data-status="loading">
+                <span className="lazy-img__skeleton" />
+              </span>
             </div>
           ))}
+
         {!loading &&
           offers.map((offer) => <OfferCard offer={offer} key={offer.id} />)}
       </div>

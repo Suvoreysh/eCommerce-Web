@@ -9,6 +9,7 @@ import icon4 from "../../assets/icons/Icon-fill/4.svg";
 
 import { FiShoppingCart } from "react-icons/fi";
 import { productApi } from "../../api/productApi";
+import useVariantCart from "../../hooks/useVariantCart";
 import WishlistButton from "../common/WishlistButton";
 
 const fallbackIcons = [icon1, icon2, icon3, icon4];
@@ -20,6 +21,11 @@ export default function ProductHighlights({ productId: passedProductId }) {
   const [highlights, setHighlights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Action bar visibility
+  const [showActionBar, setShowActionBar] = useState(true);
+
+  const { open: openVariants, modal: variantModal } = useVariantCart();
 
   useEffect(() => {
     if (!productId) return;
@@ -48,6 +54,7 @@ export default function ProductHighlights({ productId: passedProductId }) {
         );
       } catch (err) {
         if (!isMounted) return;
+
         setError(err.message || "Failed to load highlights");
         setHighlights([]);
       } finally {
@@ -62,6 +69,54 @@ export default function ProductHighlights({ productId: passedProductId }) {
     };
   }, [productId]);
 
+  // Hide action bar while scrolling down,
+  // show it again while scrolling up.
+ useEffect(() => {
+   let lastScrollY = window.scrollY;
+   let scrollTimer;
+
+   const handleScroll = () => {
+     const currentScrollY = window.scrollY;
+
+     // Always show at the top
+     if (currentScrollY <= 10) {
+       setShowActionBar(true);
+       lastScrollY = currentScrollY;
+
+       clearTimeout(scrollTimer);
+       return;
+     }
+
+     // Scrolling down → hide
+     if (currentScrollY > lastScrollY) {
+       setShowActionBar(false);
+     }
+
+     // Scrolling up → show
+     else if (currentScrollY < lastScrollY) {
+       setShowActionBar(true);
+     }
+
+     lastScrollY = currentScrollY;
+
+     // Stop scrolling → show
+     clearTimeout(scrollTimer);
+
+     scrollTimer = setTimeout(() => {
+       setShowActionBar(true);
+     }, 300);
+   };
+
+   window.addEventListener("scroll", handleScroll, {
+     passive: true,
+   });
+
+   return () => {
+     window.removeEventListener("scroll", handleScroll);
+     clearTimeout(scrollTimer);
+   };
+ }, []);
+
   const showSkeleton = loading;
   const showEmpty = !loading && !error && highlights.length === 0;
 
@@ -75,6 +130,7 @@ export default function ProductHighlights({ productId: passedProductId }) {
             Array.from({ length: 4 }).map((_, idx) => (
               <div className="highlight-card" key={`skeleton-${idx}`}>
                 <span className="highlight-skel-icon" />
+
                 <div>
                   <span className="highlight-skel-line highlight-skel-line--title" />
                   <span className="highlight-skel-line highlight-skel-line--desc" />
@@ -94,14 +150,15 @@ export default function ProductHighlights({ productId: passedProductId }) {
                 </div>
               </div>
             ))}
-
-          {/* {showEmpty && (
-            <p className="highlights-empty">No highlights available.</p>
-          )} */}
         </div>
       )}
 
-      <div className="action-bar">
+      {/* Mobile-only action bar */}
+      <div
+        className={`action-bar ${
+          showActionBar ? "action-bar-show" : "action-bar-hide"
+        }`}
+      >
         <WishlistButton
           productId={productId}
           className="wishlist-bar-btn"
@@ -112,15 +169,14 @@ export default function ProductHighlights({ productId: passedProductId }) {
         <button
           className="cart-bar-btn"
           type="button"
-          onClick={() =>
-            document
-              .querySelector(".product-multi, .product-hero, [data-add-to-cart]")
-              ?.scrollIntoView({ behavior: "smooth", block: "start" })
-          }
+          onClick={(event) => openVariants(event, { id: productId })}
         >
-          <FiShoppingCart /> Cart
+          <FiShoppingCart />
+          Cart
         </button>
       </div>
+
+      {variantModal}
     </section>
   );
 }

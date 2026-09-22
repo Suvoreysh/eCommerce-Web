@@ -194,16 +194,21 @@
   width: 100%;
   min-height: 74px;
   padding: 14px 0;
+  border: none;
   border-bottom: 1px solid #edf0f2;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   color: #111111;
   text-decoration: none;
+  text-align: left;
+  cursor: pointer;
   transition:
     opacity 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .profile-item:last-child {
@@ -241,6 +246,11 @@
   object-fit: contain;
 }
 
+.profile-item__icon svg {
+  width: 21px;
+  height: 21px;
+}
+
 .profile-item__left > span {
   overflow: hidden;
   color: #111111;
@@ -254,6 +264,226 @@
   flex-shrink: 0;
   color: #184d5d;
   font-size: 24px;
+}
+
+/* ============================================================
+   MOBILE LOGOUT
+============================================================ */
+
+.profile-logout-item {
+  color: #d64545;
+}
+
+.profile-logout-item .profile-item__left > span {
+  color: #d64545;
+}
+
+.profile-logout-icon {
+  background: #fff0f0;
+  color: #d64545;
+}
+
+.profile-logout-item .profile-item__arrow {
+  color: #d64545;
+}
+
+.profile-logout-item:hover {
+  opacity: 1;
+  background: rgba(214, 69, 69, 0.035);
+}
+
+/* ============================================================
+   LOGOUT MODAL OVERLAY
+============================================================ */
+
+.logout-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  padding: 20px;
+  background: rgba(8, 27, 33, 0.62);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: logoutOverlayIn 0.2s ease forwards;
+}
+
+/* ============================================================
+   LOGOUT MODAL
+============================================================ */
+
+.logout-modal {
+  position: relative;
+  width: min(100%, 430px);
+  padding: 34px 30px 30px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+  text-align: center;
+  animation: logoutModalIn 0.25s ease forwards;
+}
+
+/* ============================================================
+   MODAL CLOSE
+============================================================ */
+
+.logout-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #f2f4f5;
+  color: #687176;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.logout-modal-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.logout-modal-close:hover {
+  background: #e8edef;
+  color: #184d5d;
+  transform: rotate(90deg);
+}
+
+.logout-modal-close:active {
+  transform: scale(0.92);
+}
+
+/* ============================================================
+   MODAL ICON
+============================================================ */
+
+.logout-modal-icon {
+  width: 66px;
+  height: 66px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #fff0f0;
+  color: #d64545;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-modal-icon svg {
+  width: 29px;
+  height: 29px;
+}
+
+/* ============================================================
+   MODAL CONTENT
+============================================================ */
+
+.logout-modal-content h2 {
+  margin: 0 0 9px;
+  color: #111111;
+  font-size: 23px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.logout-modal-content p {
+  max-width: 330px;
+  margin: 0 auto;
+  color: #747b7f;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   MODAL ACTIONS
+============================================================ */
+
+.logout-modal-actions {
+  width: 100%;
+  margin-top: 27px;
+  display: flex;
+  gap: 12px;
+}
+
+.logout-modal-actions button {
+  min-height: 48px;
+  flex: 1;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.logout-cancel-btn {
+  border: 1px solid #dce3e6;
+  background: #ffffff;
+  color: #4e595d;
+}
+
+.logout-cancel-btn:hover {
+  border-color: #c7d1d5;
+  background: #f5f7f8;
+}
+
+.logout-confirm-btn {
+  border: 1px solid #d64545;
+  background: #d64545;
+  color: #ffffff;
+}
+
+.logout-confirm-btn:hover {
+  background: #c43838;
+  border-color: #c43838;
+  box-shadow: 0 5px 15px rgba(214, 69, 69, 0.2);
+}
+
+.logout-modal-actions button:active {
+  transform: scale(0.97);
+}
+
+/* ============================================================
+   MODAL ANIMATIONS
+============================================================ */
+
+@keyframes logoutOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes logoutModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ============================================================
@@ -304,7 +534,8 @@
 
   .profile-card {
     margin-top: -30px;
-    padding: 24px 18px calc(88px + env(safe-area-inset-bottom));
+    padding: 24px 18px
+      calc(88px + env(safe-area-inset-bottom));
     border-radius: 28px 28px 0 0;
   }
 
@@ -332,6 +563,47 @@
 
   .profile-item__arrow {
     font-size: 22px;
+  }
+
+  /* MOBILE LOGOUT MODAL */
+
+  .logout-modal-overlay {
+    padding: 16px;
+  }
+
+  .logout-modal {
+    width: 100%;
+    padding: 32px 20px 22px;
+    border-radius: 22px;
+  }
+
+  .logout-modal-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 17px;
+  }
+
+  .logout-modal-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .logout-modal-content h2 {
+    font-size: 21px;
+  }
+
+  .logout-modal-content p {
+    font-size: 13px;
+  }
+
+  .logout-modal-actions {
+    margin-top: 23px;
+    gap: 9px;
+  }
+
+  .logout-modal-actions button {
+    min-height: 46px;
+    font-size: 13px;
   }
 }
 
@@ -378,16 +650,13 @@
     top: 0;
     left: 0;
     z-index: 10;
-
     width: 328px;
     height: 100vh;
     height: 100dvh;
     min-height: 0;
     flex-shrink: 0;
-
     padding: 24px 30px 30px;
     overflow: hidden;
-
     background: #1a4653;
     display: flex;
     flex-direction: column;
@@ -440,31 +709,28 @@
     object-position: center;
   }
 
-  /* Edit icon placed over the circular avatar */
+  /* ========================================================
+     DESKTOP AVATAR EDIT
+  ======================================================== */
 
   .od-avatar-edit-btn {
     position: absolute;
     right: 8px;
     bottom: 8px;
     z-index: 5;
-
     width: 39px;
     height: 39px;
     padding: 0;
-
     border: 3px solid #1a4653;
     border-radius: 50%;
     background: #ffffff;
     color: #184d5d;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 17px;
     cursor: pointer;
     box-shadow: 0 5px 14px rgba(0, 0, 0, 0.28);
-
     transition:
       background 0.2s ease,
       color 0.2s ease,
@@ -483,6 +749,10 @@
     transform: scale(0.95);
   }
 
+  /* ========================================================
+     USER DETAILS
+  ======================================================== */
+
   .od-name {
     max-width: 100%;
     margin: 0 0 6px;
@@ -499,6 +769,10 @@
     font-size: 14px;
     line-height: 1.4;
   }
+
+  /* ========================================================
+     EDIT PROFILE
+  ======================================================== */
 
   .od-edit-profile-btn {
     width: 100%;
@@ -534,7 +808,7 @@
   }
 
   /* ========================================================
-     DESKTOP SIDEBAR NAVIGATION
+     SIDEBAR NAVIGATION
   ======================================================== */
 
   .od-nav {
@@ -598,7 +872,7 @@
   }
 
   /* ========================================================
-     DESKTOP SUPPORT BOX
+     SUPPORT BOX
   ======================================================== */
 
   .od-help {
@@ -660,11 +934,9 @@
     min-width: 0;
     min-height: 0;
     padding: 30px 40px 60px;
-
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
-
     background: #f6f7f9;
     scrollbar-width: thin;
     scrollbar-color: #cbd4d8 transparent;
@@ -682,6 +954,10 @@
     border-radius: 10px;
     background: #cbd4d8;
   }
+
+  /* ========================================================
+     MAIN HEADER
+  ======================================================== */
 
   .od-main-header {
     width: 100%;
@@ -769,7 +1045,7 @@
   }
 
   /* ========================================================
-     WELCOME DETAILS
+     WELCOME
   ======================================================== */
 
   .pd-welcome {
@@ -984,7 +1260,13 @@
   .od-desktop-back-btn:focus-visible,
   .od-info-btn:focus-visible,
   .od-nav-item:focus-visible,
-  .od-card--link:focus-visible {
+  .od-card--link:focus-visible,
+  .profile-item:focus-visible,
+  .profile-header__btn:focus-visible,
+  .profile-edit-btn:focus-visible,
+  .logout-modal-close:focus-visible,
+  .logout-cancel-btn:focus-visible,
+  .logout-confirm-btn:focus-visible {
     outline: 3px solid rgba(50, 160, 190, 0.45);
     outline-offset: 3px;
   }
@@ -1082,5 +1364,42 @@
 
   .pd-info-row {
     min-width: 200px;
+  }
+}
+
+/* ============================================================
+   EXTRA SMALL DEVICES
+============================================================ */
+
+@media (max-width: 360px) {
+  .profile-card {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .profile-item__left {
+    gap: 11px;
+  }
+
+  .profile-item__left > span {
+    font-size: 14px;
+  }
+
+  .profile-item__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logout-modal {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .logout-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .logout-modal-actions button {
+    width: 100%;
   }
 }

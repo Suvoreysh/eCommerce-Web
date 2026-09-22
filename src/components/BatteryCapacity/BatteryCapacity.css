@@ -1,6 +1,6 @@
-/* =========================================
-   RESET
-========================================= */
+
+
+
 
 *,
 *::before,
@@ -16,62 +16,85 @@
 .battery-capacity {
   width: 100%;
   margin: 0;
-  padding: 60px 0 70px;
+  padding: 70px 0;
   background: #fff;
+  overflow: hidden;
 }
 
-/* Content spacing */
 
-.battery-top,
-.battery-heading,
-.battery-stat {
+/* =========================================
+   SECTION HEADING
+========================================= */
+
+.battery-heading {
   width: 100%;
   padding: 0 50px;
+  margin: 0 0 30px;
 }
-
-/* =========================================
-   TOP TEXT
-========================================= */
-
-.battery-top {
-  margin: 0 0 14px;
-  color: #777;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* =========================================
-   HEADING
-========================================= */
 
 .battery-heading h2 {
   margin: 0;
   color: #111;
-  font-size: clamp(48px, 5vw, 72px);
+  font-size: clamp(42px, 5vw, 72px);
   line-height: 1.05;
   font-weight: 700;
   letter-spacing: -2px;
+  word-break: break-word;
 }
 
-.battery-heading h2 span {
-  font-size: 0.7em;
-  font-weight: 400;
+
+/* =========================================
+   ITEM
+========================================= */
+
+.battery-item {
+  width: 100%;
+  margin: 0;
+  padding: 0 50px;
 }
+
+
+/* =========================================
+   TITLE
+========================================= */
 
 .battery-tagline {
-  margin: 18px 0 10px;
+  margin: 0 0 16px;
   color: #00a53c;
   font-size: clamp(22px, 2vw, 30px);
+  line-height: 1.3;
   font-weight: 700;
 }
 
-.battery-desc {
-  max-width: 900px;
-  margin: 0;
-  color: #222;
-  font-size: clamp(22px, 2vw, 32px);
+
+/* =========================================
+   HIGHLIGHTED TEXT
+========================================= */
+
+.battery-highlighted-text {
+  width: 100%;
+  margin: 0 0 18px;
+  color: #111;
+  font-size: clamp(20px, 2vw, 28px);
   line-height: 1.4;
+  font-weight: 600;
+  white-space: pre-line;
 }
+
+
+/* =========================================
+   SHORT DESCRIPTION
+========================================= */
+
+.battery-desc {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 0 40px;
+  color: #222;
+  font-size: clamp(20px, 2vw, 30px);
+  line-height: 1.45;
+}
+
 
 /* =========================================
    IMAGE
@@ -79,50 +102,52 @@
 
 .battery-media {
   width: 100%;
-  margin: 50px 0;
-  padding: 0 50px;
+  margin: 0 0 45px;
+  padding: 0;
 }
 
 .battery-media img {
   width: 100%;
-  height: clamp(500px, 48vw, 760px);
+  height: clamp(400px, 48vw, 760px);
   display: block;
+  max-width: 100%;
   object-fit: cover;
   object-position: center;
-  /* border-radius: 18px; */
 }
+
 
 /* =========================================
-   BATTERY STATS
+   FULL DESCRIPTION
 ========================================= */
 
-.battery-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.battery-description {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 0 30px;
+  color: #222;
+  font-size: clamp(18px, 1.7vw, 26px);
+  line-height: 1.6;
+  white-space: pre-line;
 }
 
-.battery-up {
-  margin: 0;
-  color: #111;
-  font-size: clamp(20px, 2vw, 28px);
+
+/* =========================================
+   MULTIPLE ITEMS
+========================================= */
+
+.battery-item + .battery-item {
+  margin-top: 70px;
 }
 
-.battery-number {
-  margin: 0;
-  color: #00a53c;
-  font-size: clamp(82px, 9vw, 140px);
-  line-height: 0.9;
-  font-weight: 700;
-  letter-spacing: -5px;
+
+/* =========================================
+   MULTIPLE SECTIONS
+========================================= */
+
+.battery-capacity + .battery-capacity {
+  padding-top: 30px;
 }
 
-.battery-stat-label {
-  margin-top: 10px;
-  color: #111;
-  font-size: clamp(20px, 2vw, 30px);
-  line-height: 1.3;
-}
 
 /* =========================================
    LARGE DESKTOP
@@ -130,184 +155,293 @@
 
 @media (min-width: 1440px) {
 
-  .battery-top,
+  .battery-capacity {
+    padding: 85px 0;
+  }
+
   .battery-heading,
-  .battery-stat {
-    padding: 0 70px;
+  .battery-item {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  .battery-heading {
+    margin-bottom: 36px;
+  }
+
+  .battery-desc {
+    max-width: 1100px;
+  }
+
+  .battery-description {
+    max-width: 1100px;
   }
 
   .battery-media {
-    padding: 0 70px;
+    margin-bottom: 55px;
   }
 
+  .battery-item + .battery-item {
+    margin-top: 80px;
+  }
+
+  .battery-capacity + .battery-capacity {
+    padding-top: 40px;
+  }
 }
+
 
 /* =========================================
    TABLET
 ========================================= */
 
-@media (max-width:768px){
+@media (max-width: 768px) {
 
-    .battery-capacity{
-        padding:36px 0 40px;
-    }
+  .battery-capacity {
+    padding: 50px 0;
+  }
 
-    .battery-top,
-    .battery-heading,
-    .battery-stat{
-        padding:0 24px;
-    }
+  .battery-heading,
+  .battery-item {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 
-    .battery-top{
-        font-size:13px;
-        margin-bottom:10px;
-    }
 
-    .battery-heading h2{
-        font-size:46px;
-        letter-spacing:-1px;
-    }
+  /* Heading */
 
-    .battery-heading h2 span{
-        font-size:30px;
-    }
+  .battery-heading {
+    margin-bottom: 25px;
+  }
 
-    .battery-tagline{
-        font-size:21px;
-        margin-top:14px;
-    }
+  .battery-heading h2 {
+    font-size: 44px;
+    line-height: 1.08;
+    letter-spacing: -1.2px;
+  }
 
-    .battery-desc{
-        font-size:20px;
-    }
 
-    .battery-media{
-        margin:34px 0;
-        padding:0 24px;
-    }
+  /* Title */
 
-    .battery-media img{
-        height:430px;
-        /* border-radius:16px; */
-    }
+  .battery-tagline {
+    font-size: 21px;
+    line-height: 1.3;
+    margin-bottom: 13px;
+  }
 
-    .battery-up{
-        font-size:18px;
-    }
 
-    .battery-number{
-        font-size:72px;
-    }
+  /* Highlight */
 
-    .battery-stat-label{
-        font-size:18px;
-    }
+  .battery-highlighted-text {
+    font-size: 20px;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
 
+
+  /* Description */
+
+  .battery-desc {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+  }
+
+
+  /* Image */
+
+  .battery-media {
+    margin-bottom: 35px;
+  }
+
+  .battery-media img {
+    width: 100%;
+    height: 430px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+
+  /* Full description */
+
+  .battery-description {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+
+  /* Multiple items */
+
+  .battery-item + .battery-item {
+    margin-top: 50px;
+  }
+
+
+  /* Multiple sections */
+
+  .battery-capacity + .battery-capacity {
+    padding-top: 20px;
+  }
 }
+
 
 /* =========================================
    MOBILE
 ========================================= */
 
-@media (max-width:480px){
+@media (max-width: 480px) {
 
-    .battery-capacity{
-        padding:18px 0 24px;
-    }
+  .battery-capacity {
+    padding: 35px 0;
+  }
 
-    .battery-top,
-    .battery-heading,
-    .battery-stat{
-        padding:0 14px;
-    }
+  .battery-heading,
+  .battery-item {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 
-    .battery-top{
-        font-size:12px;
-        margin-bottom:8px;
-    }
 
-    .battery-heading h2{
-        font-size:30px;
-        letter-spacing:-0.5px;
-    }
+  /* Heading */
 
-    .battery-heading h2 span{
-        font-size:20px;
-    }
+  .battery-heading {
+    margin-bottom: 20px;
+  }
 
-    .battery-tagline{
-        font-size:15px;
-        margin:12px 0 8px;
-    }
+  .battery-heading h2 {
+    font-size: 30px;
+    line-height: 1.12;
+    letter-spacing: -0.5px;
+  }
 
-    .battery-desc{
-        font-size:17px;
-        line-height:1.45;
-    }
 
-    .battery-media{
-        margin:24px 0;
-        padding:0 14px;
-    }
+  /* Title */
 
-    .battery-media img{
-        width:100%;
-        height:180px;
-        object-fit:cover;
-        /* border-radius:14px; */
-    }
+  .battery-tagline {
+    font-size: 17px;
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
 
-    .battery-up{
-        font-size:12px;
-    }
 
-    .battery-number{
-        font-size:56px;
-        letter-spacing:-2px;
-    }
+  /* Highlight */
 
-    .battery-stat-label{
-        font-size:12px;
-        line-height:1.4;
-    }
+  .battery-highlighted-text {
+    font-size: 16px;
+    line-height: 1.45;
+    margin-bottom: 13px;
+  }
 
+
+  /* Description */
+
+  .battery-desc {
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+  }
+
+
+  /* Image */
+
+  .battery-media {
+    width: 100%;
+    margin-bottom: 28px;
+    padding: 0;
+  }
+
+  .battery-media img {
+    width: 100%;
+    height: auto;
+    min-height: 180px;
+    max-height: 420px;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+
+  /* Full description */
+
+  .battery-description {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+
+
+  /* Multiple items */
+
+  .battery-item + .battery-item {
+    margin-top: 40px;
+  }
+
+
+  /* Multiple sections */
+
+  .battery-capacity + .battery-capacity {
+    padding-top: 15px;
+  }
 }
+
 
 /* =========================================
    SMALL MOBILE
 ========================================= */
 
-@media (max-width:360px){
+@media (max-width: 360px) {
 
-    .battery-top,
-    .battery-heading,
-    .battery-stat{
-        padding:0 12px;
-    }
+  .battery-capacity {
+    padding: 28px 0;
+  }
 
-    .battery-media{
-        padding:0 12px;
-    }
+  .battery-heading,
+  .battery-item {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 
-    .battery-heading h2{
-        font-size:27px;
-    }
 
-    .battery-heading h2 span{
-        font-size:18px;
-    }
+  .battery-heading h2 {
+    font-size: 27px;
+    letter-spacing: -0.3px;
+  }
 
-    .battery-desc{
-        font-size:15px;
-    }
 
-    .battery-media img{
-        height:165px;
-        /* border-radius:12px; */
-    }
+  .battery-tagline {
+    font-size: 15px;
+  }
 
-    .battery-number{
-        font-size:50px;
-    }
 
+  .battery-highlighted-text {
+    font-size: 15px;
+  }
+
+
+  .battery-desc {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+
+  .battery-media {
+    margin-bottom: 24px;
+  }
+
+  .battery-media img {
+    min-height: 160px;
+    max-height: 300px;
+  }
+
+
+  .battery-description {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+
+  .battery-item + .battery-item {
+    margin-top: 32px;
+  }
 }

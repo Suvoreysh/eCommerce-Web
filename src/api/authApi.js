@@ -54,6 +54,14 @@ export const authApi = {
       body: payload,
     }),
 
+  // POST /forgot-password { email_id }
+  forgotPassword: (payload) =>
+    apiRequest(ENDPOINTS.FORGOT_PASSWORD, {
+      method: "POST",
+      body: payload,
+      auth: false,
+    }),
+
   changePassword: (payload) =>
     apiRequest(ENDPOINTS.CHANGE_PASSWORD, {
       method: "POST",

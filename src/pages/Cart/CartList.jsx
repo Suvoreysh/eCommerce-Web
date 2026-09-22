@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { cartApi } from "../../api/cartApi";
+import LazyImage from "../../components/common/LazyImage";
+import { resolveImageUrl } from "../../utils/image";
 import { useCartCount } from "../../context/CartCountContext";
 import AccountSidebar from "../../components/profile/AccountSidebar";
 import BackHomeButton from "../../components/profile/BackHomeButton";
@@ -21,11 +23,6 @@ const backIcon = (
     />
   </svg>
 );
-
-function resolveImage(image) {
-  if (!image) return "";
-  return image.startsWith("http") ? image : `${IMAGE_BASE}${image}`;
-}
 
 export default function CartList() {
   const navigate = useNavigate();
@@ -147,7 +144,7 @@ export default function CartList() {
             {items.map((it) => (
               <div key={it.id} className="item-card">
                 <div className="item-thumb">
-                  <img src={resolveImage(it.image)} alt={it.name} />
+                  <LazyImage src={resolveImageUrl(it.image)} alt={it.name} />
                 </div>
                 <div className="item-info">
                   <div className="item-top">
@@ -249,7 +246,7 @@ export default function CartList() {
                   {items.map((it) => (
                     <div key={it.id} className="desktop-row">
                       <div className="desktop-thumb">
-                        <img src={resolveImage(it.image)} alt={it.name} />
+                        <LazyImage src={resolveImageUrl(it.image)} alt={it.name} />
                       </div>
 
                       <div className="desktop-name-block">

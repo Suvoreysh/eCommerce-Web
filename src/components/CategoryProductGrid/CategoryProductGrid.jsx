@@ -1,89 +1,16 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./CategoryProductGrid.css";
-import { FiBox, FiShield, FiPackage } from "react-icons/fi";
-import { productApi } from "../../api/productApi";
-import { cartApi } from "../../api/cartApi";
-import { useCartCount } from "../../context/CartCountContext";
-import { VariantModal } from "../ProductGrid/ProductGrid";
-import WishlistButton from "../common/WishlistButton";
+import { FiBox, FiShield, FiShoppingBag } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
 
+import useVariantCart from "../../hooks/useVariantCart";
+import LazyImage from "../common/LazyImage";
+import WishlistButton from "../common/WishlistButton";
+import { formatPriceRange } from "../../utils/format";
+import "./CategoryProductGrid.css";
+
+// products: normalized list products from utils/catalog.normalizeListProduct
 export default function CategoryProductGrid({ title, products = [] }) {
   const navigate = useNavigate();
-  const { refreshCartCount } = useCartCount();
-
-  const [variantModalProduct, setVariantModalProduct] = useState(null);
-  const [variants, setVariants] = useState([]);
-  const [variantsLoading, setVariantsLoading] = useState(false);
-  const [variantsError, setVariantsError] = useState("");
-  const [adding, setAdding] = useState(false);
-
-  const openVariantModal = async (event, product) => {
-    event.stopPropagation();
-
-    setVariantModalProduct(product);
-    setVariants([]);
-    setVariantsError("");
-    setVariantsLoading(true);
-
-    try {
-      const response = await productApi.getProductVariants(product.id);
-      const rows = Array.isArray(response?.data) ? response.data : [];
-
-      const normalized = rows
-        .map((variant) => ({
-          id: variant.id ?? variant.product_variant_id ?? null,
-          name: product.name,
-          label:
-            variant.label ??
-            variant.storage ??
-            variant.size ??
-            variant.sku ??
-            "Standard",
-          image: variant.image ?? product.image,
-          price:
-            variant.price ??
-            variant.sale_price ??
-            variant.regular_price ??
-            product.price ??
-            product.originalPrice,
-          stock_quantity: variant.stock_quantity,
-        }))
-        .filter((variant) => variant.id !== null);
-
-      setVariants(
-        normalized.length
-          ? normalized
-          : [
-              {
-                id: product.id,
-                name: product.name,
-                label: "Standard",
-                image: product.image,
-                price: product.price ?? product.originalPrice,
-                stock_quantity: product.stock_quantity,
-              },
-            ],
-      );
-    } catch (err) {
-      setVariantsError(err.message || "Unable to load variants.");
-    } finally {
-      setVariantsLoading(false);
-    }
-  };
-
-  const addToCart = async (variantId, quantity) => {
-    try {
-      setAdding(true);
-      await cartApi.addItem(variantId, quantity);
-      setVariantModalProduct(null);
-      refreshCartCount();
-    } catch (err) {
-      alert(err.message || "Unable to add item to cart.");
-    } finally {
-      setAdding(false);
-    }
-  };
+  const { open: openVariants, modal: variantModal } = useVariantCart();
 
   return (
     <section className="category-grid-section">
@@ -93,12 +20,17 @@ export default function CategoryProductGrid({ title, products = [] }) {
 
       {products.length === 0 ? (
         <div className="category-empty">
-          <FiPackage className="category-empty-icon" />
+          <span className="category-empty-art">
+            <FiShoppingBag className="category-empty-icon" />
+          </span>
           <p className="category-empty-title">No products available</p>
           <p className="category-empty-subtext">
             {title} doesn't have any products yet — check back soon or browse
             another category.
           </p>
+          <Link to="/products" className="category-empty-cta">
+            Browse other categories
+          </Link>
         </div>
       ) : (
         <div className="category-grid">
@@ -115,36 +47,33 @@ export default function CategoryProductGrid({ title, products = [] }) {
               />
 
               <div className="category-card-img">
-                <img src={product.image} alt={product.name} />
+                <LazyImage src={product.image} alt={product.name} />
               </div>
 
               <p className="category-name">{product.name}</p>
 
               <p className="category-price">
-                <span className="price-current">₹ {product.price}</span>
-
-                <span className="price-original">
-                  ₹ {product.originalPrice}
+                <span className="price-current">
+                  {formatPriceRange(product.priceMin, product.priceMax)}
                 </span>
               </p>
 
               <div className="category-tags">
                 <span>
                   <FiBox />
-                  {product.tag1 || "Premium Product"}
+                  {product.categoryName || "Premium Product"}
                 </span>
 
                 <span>
                   <FiShield />
-                  {product.tag2 || "Quality Assured"}
+                  {product.subcategoryName || "Quality Assured"}
                 </span>
               </div>
 
               <button
                 type="button"
                 className="category-cta-btn"
-                disabled={adding && variantModalProduct?.id === product.id}
-                onClick={(event) => openVariantModal(event, product)}
+                onClick={(event) => openVariants(event, product)}
               >
                 Add to Cart
               </button>
@@ -153,18 +82,7 @@ export default function CategoryProductGrid({ title, products = [] }) {
         </div>
       )}
 
-      {variantModalProduct && (
-        <VariantModal
-          product={variantModalProduct}
-          variants={variants}
-          loading={variantsLoading}
-          error={variantsError}
-          adding={adding}
-          onClose={() => setVariantModalProduct(null)}
-          onConfirm={addToCart}
-        />
-      )}
+      {variantModal}
     </section>
   );
 }
-

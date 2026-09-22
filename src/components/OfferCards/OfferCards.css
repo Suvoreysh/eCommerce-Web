@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 22px 16px 6px;
 }
+
 .offer-cards-section h2 {
   margin: 0 0 14px;
   color: #111;
@@ -10,50 +11,43 @@
   font-weight: 800;
   letter-spacing: -0.2px;
 }
+
 .offer-cards-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
+
 .offer-card {
-  position: relative;
-  min-height: 180px;
   overflow: hidden;
   border-radius: 14px;
   background: #e8edef;
 }
-.offer-card img {
-  position: relative;
-  z-index: 2;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.45s ease;
+
+/* Reserve space while loading, then follow the image's natural height */
+.offer-card .lazy-img {
+  min-height: 180px;
+  border-radius: 14px;
 }
-.offer-card img.is-loaded {
-  opacity: 1;
+
+.offer-card .lazy-img[data-status="loaded"] {
+  min-height: 0;
 }
-.offer-image-skeleton {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: #e8edef;
+
+.offer-card .lazy-img__el {
+  height: auto;
 }
+
 @media (max-width: 480px) {
   .offer-cards-row {
     gap: 10px;
   }
-  .offer-card {
+
+  .offer-card .lazy-img {
     min-height: 120px;
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  .offer-card img {
-    transition: none;
-  }
-  .offer-image-skeleton span {
-    animation: none;
+
+  .offer-card .lazy-img[data-status="loaded"] {
+    min-height: 0;
   }
 }

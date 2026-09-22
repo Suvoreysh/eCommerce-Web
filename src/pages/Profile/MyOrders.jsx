@@ -1,141 +1,183 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { IoInformationCircleOutline } from "react-icons/io5";
+import { FiShoppingBag } from "react-icons/fi";
 
+import { orderApi } from "../../api/cartApi";
 import Seo from "../../components/common/Seo";
+import LazyImage from "../../components/common/LazyImage";
 import AccountSidebar from "../../components/profile/AccountSidebar";
 import BackHomeButton from "../../components/profile/BackHomeButton";
+import { firstErrorMessage, formatINR } from "../../utils/format";
+import { deliveryStatusLabel, isCancelled, orderTab } from "../../utils/orderStatus";
 
 import "./MyOrders.css";
 
 const tabs = [
-  {
-    key: "pending",
-    label: "Pending",
-  },
-  {
-    key: "completed",
-    label: "Completed",
-  },
-  {
-    key: "return",
-    label: "Return",
-  },
+  { key: "pending", label: "Pending" },
+  { key: "completed", label: "Completed" },
+  { key: "cancelled", label: "Cancelled" },
 ];
 
-const orders = [
-  {
-    id: "123456788",
-    total: 1000,
-    status: "Shipped",
-    tab: "pending",
+function OrderCard({ order, desktop, onOpen, onCancel, cancelling }) {
+  const prefix = desktop ? "od-card" : "order-card";
+  const cancellable = !isCancelled(order) && order.delivery_status_id < 5;
 
-    items: [
-      {
-        id: 1,
-        name: "Product name",
-        value: 500,
-        arrival: "04 Dec 26",
-        qty: 1,
-        image: "",
-      },
-      {
-        id: 2,
-        name: "Product name",
-        value: 500,
-        arrival: "04 Dec 26",
-        qty: 1,
-        image: "",
-      },
-    ],
-  },
+  return (
+    <article className={prefix} key={order.order_id}>
+      <div className={`${prefix}__header`}>
+        <div className={`${prefix}__id`}>
+          <strong>Order:</strong> <span>#{order.order_number}</span>
+        </div>
+        <div className={`${prefix}__right`}>
+          <span>
+            ({order.item_count} {order.item_count === 1 ? "Item" : "Items"})
+          </span>
+          <strong>{formatINR(order.total_payable_amount)}</strong>
+        </div>
+      </div>
 
-  {
-    id: "123455789",
-    total: 1000,
-    status: "Shipped",
-    tab: "pending",
+      <div className={`${prefix}__divider`} />
 
-    items: [
-      {
-        id: 3,
-        name: "Product name",
-        value: 1000,
-        arrival: "04 Dec 26",
-        qty: 1,
-        image: "",
-      },
-    ],
-  },
+      <div className={`${desktop ? "od-products" : "order-products"} order-preview-row`}>
+        {(order.preview_images || []).slice(0, 4).map((image, index) => (
+          <div className="order-preview-thumb" key={`${order.order_id}-${index}`}>
+            <LazyImage src={image} alt="" />
+          </div>
+        ))}
+        {order.item_count > (order.preview_images || []).length && (
+          <div className="order-preview-thumb order-preview-thumb--more">
+            +{order.item_count - (order.preview_images || []).length}
+          </div>
+        )}
+      </div>
 
-  {
-    id: "123455790",
-    total: 750,
-    status: "Delivered",
-    tab: "completed",
+      <p className="order-placed-on">
+        Placed on {new Date(order.placed_on).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })}
+      </p>
 
-    items: [
-      {
-        id: 4,
-        name: "Completed product",
-        value: 750,
-        arrival: "28 Nov 26",
-        qty: 1,
-        image: "",
-      },
-    ],
-  },
+      <div className={`${prefix}__actions`}>
+        <button type="button" className={desktop ? "od-status-btn" : "status-btn"}>
+          {deliveryStatusLabel(order.delivery_status_id)}
+        </button>
 
-  {
-    id: "123455791",
-    total: 450,
-    status: "Return Requested",
-    tab: "return",
+        <div className="order-card__action-group">
+          {cancellable && (
+            <button
+              type="button"
+              className="cancel-btn"
+              disabled={cancelling}
+              onClick={() => onCancel(order)}
+            >
+              {cancelling ? "Cancelling…" : "Cancel"}
+            </button>
+          )}
 
-    items: [
-      {
-        id: 5,
-        name: "Returned product",
-        value: 450,
-        arrival: "25 Nov 26",
-        qty: 1,
-        image: "",
-      },
-    ],
-  },
-];
+          <button
+            type="button"
+            className={desktop ? "od-track-btn" : "track-btn"}
+            onClick={() => onOpen(order)}
+          >
+            Order Details
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export default function MyOrders() {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("pending");
+  const [orders, setOrders] = useState([]);
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [error, setError] = useState("");
+  const [cancellingId, setCancellingId] = useState(null);
 
-  const filteredOrders = useMemo(() => {
-    return orders.filter((order) => order.tab === activeTab);
-  }, [activeTab]);
+  const loadPage = async (targetPage) => {
+    try {
+      if (targetPage === 1) setLoading(true);
+      else setLoadingMore(true);
+      setError("");
+
+      const response = await orderApi.getOrders(targetPage);
+      const data = response?.data || {};
+      const rows = Array.isArray(data.orders) ? data.orders : [];
+
+      setOrders((prev) => (targetPage === 1 ? rows : [...prev, ...rows]));
+      setPage(Number(data.current_page) || targetPage);
+      setLastPage(Number(data.last_page) || 1);
+    } catch (err) {
+      console.error("Get orders failed:", err);
+      setError(firstErrorMessage(err, "Unable to load your orders."));
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  useEffect(() => {
+    loadPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const filteredOrders = useMemo(
+    () => orders.filter((order) => orderTab(order) === activeTab),
+    [orders, activeTab],
+  );
 
   const openOrderDetails = (order) => {
-    navigate(`/order-details/${order.id}`, {
-      state: {
-        order,
-      },
-    });
+    navigate(`/order-details/${order.order_id}`, { state: { order } });
   };
+
+  const handleCancel = async (order) => {
+    if (!window.confirm(`Cancel order #${order.order_number}?`)) return;
+
+    try {
+      setCancellingId(order.order_id);
+      await orderApi.cancelOrder(order.order_id);
+
+      setOrders((prev) =>
+        prev.map((item) =>
+          item.order_id === order.order_id
+            ? { ...item, order_status_id: 4 }
+            : item,
+        ),
+      );
+    } catch (err) {
+      console.error("Cancel order failed:", err);
+      window.alert(firstErrorMessage(err, "Unable to cancel this order."));
+    } finally {
+      setCancellingId(null);
+    }
+  };
+
+  const emptyState = (
+    <div className="orders-empty">
+      <FiShoppingBag />
+      <h2>No orders found</h2>
+      <p>There are no orders available in this section.</p>
+    </div>
+  );
 
   return (
     <main className="orders-page">
       <Seo title="My Orders" description="View and manage your orders" />
 
-      {/* ========================================
-          MOBILE HEADER
-      ======================================== */}
+      {/* ---------- Mobile ---------- */}
 
       <header className="orders-header">
         <BackHomeButton className="orders-header__btn" />
-
         <h1>My Order</h1>
-
         <button
           type="button"
           className="orders-header__btn orders-header__info"
@@ -144,10 +186,6 @@ export default function MyOrders() {
           <IoInformationCircleOutline />
         </button>
       </header>
-
-      {/* ========================================
-          MOBILE CONTENT
-      ======================================== */}
 
       <div className="orders-mobile-body">
         <div className="orders-tabs">
@@ -164,85 +202,38 @@ export default function MyOrders() {
         </div>
 
         <div className="orders-list">
-          {filteredOrders.length === 0 ? (
-            <div className="orders-empty">
-              <FiShoppingBag />
-              <h2>No orders found</h2>
-              <p>There are no orders available in this section.</p>
-            </div>
+          {loading ? (
+            <p style={{ textAlign: "center", padding: "24px 0" }}>Loading orders…</p>
+          ) : error ? (
+            <p style={{ textAlign: "center", padding: "24px 0", color: "red" }}>{error}</p>
+          ) : filteredOrders.length === 0 ? (
+            emptyState
           ) : (
             filteredOrders.map((order) => (
-              <article className="order-card" key={order.id}>
-                <div className="order-card__header">
-                  <div className="order-card__id">
-                    <strong>ID:</strong>
-                    <span> #{order.id}</span>
-                  </div>
-
-                  <div className="order-card__right">
-                    <span>
-                      ({order.items.length}{" "}
-                      {order.items.length === 1 ? "Item" : "Items"})
-                    </span>
-
-                    <strong>${Number(order.total).toFixed(2)}</strong>
-                  </div>
-                </div>
-
-                <div className="order-divider" />
-
-                <div className="order-products">
-                  {order.items.map((item) => (
-                    <div className="order-product" key={item.id}>
-                      <div className="order-product__image">
-                        {item.image ? (
-                          <img src={item.image} alt={item.name} />
-                        ) : (
-                          <div className="image-placeholder" />
-                        )}
-                      </div>
-
-                      <div className="order-product__content">
-                        <h2>{item.name}</h2>
-
-                        <p className="price">
-                          Value: ${Number(item.value).toFixed(2)}
-                        </p>
-
-                        <p className="arrival">
-                          Est Arrival: <strong>{item.arrival}</strong>
-                        </p>
-                      </div>
-
-                      <span className="order-product__qty">
-                        Qty: {item.qty}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="order-card__actions">
-                  <button type="button" className="status-btn">
-                    {order.status}
-                  </button>
-
-                  <button
-                    type="button"
-                    className="track-btn"
-                    onClick={() => openOrderDetails(order)}
-                  >
-                    Order Details
-                  </button>
-                </div>
-              </article>
+              <OrderCard
+                key={order.order_id}
+                order={order}
+                onOpen={openOrderDetails}
+                onCancel={handleCancel}
+                cancelling={cancellingId === order.order_id}
+              />
             ))
           )}
         </div>
+
+        {!loading && page < lastPage && (
+          <button
+            type="button"
+            className="orders-load-more"
+            disabled={loadingMore}
+            onClick={() => loadPage(page + 1)}
+          >
+            {loadingMore ? "Loading…" : "Load more"}
+          </button>
+        )}
       </div>
 
-      {/* ========================================
-          DESKTOP LAYOUT
-      ======================================== */}
+      {/* ---------- Desktop ---------- */}
 
       <div className="orders-desktop">
         <AccountSidebar />
@@ -253,7 +244,6 @@ export default function MyOrders() {
               <BackHomeButton className="od-desktop-back-btn" />
               <h1>My Orders</h1>
             </div>
-
             <button type="button" className="od-info-btn">
               <IoInformationCircleOutline />
               <span>How orders work?</span>
@@ -265,9 +255,7 @@ export default function MyOrders() {
               <button
                 type="button"
                 key={tab.key}
-                className={`od-tab ${
-                  activeTab === tab.key ? "od-tab--active" : ""
-                }`}
+                className={`od-tab ${activeTab === tab.key ? "od-tab--active" : ""}`}
                 onClick={() => setActiveTab(tab.key)}
               >
                 {tab.label}
@@ -276,73 +264,38 @@ export default function MyOrders() {
           </div>
 
           <div className="od-list">
-            {filteredOrders.length === 0 ? (
+            {loading ? (
+              <p style={{ textAlign: "center", padding: "24px 0" }}>Loading orders…</p>
+            ) : error ? (
+              <p style={{ textAlign: "center", padding: "24px 0", color: "red" }}>{error}</p>
+            ) : filteredOrders.length === 0 ? (
               <div className="od-empty">
                 <FiShoppingBag />
-
                 <h2>No orders found</h2>
-
                 <p>There are no orders available in this section.</p>
               </div>
             ) : (
               filteredOrders.map((order) => (
-                <article className="od-card" key={order.id}>
-                  <div className="od-card__header">
-                    <span className="od-card__id">ID: #{order.id}</span>
-
-                    <span className="od-card__meta">
-                      ({order.items.length}{" "}
-                      {order.items.length === 1 ? "Item" : "Items"})
-                    </span>
-
-                    <strong className="od-card__total">
-                      ${Number(order.total).toFixed(2)}
-                    </strong>
-                  </div>
-
-                  <div className="od-card__divider" />
-
-                  <div className="od-products">
-                    {order.items.map((item) => (
-                      <div className="od-product" key={item.id}>
-                        <div className="od-product__img">
-                          {item.image ? (
-                            <img src={item.image} alt={item.name} />
-                          ) : (
-                            <div className="od-img-placeholder" />
-                          )}
-                        </div>
-
-                        <div className="od-product__info">
-                          <h2>{item.name}</h2>
-
-                          <p>Value: ${Number(item.value).toFixed(2)}</p>
-
-                          <p>
-                            Est Arrival: <strong>{item.arrival}</strong>
-                          </p>
-                        </div>
-
-                        <span className="od-product__qty">Qty: {item.qty}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="od-card__actions">
-                    <button type="button" className="od-status-btn">
-                      {order.status}
-                    </button>
-
-                    <button
-                      type="button"
-                      className="od-track-btn"
-                      onClick={() => openOrderDetails(order)}
-                    >
-                      Order Details
-                    </button>
-                  </div>
-                </article>
+                <OrderCard
+                  key={order.order_id}
+                  order={order}
+                  desktop
+                  onOpen={openOrderDetails}
+                  onCancel={handleCancel}
+                  cancelling={cancellingId === order.order_id}
+                />
               ))
+            )}
+
+            {!loading && page < lastPage && (
+              <button
+                type="button"
+                className="orders-load-more"
+                disabled={loadingMore}
+                onClick={() => loadPage(page + 1)}
+              >
+                {loadingMore ? "Loading…" : "Load more"}
+              </button>
             )}
           </div>
         </section>

@@ -5,7 +5,7 @@ import { productApi } from "../../api/productApi";
 import { cartApi } from "../../api/cartApi";
 import { useCartCount } from "../../context/CartCountContext";
 import { useAuth } from "../../context/AuthContext";
-import { VariantModal } from "../ProductGrid/ProductGrid";
+import VariantModal from "../common/VariantModal";
 import WishlistButton from "../common/WishlistButton";
 import "./KeepExploring.css";
 

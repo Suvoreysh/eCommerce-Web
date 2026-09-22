@@ -67,12 +67,12 @@ export default function PrivacySecurity({ productId: passedProductId }) {
 
   return (
     <section className="privacy-security">
-      <div className="privacy-media">
+      {/* <div className="privacy-media">
         <img src={securityImg} alt="MacBook Neo security" />
-      </div>
+      </div> */}
 
       <div className="privacy-content">
-        <p className="privacy-eyebrow">Privacy and Security</p>
+        {/* <p className="privacy-eyebrow">Privacy and Security</p>
 
         <h2 className="privacy-heading">
           No
@@ -90,7 +90,7 @@ export default function PrivacySecurity({ productId: passedProductId }) {
           Mac. Automatic data encryption, free antivirus protections and regular
           software updates give you the peace of mind that you and your data
           stay safe online.
-        </p>
+        </p> */}
 
         <div className="privacy-points">
           {loading &&

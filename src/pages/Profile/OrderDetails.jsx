@@ -1,9 +1,14 @@
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { IoCallOutline, IoInformationCircleOutline } from "react-icons/io5";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
+import { orderApi } from "../../api/cartApi";
 import Seo from "../../components/common/Seo";
+import LazyImage from "../../components/common/LazyImage";
 import AccountSidebar from "../../components/profile/AccountSidebar";
+import { firstErrorMessage, formatINR } from "../../utils/format";
+import { deliveryStatusLabel, isCancelled } from "../../utils/orderStatus";
 import "./OrderDetails.css";
 
 const backIcon = (
@@ -18,60 +23,30 @@ const backIcon = (
   </svg>
 );
 
-const steps = [
-  { id: 1, label: "Processing" },
-  { id: 2, label: "Picking" },
-  { id: 3, label: "Shipping" },
-  { id: 4, label: "Delivered" },
+const STEPS = [
+  { id: 1, label: "Placed" },
+  { id: 2, label: "Processing" },
+  { id: 3, label: "Shipped" },
+  { id: 4, label: "Out for Delivery" },
+  { id: 5, label: "Delivered" },
 ];
 
-const fallbackOrder = {
-  id: "123456789",
-  total: 1000,
-  status: "Processing",
-  currentStep: 2,
-  deliveryEstimate: "December 3, 2026",
-
-  customer: {
-    name: "Rahul Sharma",
-    address:
-      "Flat 5B, Shanti Residency, 24 MG Road, Indiranagar, Karnataka, Bengaluru-560038",
-    phone: "+91 98765 43210",
-  },
-
-  paymentMethod: "Credit Card",
-
-  items: [
-    {
-      name: "Product name",
-      value: 1000,
-      arrival: "04 Dec 26",
-      qty: 1,
-      image: "",
-    },
-  ],
-};
-
-function OrderDetailsContent({ order }) {
+function OrderDetailsContent({ order, onCancel, cancelling }) {
   const navigate = useNavigate();
 
-  const product = order.items?.[0] || fallbackOrder.items[0];
+  const currentStep = isCancelled(order) ? 0 : Number(order.delivery_status_id) || 1;
+  const progressWidth =
+    currentStep > 0 ? ((currentStep - 1) / (STEPS.length - 1)) * 100 : 0;
 
-  const progressWidth = ((order.currentStep - 1) / (steps.length - 1)) * 100;
+  const placedOnLabel = order.placed_on
+    ? new Date(order.placed_on).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : "";
 
-  const handleContact = () => {
-    window.location.href = `tel:${order.customer.phone.replace(/\s/g, "")}`;
-  };
-
-  const handleCancelOrder = () => {
-    const confirmed = window.confirm(
-      `Are you sure you want to cancel order #${order.id}?`,
-    );
-
-    if (!confirmed) return;
-
-    console.log("Order cancelled:", order.id);
-  };
+  const cancellable = !isCancelled(order) && currentStep < 5;
 
   return (
     <div className="order-details-content">
@@ -96,127 +71,95 @@ function OrderDetailsContent({ order }) {
         </button>
       </header>
 
-      <section className="order-progress">
-        <div className="order-progress-track">
-          <div
-            className="order-progress-track-active"
-            style={{ width: `${progressWidth}%` }}
-          />
-        </div>
+      {isCancelled(order) ? (
+        <section className="order-status-banner order-status-banner--cancelled">
+          This order was cancelled.
+        </section>
+      ) : (
+        <section className="order-progress">
+          <div className="order-progress-track">
+            <div
+              className="order-progress-track-active"
+              style={{ width: `${progressWidth}%` }}
+            />
+          </div>
 
-        {steps.map((step) => {
-          const active = step.id <= order.currentStep;
-
-          return (
+          {STEPS.map((step) => (
             <div
               key={step.id}
-              className={`order-progress-step ${active ? "active" : ""}`}
+              className={`order-progress-step ${step.id <= currentStep ? "active" : ""}`}
             >
               <div className="order-progress-circle">
                 <span />
               </div>
-
               <p>{step.label}</p>
             </div>
-          );
-        })}
-      </section>
+          ))}
+        </section>
+      )}
 
       <div className="order-details-grid">
         <section className="order-information-card">
           <div className="order-details-row order-status-row">
             <p>
-              <strong>ID:</strong>
-              <span> #{order.id}</span>
+              <strong>Order:</strong>
+              <span> #{order.order_number}</span>
             </p>
 
-            <span className="order-status-badge">{order.status}</span>
+            <span className="order-status-badge">
+              {isCancelled(order) ? "Cancelled" : deliveryStatusLabel(order.delivery_status_id)}
+            </span>
           </div>
 
           <div className="order-details-divider" />
 
           <div className="order-details-row delivery-row">
-            <span>Delivery estimate</span>
-            <strong>{order.deliveryEstimate}</strong>
+            <span>Placed on</span>
+            <strong>{placedOnLabel}</strong>
           </div>
 
           <div className="order-details-divider" />
 
-          <div className="customer-details">
-            <h2>{order.customer.name}</h2>
-
-            <p className="customer-address">{order.customer.address}</p>
-
-            <p className="customer-phone">
-              <span>Phone No:</span>
-              <strong>{order.customer.phone}</strong>
-            </p>
+          <div className="order-details-row delivery-row">
+            <span>Items</span>
+            <strong>{order.item_count}</strong>
           </div>
 
           <div className="order-details-divider" />
 
-          <div className="order-details-row payment-row">
-            <span>Payment method</span>
-            <strong>{order.paymentMethod}</strong>
+          <div className="order-details-row delivery-row">
+            <span>Total Payable</span>
+            <strong>{formatINR(order.total_payable_amount)}</strong>
           </div>
         </section>
 
-        <section className="order-product-details-card">
-          <div className="order-product-card-header">
-            <p>
-              <strong>ID:</strong>
-              <span> #{order.id}</span>
-            </p>
-
-            <strong>${Number(order.total).toFixed(2)}</strong>
-          </div>
-
-          <div className="order-details-divider" />
-
-          <div className="order-product-details-body">
-            <div className="order-details-product-image">
-              {product.image ? (
-                <img src={product.image} alt={product.name} />
-              ) : (
-                <div className="order-details-placeholder" />
-              )}
-            </div>
-
-            <div className="order-details-product-info">
-              <h2>{product.name}</h2>
-
-              <p>Value: ${Number(product.value).toFixed(2)}</p>
-
-              <small>
-                Est Arrival: <strong>{product.arrival}</strong>
-              </small>
-            </div>
-
-            <span className="order-details-product-qty">
-              Qty: {product.qty}
-            </span>
+        <section className="order-details-product">
+          <h3 className="order-preview-title">Items in this order</h3>
+          <div className="order-preview-gallery">
+            {(order.preview_images || []).map((image, index) => (
+              <div className="order-preview-thumb" key={index}>
+                <LazyImage src={image} alt="" />
+              </div>
+            ))}
+            {(!order.preview_images || order.preview_images.length === 0) && (
+              <p style={{ color: "#8a8a8a", fontSize: 13 }}>No preview available.</p>
+            )}
           </div>
         </section>
       </div>
 
-      <div className="order-details-actions">
-        <button
-          type="button"
-          className="order-contact-btn"
-          onClick={handleContact}
-        >
-          <IoCallOutline />
-          Contact Us
-        </button>
-
-        <button
-          type="button"
-          className="order-cancel-btn"
-          onClick={handleCancelOrder}
-        >
-          Cancel Order
-        </button>
-      </div>
+      {cancellable && (
+        <div className="order-details-actions">
+          <button
+            type="button"
+            className="order-cancel-btn"
+            disabled={cancelling}
+            onClick={onCancel}
+          >
+            {cancelling ? "Cancelling…" : "Cancel Order"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -225,46 +168,95 @@ export default function OrderDetails() {
   const location = useLocation();
   const { orderId } = useParams();
 
-  const receivedOrder = location.state?.order;
+  const [order, setOrder] = useState(location.state?.order || null);
+  const [loading, setLoading] = useState(!location.state?.order);
+  const [error, setError] = useState("");
+  const [cancelling, setCancelling] = useState(false);
 
-  const order = {
-    ...fallbackOrder,
-    ...receivedOrder,
+  // Direct link / refresh without router state: fall back to the order list
+  // and pick out this order, since there's no confirmed single-order
+  // endpoint in the API contract.
+  useEffect(() => {
+    if (order) return;
 
-    id: orderId || receivedOrder?.id || fallbackOrder.id,
+    let active = true;
 
-    currentStep: receivedOrder?.currentStep || fallbackOrder.currentStep,
+    (async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-    deliveryEstimate:
-      receivedOrder?.deliveryEstimate || fallbackOrder.deliveryEstimate,
+        let page = 1;
+        let found = null;
+        let lastPage = 1;
 
-    customer: receivedOrder?.customer || fallbackOrder.customer,
+        do {
+          const response = await orderApi.getOrders(page);
+          const data = response?.data || {};
+          const rows = Array.isArray(data.orders) ? data.orders : [];
 
-    paymentMethod: receivedOrder?.paymentMethod || fallbackOrder.paymentMethod,
+          found = rows.find((item) => String(item.order_id) === String(orderId));
+          lastPage = Number(data.last_page) || 1;
+          page += 1;
+        } while (!found && page <= lastPage && page <= 10);
 
-    items: receivedOrder?.items || fallbackOrder.items,
+        if (!active) return;
+
+        if (!found) {
+          setError("Order not found.");
+        } else {
+          setOrder(found);
+        }
+      } catch (err) {
+        if (active) setError(firstErrorMessage(err, "Unable to load this order."));
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [order, orderId]);
+
+  const handleCancel = async () => {
+    if (!order || !window.confirm(`Cancel order #${order.order_number}?`)) return;
+
+    try {
+      setCancelling(true);
+      await orderApi.cancelOrder(order.order_id);
+      setOrder((prev) => ({ ...prev, order_status_id: 4 }));
+    } catch (err) {
+      window.alert(firstErrorMessage(err, "Unable to cancel this order."));
+    } finally {
+      setCancelling(false);
+    }
   };
 
   return (
     <main className="order-details-page">
-      <Seo
-        title="Order Details"
-        description={`Order details for ${order.id}`}
-      />
+      <Seo title="Order Details" description="View your order details." />
 
-      {/* Mobile */}
-      <div className="order-details-mobile">
-        <OrderDetailsContent order={order} />
-      </div>
+      {loading ? (
+        <p style={{ textAlign: "center", padding: "40px 20px" }}>Loading order…</p>
+      ) : error || !order ? (
+        <p style={{ textAlign: "center", padding: "40px 20px", color: "red" }}>
+          {error || "Order not found."}
+        </p>
+      ) : (
+        <>
+          <div className="order-details-mobile">
+            <OrderDetailsContent order={order} onCancel={handleCancel} cancelling={cancelling} />
+          </div>
 
-      {/* Desktop */}
-      <div className="order-details-desktop">
-        <AccountSidebar />
-
-        <section className="order-details-main-panel">
-          <OrderDetailsContent order={order} />
-        </section>
-      </div>
+          <div className="order-details-desktop">
+            <AccountSidebar />
+            <section className="order-details-main-panel">
+              <OrderDetailsContent order={order} onCancel={handleCancel} cancelling={cancelling} />
+            </section>
+          </div>
+        </>
+      )}
     </main>
   );
 }

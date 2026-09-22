@@ -1,0 +1,45 @@
+.cat-offers {
+  max-width: 1400px;
+  margin: 14px auto 0;
+  padding: 0 25px;
+}
+
+.cat-offers__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.cat-offers__card {
+  overflow: hidden;
+  border-radius: 16px;
+  background: #e8edef;
+}
+
+.cat-offers__card .lazy-img {
+  min-height: 160px;
+  border-radius: 16px;
+}
+
+.cat-offers__card .lazy-img[data-status="loaded"] {
+  min-height: 0;
+}
+
+.cat-offers__card .lazy-img__el {
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .cat-offers {
+    padding: 0 16px;
+  }
+
+  .cat-offers__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .cat-offers__card .lazy-img {
+    min-height: 120px;
+  }
+}

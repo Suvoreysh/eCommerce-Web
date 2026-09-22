@@ -73,10 +73,6 @@
   .bottom-nav {
     display: none;
   }
-
-  .search-modal-backdrop {
-    display: none;
-  }
 }
 
 @media (max-width: 768px) {
@@ -96,64 +92,5 @@
 
   .bottom-nav__label {
     font-size: 12px;
-  }
-}
-
-/*=========================================
-  SEARCH MODAL — top-to-bottom slide-in
-=========================================*/
-
-.search-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  z-index: 1000;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: default;
-  animation: search-backdrop-fade 0.28s ease forwards;
-}
-
-@keyframes search-backdrop-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.search-modal-panel {
-  width: 100%;
-  max-height: 100vh;
-  overflow-y: auto;
-  background: transparent;
-  animation: search-modal-slide-down 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.search-modal-panel--closing {
-  animation: search-modal-slide-up 0.28s cubic-bezier(0.4, 0, 1, 1) forwards;
-}
-
-@keyframes search-modal-slide-down {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes search-modal-slide-up {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-100%);
-    opacity: 0;
   }
 }
