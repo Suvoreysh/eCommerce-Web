@@ -12,12 +12,11 @@ export default function OrderSuccess() {
   const { reset } = useCheckout();
 
   const orderId = location.state?.orderId || "#000000000";
-  const email = location.state?.personal?.email || location.state?.personal?.email_id;
+  const email =
+    location.state?.personal?.email || location.state?.personal?.email_id;
   const paymentType = location.state?.paymentType;
   const address = location.state?.address;
 
-  // The order is placed — clear the checkout wizard state and refresh the
-  // cart badge (place-order empties the server-side cart).
   useEffect(() => {
     refreshCartCount();
     reset();
@@ -55,7 +54,9 @@ export default function OrderSuccess() {
         {address && (
           <p style={{ color: "#6b6b6b", fontSize: 13, lineHeight: 1.5 }}>
             Delivering to {address.full_name} —{" "}
-            {[address.city, address.state, address.pincode].filter(Boolean).join(", ")}
+            {[address.city, address.state, address.pincode]
+              .filter(Boolean)
+              .join(", ")}
           </p>
         )}
       </div>
@@ -64,7 +65,10 @@ export default function OrderSuccess() {
         <button className="invoice-btn" onClick={() => navigate("/orders")}>
           See Invoice 📄
         </button>
-        <button className="order-details-btn" onClick={() => navigate("/orders")}>
+        <button
+          className="order-details-btn"
+          onClick={() => navigate("/orders")}
+        >
           See Order Details 🕓
         </button>
       </div>
@@ -76,13 +80,11 @@ export default function OrderSuccess() {
       <div className="checkout-mobile">
         <div className="success-wrap">{successBody}</div>
       </div>
-
       <div className="cd-desktop">
         <aside className="od-sidebar">
           <div className="od-avatar" />
           <h2 className="od-name">Checkout</h2>
           <p className="od-phone">Complete</p>
-
           <nav className="od-steps">
             <div className="od-step done">
               <span className="od-step-num">✓</span>
@@ -97,7 +99,6 @@ export default function OrderSuccess() {
               <span>Payment</span>
             </div>
           </nav>
-
           <div className="od-help">
             <span className="od-help-icon">🎧</span>
             <div>
@@ -107,7 +108,6 @@ export default function OrderSuccess() {
             </div>
           </div>
         </aside>
-
         <div className="od-main">
           <div className="od-main-header">
             <h1>Order Confirmed</h1>

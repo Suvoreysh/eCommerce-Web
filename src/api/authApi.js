@@ -68,3 +68,30 @@ export const authApi = {
       body: payload,
     }),
 };
+
+// Separate export so Profile.jsx can use it directly (multipart, no JSON header)
+export async function uploadProfileImageRequest(file) {
+  const token = localStorage.getItem("authToken");
+  if (!token) throw new Error("Not authenticated");
+
+  const form = new FormData();
+  form.append("image", file);
+
+  const { BASE_URL } = await import("./config");
+  const res = await fetch(`${BASE_URL}/profile/image`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: form,
+  });
+
+  let json = null;
+  try { json = await res.json(); } catch { /* empty */ }
+
+  if (!res.ok) {
+    throw new Error(json?.message || json?.error || `Upload failed (${res.status})`);
+  }
+  return json;
+}

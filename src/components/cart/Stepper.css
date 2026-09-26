@@ -1,82 +1,191 @@
-.stepper {
-    display: flex;
-    align-items: center;
-    padding: 14px 28px 4px;
+/* =========================================
+   CHECKOUT STEPPER
+   Scoped classes so other UI is not affected
+========================================= */
+
+.checkout-stepper {
+  width: 100%;
+  padding: 20px 16px 26px;
+  box-sizing: border-box;
 }
 
-.step-dot-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    position: relative;
+.checkout-stepper-track {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
 }
 
-.step-dot {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 2px solid #d5d5d5;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
+/* =========================================
+   EACH STEP
+========================================= */
+
+.checkout-step {
+  flex: 1;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 0;
 }
 
-.step-dot.done {
-    border-color: #2fae4e;
+/* =========================================
+   CONNECTOR LINE
+========================================= */
+
+.checkout-step:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  /* vertically center line with dot */
+  top: 14px;
+
+  /* start from center of current dot */
+  left: 50%;
+
+  width: 100%;
+  height: 2px;
+
+  background: #dedede;
+
+  z-index: 0;
 }
 
-.step-dot.done::after {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #2fae4e;
+/* completed/active connector */
+
+.checkout-step--active:not(:last-child)::after {
+  background: #17495a;
 }
 
-.step-dot.current {
-    border-color: #123848;
+/*
+If next step is NOT reached,
+the line after the current step should stay gray.
+*/
+
+.checkout-step--active:not(:last-child):has(
+    + .checkout-step:not(.checkout-step--active)
+  )::after {
+  background: #dedede;
 }
 
-.step-dot.current::after {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #123848;
+/* =========================================
+   OUTER DOT
+========================================= */
+
+.checkout-step-dot {
+  width: 29px;
+  height: 29px;
+
+  border-radius: 50%;
+
+  background: #f8fafb;
+  border: 1.5px solid #17495a;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  z-index: 2;
+
+  box-sizing: border-box;
 }
 
-.step-line {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    width: 100%;
+/* inactive */
+
+.checkout-step:not(.checkout-step--active) .checkout-step-dot {
+  border-color: #8f9699;
+}
+
+/* =========================================
+   INNER DOT
+========================================= */
+
+.checkout-step-dot span {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+
+  background: #17495a;
+
+  display: block;
+}
+
+/* inactive inner dot */
+
+.checkout-step:not(.checkout-step--active) .checkout-step-dot span {
+  background: #17495a;
+}
+
+/* =========================================
+   LABEL
+========================================= */
+
+.checkout-step-label {
+  margin-top: 9px;
+
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 500;
+
+  color: #17495a;
+
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* inactive label */
+
+.checkout-step:not(.checkout-step--active) .checkout-step-label {
+  color: #b8b8b8;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+  .checkout-stepper {
+    padding: 20px 15px 27px;
+  }
+
+  .checkout-step-dot {
+    width: 29px;
+    height: 29px;
+  }
+
+  .checkout-step-dot span {
+    width: 10px;
+    height: 10px;
+  }
+
+  .checkout-step:not(:last-child)::after {
+    top: 14px;
     height: 2px;
-    background: #d5d5d5;
-    z-index: 1;
+  }
+
+  .checkout-step-label {
+    margin-top: 9px;
+    font-size: 15px;
+    line-height: 20px;
+  }
 }
 
-.step-line.done {
-    background: #123848;
-}
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
 
-.step-dot-wrap:last-child .step-line {
-    display: none;
-}
+@media (max-width: 360px) {
+  .checkout-stepper {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 
-.step-label {
-    margin-top: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #b5b5b5;
-}
-
-.step-label.done {
-    color: #2fae4e;
-}
-
-.step-label.current {
-    color: #123848;
+  .checkout-step-label {
+    font-size: 13px;
+  }
 }

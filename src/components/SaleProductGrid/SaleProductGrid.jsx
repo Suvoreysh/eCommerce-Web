@@ -3,11 +3,11 @@ import "./SaleProductGrid.css";
 import useVariantCart from "../../hooks/useVariantCart";
 import WishlistButton from "../common/WishlistButton";
 import LazyImage from "../common/LazyImage";
+import { useAuth } from "../../context/AuthContext";
 
-// Legacy grid kept for any screen still passing plain { id, name, image,
-// price, chip, desc, onSale, ctaLabel } product shapes.
 export default function SaleProductGrid({ title, products = [], seeMoreHref = "/category" }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { open: openVariants, modal: variantModal } = useVariantCart();
 
   return (
@@ -38,7 +38,25 @@ export default function SaleProductGrid({ title, products = [], seeMoreHref = "/
               <LazyImage src={p.image} alt={p.name} />
             </div>
 
-            <p className="sale-price">Price: {p.price}</p>
+            {user ? (
+              <p className="sale-price">₹ {p.price}</p>
+            ) : (
+              <p
+                className="sale-price price-login-prompt"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const returnTo = encodeURIComponent(
+                    window.location.pathname + window.location.search,
+                  );
+                  navigate(`/login?returnTo=${returnTo}`);
+                }}
+              >
+                Login to see price
+              </p>
+            )}
+
             <p className="sale-name">{p.name}</p>
             <p className="sale-chip">{p.chip}</p>
             <p className="sale-desc">{p.desc}</p>

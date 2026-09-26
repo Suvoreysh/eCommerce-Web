@@ -77,7 +77,11 @@ export default function UserDetail() {
   const [loadError, setLoadError] = useState("");
 
   const [cartItems, setCartItems] = useState([]);
-  const [cartMeta, setCartMeta] = useState({ subtotal: 0, discount: 0, totalItems: 0 });
+  const [cartMeta, setCartMeta] = useState({
+    subtotal: 0,
+    discount: 0,
+    totalItems: 0,
+  });
   const [cartLoading, setCartLoading] = useState(true);
 
   useEffect(() => {
@@ -324,7 +328,10 @@ export default function UserDetail() {
 
           <nav className="od-steps">
             {steps.map((s) => (
-              <div key={s.num} className={`od-step ${s.num === 1 ? "active" : ""}`}>
+              <div
+                key={s.num}
+                className={`od-step ${s.num === 1 ? "active" : ""}`}
+              >
                 <span className="od-step-num">{s.num}</span>
                 <span>{s.label}</span>
               </div>

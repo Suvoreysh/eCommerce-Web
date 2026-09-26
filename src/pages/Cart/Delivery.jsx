@@ -71,7 +71,8 @@ const PIN_VALID_RE = /^[0-9]{6}$/;
 const validators = {
   full_name: (v) => {
     if (!v.trim()) return "Full name is required";
-    if (!NAME_VALID_RE.test(v.trim())) return "Only letters and spaces are allowed";
+    if (!NAME_VALID_RE.test(v.trim()))
+      return "Only letters and spaces are allowed";
     return "";
   },
   phone_number: (v) => {
@@ -106,7 +107,9 @@ export default function Delivery() {
 
   const [addresses, setAddresses] = useState([]);
   const [addressesLoading, setAddressesLoading] = useState(true);
-  const [selectedAddressId, setSelectedAddressId] = useState(address?.id ?? null);
+  const [selectedAddressId, setSelectedAddressId] = useState(
+    address?.id ?? null,
+  );
   const [showAddressForm, setShowAddressForm] = useState(false);
 
   const [draft, setDraft] = useState({
@@ -122,7 +125,11 @@ export default function Delivery() {
   const [continueError, setContinueError] = useState("");
 
   const [cartItems, setCartItems] = useState([]);
-  const [cartMeta, setCartMeta] = useState({ subtotal: 0, discount: 0, totalItems: 0 });
+  const [cartMeta, setCartMeta] = useState({
+    subtotal: 0,
+    discount: 0,
+    totalItems: 0,
+  });
 
   useEffect(() => {
     let active = true;
@@ -205,7 +212,9 @@ export default function Delivery() {
       nextErrors[key] = validators[key](draft[key]);
     });
     setErrors(nextErrors);
-    setTouched(Object.fromEntries(Object.keys(validators).map((k) => [k, true])));
+    setTouched(
+      Object.fromEntries(Object.keys(validators).map((k) => [k, true])),
+    );
     return Object.values(nextErrors).every((msg) => !msg);
   };
 
@@ -228,7 +237,11 @@ export default function Delivery() {
       setAddresses((prev) => [...prev, savedAddress]);
       setSelectedAddressId(newId);
       setShowAddressForm(false);
-      setDraft({ ...emptyDraft, full_name: draft.full_name, phone_number: draft.phone_number });
+      setDraft({
+        ...emptyDraft,
+        full_name: draft.full_name,
+        phone_number: draft.phone_number,
+      });
       setTouched({});
     } catch (err) {
       console.error("Create address failed:", err);
@@ -325,9 +338,13 @@ export default function Delivery() {
           onBlur={handleBlur("full_name")}
           className={fieldError("full_name") ? "input-error" : ""}
         />
-        {fieldError("full_name") && <p className="error-text">{errors.full_name}</p>}
+        {fieldError("full_name") && (
+          <p className="error-text">{errors.full_name}</p>
+        )}
 
-        <div className={`phone-row ${fieldError("phone_number") ? "input-error" : ""}`}>
+        <div
+          className={`phone-row ${fieldError("phone_number") ? "input-error" : ""}`}
+        >
           <span className="cc-badge">IN ▾</span>
           <input
             placeholder="Phone Number"
@@ -347,14 +364,18 @@ export default function Delivery() {
             className="radio-item"
             onClick={() => setDraft((d) => ({ ...d, address_type: "home" }))}
           >
-            <div className={`radio-dot ${draft.address_type === "home" ? "on" : ""}`} />
+            <div
+              className={`radio-dot ${draft.address_type === "home" ? "on" : ""}`}
+            />
             Home
           </div>
           <div
             className="radio-item"
             onClick={() => setDraft((d) => ({ ...d, address_type: "office" }))}
           >
-            <div className={`radio-dot ${draft.address_type === "office" ? "on" : ""}`} />
+            <div
+              className={`radio-dot ${draft.address_type === "office" ? "on" : ""}`}
+            />
             Office
           </div>
         </div>
@@ -391,7 +412,9 @@ export default function Delivery() {
           maxLength={6}
           className={fieldError("pincode") ? "input-error" : ""}
         />
-        {fieldError("pincode") && <p className="error-text">{errors.pincode}</p>}
+        {fieldError("pincode") && (
+          <p className="error-text">{errors.pincode}</p>
+        )}
 
         <input
           placeholder="State"
@@ -449,7 +472,9 @@ export default function Delivery() {
               onClick={() => setSelectedAddressId(addr.id)}
             >
               <div className="addr-top">
-                <div className={`radio-dot ${selectedAddressId === addr.id ? "on" : ""}`} />
+                <div
+                  className={`radio-dot ${selectedAddressId === addr.id ? "on" : ""}`}
+                />
                 <b>{addr.full_name}</b>
               </div>
 
@@ -478,7 +503,10 @@ export default function Delivery() {
           );
         })}
 
-        <button className="add-new-btn" onClick={() => setShowAddressForm(true)}>
+        <button
+          className="add-new-btn"
+          onClick={() => setShowAddressForm(true)}
+        >
           Add New Address
         </button>
 
@@ -499,7 +527,10 @@ export default function Delivery() {
     <div className="checkout-page">
       <div className="checkout-mobile">
         <div className="top-bar">
-          <button className="icon-btn" onClick={() => navigate("/cart/details")}>
+          <button
+            className="icon-btn"
+            onClick={() => navigate("/cart/details")}
+          >
             {backIcon}
           </button>
           <h1>Cart</h1>
@@ -523,7 +554,9 @@ export default function Delivery() {
                 key={step.num}
                 className={`od-step ${step.num === 2 ? "active" : step.num < 2 ? "done" : ""}`}
               >
-                <span className="od-step-num">{step.num < 2 ? "✓" : step.num}</span>
+                <span className="od-step-num">
+                  {step.num < 2 ? "✓" : step.num}
+                </span>
                 <span>{step.label}</span>
               </div>
             ))}

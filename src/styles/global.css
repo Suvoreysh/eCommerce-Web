@@ -59,3 +59,25 @@ ul {
   padding: 16px;
   padding-bottom: calc(var(--bottomnav-height) + 16px);
 }
+
+/* ── AUTH-GATED PRICE PROMPT ─────────────────────────────── */
+.price-login-prompt {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #143d4a;
+  background: #e8f4f7;
+  border: 1px solid #b8dde8;
+  border-radius: 20px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+  user-select: none;
+  text-decoration: none;
+}
+
+.price-login-prompt:hover {
+  background: #143d4a;
+  color: #ffffff;
+  border-color: #143d4a;
+}

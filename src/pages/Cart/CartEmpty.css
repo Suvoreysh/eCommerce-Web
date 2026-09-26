@@ -1,0 +1,136 @@
+/* ============================================================
+   EMPTY CART — shared mobile + desktop empty state
+============================================================ */
+
+.cart-empty-root {
+  width: 100%;
+}
+
+/* ─── MOBILE ─────────────────────────────────────────────── */
+.cart-empty-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 28px 40px;
+  gap: 16px;
+}
+
+.cart-empty-icon-wrap {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8f4f7 0%, #c5e4ee 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.cart-empty-icon {
+  font-size: 40px;
+  color: #143d4a;
+  stroke-width: 1.4;
+}
+
+.cart-empty-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.cart-empty-sub {
+  font-size: 14px;
+  color: #6b6b6b;
+  max-width: 300px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.cart-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: none;
+  background: #143d4a;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.cart-empty-cta:hover {
+  background: #1a5068;
+  transform: translateY(-1px);
+}
+
+.cart-empty-cta:active {
+  transform: translateY(0);
+}
+
+/* Hide desktop empty on mobile */
+.cart-empty-desktop {
+  display: none !important;
+}
+
+/* ─── DESKTOP ────────────────────────────────────────────── */
+@media (min-width: 992px) {
+  .cart-empty-mobile {
+    display: none;
+  }
+
+  .cart-empty-desktop {
+    display: flex !important;
+  }
+
+  .cart-empty-desktop-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cart-empty-desktop-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    gap: 16px;
+  }
+
+  .cart-empty-illustration {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e8f4f7 0%, #c5e4ee 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .cart-empty-illustration svg {
+    font-size: 52px;
+    color: #143d4a;
+    stroke-width: 1.2;
+  }
+
+  .cart-empty-desktop-body h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+  }
+
+  .cart-empty-desktop-body p {
+    font-size: 15px;
+    color: #6b6b6b;
+    max-width: 380px;
+    line-height: 1.65;
+    margin: 0;
+  }
+}

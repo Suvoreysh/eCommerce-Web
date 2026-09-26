@@ -5,11 +5,12 @@ import useVariantCart from "../../hooks/useVariantCart";
 import LazyImage from "../common/LazyImage";
 import WishlistButton from "../common/WishlistButton";
 import { formatPriceRange } from "../../utils/format";
+import { useAuth } from "../../context/AuthContext";
 import "./CategoryProductGrid.css";
 
-// products: normalized list products from utils/catalog.normalizeListProduct
 export default function CategoryProductGrid({ title, products = [] }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { open: openVariants, modal: variantModal } = useVariantCart();
 
   return (
@@ -52,18 +53,36 @@ export default function CategoryProductGrid({ title, products = [] }) {
 
               <p className="category-name">{product.name}</p>
 
-              <p className="category-price">
-                <span className="price-current">
-                  {formatPriceRange(product.priceMin, product.priceMax)}
-                </span>
-              </p>
+              {user ? (
+                <p className="category-price">
+                  <span className="price-current">
+                    {formatPriceRange(product.priceMin, product.priceMax)}
+                  </span>
+                </p>
+              ) : (
+                <p className="category-price">
+                  <span
+                    className="price-login-prompt"
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const returnTo = encodeURIComponent(
+                        window.location.pathname + window.location.search,
+                      );
+                      navigate(`/login?returnTo=${returnTo}`);
+                    }}
+                  >
+                    Login to see price
+                  </span>
+                </p>
+              )}
 
               <div className="category-tags">
                 <span>
                   <FiBox />
                   {product.categoryName || "Premium Product"}
                 </span>
-
                 <span>
                   <FiShield />
                   {product.subcategoryName || "Quality Assured"}

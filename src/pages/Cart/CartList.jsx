@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import { FiShoppingBag, FiArrowRight } from "react-icons/fi";
 import { cartApi } from "../../api/cartApi";
 import LazyImage from "../../components/common/LazyImage";
 import { resolveImageUrl } from "../../utils/image";
@@ -8,9 +9,7 @@ import { useCartCount } from "../../context/CartCountContext";
 import AccountSidebar from "../../components/profile/AccountSidebar";
 import BackHomeButton from "../../components/profile/BackHomeButton";
 import "./Cart.css";
-
-const IMAGE_BASE =
-  "https://spaknit.com/spaknit/public/uploads/images/variants/";
+import "./CartEmpty.css";
 
 const backIcon = (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -24,9 +23,29 @@ const backIcon = (
   </svg>
 );
 
+function computeSummary(items) {
+  let subtotal = 0;
+  let gst = 0;
+
+  for (const it of items) {
+    const qty = it.quantity;
+    subtotal += (Number(it.price) || 0) * qty;
+    if (it.gst_amount != null) gst += Number(it.gst_amount) * qty;
+  }
+
+  return {
+    subtotal,
+    gst,
+    discount: 0,
+    payable: Math.max(0, subtotal + gst),
+    totalItems: items.reduce((s, i) => s + i.quantity, 0),
+  };
+}
+
 export default function CartList() {
   const navigate = useNavigate();
   const { refreshCartCount } = useCartCount();
+
   const [items, setItems] = useState([]);
   const [cartMeta, setCartMeta] = useState({
     totalItems: 0,
@@ -37,178 +56,325 @@ export default function CartList() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [updatingId, setUpdatingId] = useState(null);
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchCart = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const response = await cartApi.getCart();
-        const data = response?.data;
-
-        if (!isMounted) return;
-
-        setItems(Array.isArray(data?.items) ? data.items : []);
-        setCartMeta({
-          totalItems: Number(data?.total_items ?? 0),
-          subtotal: Number(data?.subtotal ?? 0),
-          gst: Number(data?.gst ?? 0),
-          discount: Number(data?.discount ?? 0),
-          payable: Number(data?.payable ?? 0),
-        });
-        refreshCartCount();
-      } catch (err) {
-        if (!isMounted) return;
-
-        console.error("Get cart failed:", err);
-        setError(err.message || "Unable to load cart.");
-        setItems([]);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    fetchCart();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  const updateQty = (id, delta) => {
-    setItems((prev) =>
-      prev.map((it) =>
-        it.id === id
-          ? { ...it, quantity: Math.max(1, it.quantity + delta) }
-          : it,
-      ),
-    );
-    // TODO: call the cart update-quantity endpoint here once the backend
-    // exposes one, then refreshCartCount() after it resolves.
-    refreshCartCount();
-  };
-
-  const removeItem = async (id) => {
+  const fetchCart = useCallback(async () => {
     try {
-      await cartApi.removeItem(id);
-      setItems((prev) => prev.filter((it) => it.id !== id));
+      setLoading(true);
+      setError("");
+      const response = await cartApi.getCart();
+      const data = response?.data;
+      const fetchedItems = Array.isArray(data?.items) ? data.items : [];
+      setItems(fetchedItems);
+      setCartMeta({
+        totalItems: Number(data?.total_items ?? 0),
+        subtotal: Number(data?.subtotal ?? 0),
+        gst: Number(data?.gst ?? 0),
+        discount: Number(data?.discount ?? 0),
+        payable: Number(data?.payable ?? 0),
+      });
       refreshCartCount();
     } catch (err) {
-      console.error("Remove item failed:", err);
-      setError(err.message || "Unable to remove item.");
+      console.error("Get cart failed:", err);
+      setError(err.message || "Unable to load cart.");
+      setItems([]);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [refreshCartCount]);
 
-  const goToCheckout = () => {
-    navigate("/cart/details");
-  };
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
 
+  // Fully remove item — no re-add
+  const removeItem = useCallback(
+    async (it) => {
+      if (updatingId === it.id) return;
+      setUpdatingId(it.id);
+
+      // Optimistic: remove from list
+      setItems((prev) => {
+        const next = prev.filter((x) => x.id !== it.id);
+        setCartMeta(computeSummary(next));
+        return next;
+      });
+
+      try {
+        await cartApi.deleteItem(it.id);
+        refreshCartCount();
+      } catch (err) {
+        console.error("Remove failed:", err);
+        fetchCart();
+      } finally {
+        setUpdatingId(null);
+      }
+    },
+    [updatingId, refreshCartCount, fetchCart],
+  );
+
+  // Decrease quantity:
+  //   newQty <= 0  → just delete, no re-add
+  //   newQty >= 1  → DELETE first, then re-ADD with newQty
+  const decreaseQty = useCallback(
+    async (it) => {
+      if (updatingId === it.id) return;
+
+      const newQty = it.quantity - 1;
+
+      setUpdatingId(it.id);
+
+      // Optimistic UI
+      if (newQty <= 0) {
+        setItems((prev) => {
+          const next = prev.filter((x) => x.id !== it.id);
+          setCartMeta(computeSummary(next));
+          return next;
+        });
+      } else {
+        setItems((prev) => {
+          const next = prev.map((x) =>
+            x.id === it.id ? { ...x, quantity: newQty } : x,
+          );
+          setCartMeta(computeSummary(next));
+          return next;
+        });
+      }
+
+      try {
+        // Step 1: always delete the current cart entry
+        await cartApi.deleteItem(it.id);
+
+        // Step 2: if newQty >= 1, re-add with the reduced quantity
+        if (newQty >= 1) {
+          await cartApi.addItem(it.product_variant_id, newQty);
+        }
+
+        refreshCartCount();
+      } catch (err) {
+        console.error("Decrease qty failed:", err);
+        fetchCart();
+      } finally {
+        setUpdatingId(null);
+      }
+    },
+    [updatingId, refreshCartCount, fetchCart],
+  );
+
+  // Increase quantity:
+  //   DELETE first, then re-ADD with newQty
+  const increaseQty = useCallback(
+    async (it) => {
+      if (updatingId === it.id) return;
+
+      const newQty = it.quantity + 1;
+
+      setUpdatingId(it.id);
+
+      // Optimistic UI
+      setItems((prev) => {
+        const next = prev.map((x) =>
+          x.id === it.id ? { ...x, quantity: newQty } : x,
+        );
+        setCartMeta(computeSummary(next));
+        return next;
+      });
+
+      try {
+        // Step 1: delete existing entry
+        await cartApi.deleteItem(it.id);
+
+        // Step 2: re-add with increased quantity
+        await cartApi.addItem(it.product_variant_id, newQty);
+
+        // Refresh to get new cart item id from server (id changes after delete+add)
+        refreshCartCount();
+        fetchCart();
+      } catch (err) {
+        console.error("Increase qty failed:", err);
+        fetchCart();
+      } finally {
+        setUpdatingId(null);
+      }
+    },
+    [updatingId, refreshCartCount, fetchCart],
+  );
+
+  const goToCheckout = () => navigate("/cart/details");
+
+  // ─── EMPTY STATE ──────────────────────────────────────────────────────────────
+  const EmptyCart = () => (
+    <div className="cart-empty-root">
+      <div className="cart-empty-mobile">
+        <div className="cart-empty-icon-wrap">
+          <FiShoppingBag className="cart-empty-icon" />
+        </div>
+        <h2 className="cart-empty-title">Your cart is empty</h2>
+        <p className="cart-empty-sub">
+          Looks like you haven't added anything yet. Browse our products and
+          find something you'll love.
+        </p>
+        <button
+          type="button"
+          className="cart-empty-cta"
+          onClick={() => navigate("/products")}
+        >
+          Browse Products <FiArrowRight />
+        </button>
+      </div>
+
+      <div className="cd-desktop cart-empty-desktop">
+        <AccountSidebar />
+        <div className="od-main cart-empty-desktop-main">
+          <div className="od-main-header">
+            <div className="od-main-title">
+              <BackHomeButton className="od-desktop-back-btn" />
+              <h1>My Cart</h1>
+            </div>
+          </div>
+          <div className="cart-empty-desktop-body">
+            <div className="cart-empty-illustration">
+              <FiShoppingBag />
+            </div>
+            <h2>Your cart is empty</h2>
+            <p>
+              You haven't added any products yet. Start exploring and add items
+              to your cart.
+            </p>
+            <button
+              type="button"
+              className="cart-empty-cta"
+              onClick={() => navigate("/products")}
+            >
+              Browse Products <FiArrowRight />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ─── SUMMARY BLOCK ────────────────────────────────────────────────────────────
+  const SummaryCard = ({ className, children }) => (
+    <div className={`summary-card ${className}`}>
+      <h2>Order Summary</h2>
+      <div className="summary-line">
+        <span>Subtotal ({cartMeta.totalItems} items)</span>
+        <span>₹ {cartMeta.subtotal.toLocaleString("en-IN")}</span>
+      </div>
+      {cartMeta.gst > 0 && (
+        <div className="summary-line">
+          <span>GST</span>
+          <span>₹ {cartMeta.gst.toLocaleString("en-IN")}</span>
+        </div>
+      )}
+      <div className="summary-divider" />
+      <div className="summary-total">
+        <span>Payable</span>
+        <span>₹ {cartMeta.payable.toLocaleString("en-IN")}</span>
+      </div>
+      {children}
+    </div>
+  );
+
+  // ─── RENDER ───────────────────────────────────────────────────────────────────
   return (
     <div className="cart-page">
       <header className="cart-header">
         <button
           className="back-btn"
           aria-label="Go back"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
         >
           {backIcon}
         </button>
         <h1>Cart</h1>
       </header>
 
-      <p className="cart-title">My Cart ({cartMeta.totalItems})</p>
-
       {loading && (
-        <p style={{ textAlign: "center", padding: "24px 0" }}>
-          Loading cart...
-        </p>
+        <p style={{ textAlign: "center", padding: "24px 0" }}>Loading cart…</p>
       )}
+
       {!loading && error && (
         <p style={{ textAlign: "center", padding: "24px 0", color: "red" }}>
           {error}
         </p>
       )}
-      {!loading && !error && items.length === 0 && (
-        <p style={{ textAlign: "center", padding: "24px 0" }}>
-          Your cart is empty.
-        </p>
-      )}
+
+      {!loading && !error && items.length === 0 && <EmptyCart />}
 
       {!loading && !error && items.length > 0 && (
         <>
-          {/* ---------- Mobile view ---------- */}
+          <p className="cart-title">My Cart ({cartMeta.totalItems})</p>
+
+          {/* ── MOBILE ── */}
           <div className="mobile-list">
             {items.map((it) => (
-              <div key={it.id} className="item-card">
+              <div
+                key={it.id}
+                className={`item-card${updatingId === it.id ? " item-card--removing" : ""}`}
+              >
                 <div className="item-thumb">
                   <LazyImage src={resolveImageUrl(it.image)} alt={it.name} />
                 </div>
+
                 <div className="item-info">
                   <div className="item-top">
                     <p className="item-name">{it.name}</p>
-                    <button className="heart-btn" aria-label="Save for later">
-                      ♡
-                    </button>
                   </div>
+
                   <div className="price-row">
-                    ₹ {it.price} <span className="mrp">{it.old_price}</span>
+                    ₹ {it.price}
+                    {it.old_price && (
+                      <span className="mrp">₹ {it.old_price}</span>
+                    )}
                   </div>
+
                   {it.sku && (
                     <div className="color-row">
                       SKU: <b>{it.sku}</b>
                     </div>
                   )}
+
                   <div className="qty-row">
                     <span>Qty.</span>
                     <div className="stepper">
                       <button
-                        onClick={() => updateQty(it.id, -1)}
-                        disabled={it.quantity <= 1}
+                        onClick={() => decreaseQty(it)}
+                        disabled={updatingId === it.id}
+                        aria-label="Decrease quantity"
                       >
                         −
                       </button>
                       <span>{it.quantity}</span>
-                      <button onClick={() => updateQty(it.id, 1)}>+</button>
+                      <button
+                        onClick={() => increaseQty(it)}
+                        disabled={updatingId === it.id}
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
                     </div>
                     <span className="stock-text">
-                      Line total: ₹ {it.line_total}
+                      ₹{" "}
+                      {(Number(it.price) * it.quantity).toLocaleString("en-IN")}
                     </span>
                   </div>
+
                   <div className="card-footer">
                     <button
                       className="remove-btn"
-                      onClick={() => removeItem(it.id)}
+                      onClick={() => removeItem(it)}
+                      disabled={updatingId === it.id}
                     >
-                      Remove 🗑
+                      {updatingId === it.id ? "Removing…" : "Remove 🗑"}
                     </button>
                   </div>
                 </div>
               </div>
             ))}
 
-            <div className="summary-card mobile-summary">
-              <h2>Order Summary</h2>
-              <div className="summary-line">
-                <span>Subtotal ({cartMeta.totalItems} items)</span>
-                <span>₹ {cartMeta.subtotal}</span>
-              </div>
-              <div className="summary-line discount">
-                <span>Discount</span>
-                <span>− ₹ {cartMeta.discount}</span>
-              </div>
-              <div className="summary-line">
-                <span>GST</span>
-                <span>₹ {cartMeta.gst}</span>
-              </div>
-              <div className="summary-divider" />
-              <div className="summary-total">
-                <span>Payable</span>
-                <span>₹ {cartMeta.payable}</span>
-              </div>
-            </div>
+            <SummaryCard className="mobile-summary" />
           </div>
 
           <div className="checkout-bar">
@@ -217,7 +383,7 @@ export default function CartList() {
             </button>
           </div>
 
-          {/* ---------- Desktop view — sidebar layout (matches My Orders) ---------- */}
+          {/* ── DESKTOP ── */}
           <div className="cd-desktop">
             <AccountSidebar />
 
@@ -240,13 +406,19 @@ export default function CartList() {
                     <span>Product</span>
                     <span>Price</span>
                     <span>Quantity</span>
-                    <span></span>
+                    <span>Total</span>
                   </div>
 
                   {items.map((it) => (
-                    <div key={it.id} className="desktop-row">
+                    <div
+                      key={it.id}
+                      className={`desktop-row${updatingId === it.id ? " desktop-row--removing" : ""}`}
+                    >
                       <div className="desktop-thumb">
-                        <LazyImage src={resolveImageUrl(it.image)} alt={it.name} />
+                        <LazyImage
+                          src={resolveImageUrl(it.image)}
+                          alt={it.name}
+                        />
                       </div>
 
                       <div className="desktop-name-block">
@@ -258,65 +430,58 @@ export default function CartList() {
                         )}
                         <button
                           className="desktop-remove"
-                          onClick={() => removeItem(it.id)}
+                          onClick={() => removeItem(it)}
+                          disabled={updatingId === it.id}
                         >
-                          Remove
+                          {updatingId === it.id ? "Removing…" : "Remove"}
                         </button>
                       </div>
 
                       <div className="desktop-price">
                         <div className="price-row">
-                          ₹ {it.price}{" "}
-                          <span className="mrp">{it.old_price}</span>
+                          ₹ {it.price}
+                          {it.old_price && (
+                            <span className="mrp">₹ {it.old_price}</span>
+                          )}
                         </div>
                       </div>
 
                       <div className="desktop-qty-cell">
                         <div className="stepper">
                           <button
-                            onClick={() => updateQty(it.id, -1)}
-                            disabled={it.quantity <= 1}
+                            onClick={() => decreaseQty(it)}
+                            disabled={updatingId === it.id}
                           >
                             −
                           </button>
                           <span>{it.quantity}</span>
-                          <button onClick={() => updateQty(it.id, 1)}>+</button>
+                          <button
+                            onClick={() => increaseQty(it)}
+                            disabled={updatingId === it.id}
+                          >
+                            +
+                          </button>
                         </div>
                       </div>
 
                       <div className="desktop-line-total">
-                        ₹ {it.line_total}
+                        ₹{" "}
+                        {(Number(it.price) * it.quantity).toLocaleString(
+                          "en-IN",
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="summary-card desktop-only-summary">
-                  <h2>Order Summary</h2>
-                  <div className="summary-line">
-                    <span>Subtotal ({cartMeta.totalItems} items)</span>
-                    <span>₹ {cartMeta.subtotal}</span>
-                  </div>
-                  <div className="summary-line discount">
-                    <span>Discount</span>
-                    <span>− ₹ {cartMeta.discount}</span>
-                  </div>
-                  <div className="summary-line">
-                    <span>GST</span>
-                    <span>₹ {cartMeta.gst}</span>
-                  </div>
-                  <div className="summary-divider" />
-                  <div className="summary-total">
-                    <span>Payable</span>
-                    <span>₹ {cartMeta.payable}</span>
-                  </div>
+                <SummaryCard className="desktop-only-summary">
                   <button
                     className="desktop-checkout-btn"
                     onClick={goToCheckout}
                   >
                     Check Out
                   </button>
-                </div>
+                </SummaryCard>
               </div>
             </div>
           </div>

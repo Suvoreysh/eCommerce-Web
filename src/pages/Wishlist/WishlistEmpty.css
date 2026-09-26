@@ -1,0 +1,135 @@
+/* ============================================================
+   EMPTY WISHLIST
+============================================================ */
+
+.wl-empty-root {
+  width: 100%;
+}
+
+/* ─── MOBILE ─────────────────────────────────────────────── */
+.wl-empty-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 28px 40px;
+  gap: 16px;
+}
+
+.wl-empty-icon-wrap {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fce8ef 0%, #fbc3d4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.wl-empty-icon {
+  font-size: 40px;
+  color: #c62a6e;
+  stroke-width: 1.4;
+}
+
+.wl-empty-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.wl-empty-sub {
+  font-size: 14px;
+  color: #6b6b6b;
+  max-width: 300px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.wl-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: none;
+  background: #143d4a;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.wl-empty-cta:hover {
+  background: #1a5068;
+  transform: translateY(-1px);
+}
+
+.wl-empty-cta:active {
+  transform: translateY(0);
+}
+
+.wl-empty-desktop {
+  display: none !important;
+}
+
+/* ─── DESKTOP ────────────────────────────────────────────── */
+@media (min-width: 992px) {
+  .wl-empty-mobile {
+    display: none;
+  }
+
+  .wl-empty-desktop {
+    display: flex !important;
+  }
+
+  .wl-empty-desktop-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .wl-empty-desktop-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    gap: 16px;
+  }
+
+  .wl-empty-illustration {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fce8ef 0%, #fbc3d4 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .wl-empty-illustration svg {
+    font-size: 52px;
+    color: #c62a6e;
+    stroke-width: 1.2;
+  }
+
+  .wl-empty-desktop-body h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+  }
+
+  .wl-empty-desktop-body p {
+    font-size: 15px;
+    color: #6b6b6b;
+    max-width: 380px;
+    line-height: 1.65;
+    margin: 0;
+  }
+}
