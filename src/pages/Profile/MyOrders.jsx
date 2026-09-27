@@ -1,3 +1,4 @@
+// MyOrders.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +11,7 @@ import LazyImage from "../../components/common/LazyImage";
 import AccountSidebar from "../../components/profile/AccountSidebar";
 import BackHomeButton from "../../components/profile/BackHomeButton";
 import { firstErrorMessage, formatINR } from "../../utils/format";
-import { deliveryStatusLabel, isCancelled, orderTab } from "../../utils/orderStatus";
+import { deliveryStatusLabel, orderTab } from "../../utils/orderStatus";
 
 import "./MyOrders.css";
 
@@ -20,12 +21,11 @@ const tabs = [
   { key: "cancelled", label: "Cancelled" },
 ];
 
-function OrderCard({ order, desktop, onOpen, onCancel, cancelling }) {
+function OrderCard({ order, desktop, onOpen }) {
   const prefix = desktop ? "od-card" : "order-card";
-  const cancellable = !isCancelled(order) && order.delivery_status_id < 5;
 
   return (
-    <article className={prefix} key={order.order_id}>
+    <article className={prefix}>
       <div className={`${prefix}__header`}>
         <div className={`${prefix}__id`}>
           <strong>Order:</strong> <span>#{order.order_number}</span>
@@ -40,9 +40,12 @@ function OrderCard({ order, desktop, onOpen, onCancel, cancelling }) {
 
       <div className={`${prefix}__divider`} />
 
-      <div className={`${desktop ? "od-products" : "order-products"} order-preview-row`}>
+      <div className="order-preview-row">
         {(order.preview_images || []).slice(0, 4).map((image, index) => (
-          <div className="order-preview-thumb" key={`${order.order_id}-${index}`}>
+          <div
+            className="order-preview-thumb"
+            key={`${order.order_id}-${index}`}
+          >
             <LazyImage src={image} alt="" />
           </div>
         ))}
@@ -54,7 +57,8 @@ function OrderCard({ order, desktop, onOpen, onCancel, cancelling }) {
       </div>
 
       <p className="order-placed-on">
-        Placed on {new Date(order.placed_on).toLocaleDateString("en-IN", {
+        Placed on{" "}
+        {new Date(order.placed_on).toLocaleDateString("en-IN", {
           day: "2-digit",
           month: "short",
           year: "numeric",
@@ -62,30 +66,19 @@ function OrderCard({ order, desktop, onOpen, onCancel, cancelling }) {
       </p>
 
       <div className={`${prefix}__actions`}>
-        <button type="button" className={desktop ? "od-status-btn" : "status-btn"}>
+        <button
+          type="button"
+          className={desktop ? "od-status-btn" : "status-btn"}
+        >
           {deliveryStatusLabel(order.delivery_status_id)}
         </button>
-
-        <div className="order-card__action-group">
-          {cancellable && (
-            <button
-              type="button"
-              className="cancel-btn"
-              disabled={cancelling}
-              onClick={() => onCancel(order)}
-            >
-              {cancelling ? "Cancelling…" : "Cancel"}
-            </button>
-          )}
-
-          <button
-            type="button"
-            className={desktop ? "od-track-btn" : "track-btn"}
-            onClick={() => onOpen(order)}
-          >
-            Order Details
-          </button>
-        </div>
+        <button
+          type="button"
+          className={desktop ? "od-track-btn" : "track-btn"}
+          onClick={() => onOpen(order)}
+        >
+          Order Details
+        </button>
       </div>
     </article>
   );
@@ -101,7 +94,6 @@ export default function MyOrders() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
-  const [cancellingId, setCancellingId] = useState(null);
 
   const loadPage = async (targetPage) => {
     try {
@@ -127,7 +119,6 @@ export default function MyOrders() {
 
   useEffect(() => {
     loadPage(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filteredOrders = useMemo(
@@ -137,28 +128,6 @@ export default function MyOrders() {
 
   const openOrderDetails = (order) => {
     navigate(`/order-details/${order.order_id}`, { state: { order } });
-  };
-
-  const handleCancel = async (order) => {
-    if (!window.confirm(`Cancel order #${order.order_number}?`)) return;
-
-    try {
-      setCancellingId(order.order_id);
-      await orderApi.cancelOrder(order.order_id);
-
-      setOrders((prev) =>
-        prev.map((item) =>
-          item.order_id === order.order_id
-            ? { ...item, order_status_id: 4 }
-            : item,
-        ),
-      );
-    } catch (err) {
-      console.error("Cancel order failed:", err);
-      window.alert(firstErrorMessage(err, "Unable to cancel this order."));
-    } finally {
-      setCancellingId(null);
-    }
   };
 
   const emptyState = (
@@ -173,8 +142,7 @@ export default function MyOrders() {
     <main className="orders-page">
       <Seo title="My Orders" description="View and manage your orders" />
 
-      {/* ---------- Mobile ---------- */}
-
+      {/* ── Mobile ── */}
       <header className="orders-header">
         <BackHomeButton className="orders-header__btn" />
         <h1>My Order</h1>
@@ -203,9 +171,13 @@ export default function MyOrders() {
 
         <div className="orders-list">
           {loading ? (
-            <p style={{ textAlign: "center", padding: "24px 0" }}>Loading orders…</p>
+            <p style={{ textAlign: "center", padding: "24px 0" }}>
+              Loading orders…
+            </p>
           ) : error ? (
-            <p style={{ textAlign: "center", padding: "24px 0", color: "red" }}>{error}</p>
+            <p style={{ textAlign: "center", padding: "24px 0", color: "red" }}>
+              {error}
+            </p>
           ) : filteredOrders.length === 0 ? (
             emptyState
           ) : (
@@ -214,8 +186,6 @@ export default function MyOrders() {
                 key={order.order_id}
                 order={order}
                 onOpen={openOrderDetails}
-                onCancel={handleCancel}
-                cancelling={cancellingId === order.order_id}
               />
             ))
           )}
@@ -233,13 +203,12 @@ export default function MyOrders() {
         )}
       </div>
 
-      {/* ---------- Desktop ---------- */}
-
+      {/* ── Desktop ── */}
       <div className="orders-desktop">
         <AccountSidebar />
 
         <section className="od-main">
-          <div className="od-main-header">
+          <div className="od-main-header od-main-header--sticky">
             <div className="od-main-title">
               <BackHomeButton className="od-desktop-back-btn" />
               <h1>My Orders</h1>
@@ -265,9 +234,15 @@ export default function MyOrders() {
 
           <div className="od-list">
             {loading ? (
-              <p style={{ textAlign: "center", padding: "24px 0" }}>Loading orders…</p>
+              <p style={{ textAlign: "center", padding: "24px 0" }}>
+                Loading orders…
+              </p>
             ) : error ? (
-              <p style={{ textAlign: "center", padding: "24px 0", color: "red" }}>{error}</p>
+              <p
+                style={{ textAlign: "center", padding: "24px 0", color: "red" }}
+              >
+                {error}
+              </p>
             ) : filteredOrders.length === 0 ? (
               <div className="od-empty">
                 <FiShoppingBag />
@@ -281,8 +256,6 @@ export default function MyOrders() {
                   order={order}
                   desktop
                   onOpen={openOrderDetails}
-                  onCancel={handleCancel}
-                  cancelling={cancellingId === order.order_id}
                 />
               ))
             )}

@@ -142,7 +142,7 @@ export default function Wishlist() {
                         navigate(`/productdetails/${item.product_id}`)
                       }
                     >
-                      <FiShoppingCart /> View &amp; Add to Cart
+                      View 
                     </button>
                     <button
                       type="button"

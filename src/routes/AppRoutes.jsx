@@ -20,7 +20,7 @@ import UserDetail from "../pages/Cart/UserDetail";
 import Delivery from "../pages/Cart/Delivery";
 import Payment from "../pages/Cart/Payment";
 import OrderSuccess from "../pages/Cart/OrderSuccess";
-
+import ResetPassword from "../pages/Auth/ResetPassword";
 import Profile from "../pages/Profile/Profile";
 import MyOrders from "../pages/Profile/MyOrders";
 import OrderDetails from "../pages/Profile/OrderDetails";
@@ -38,6 +38,7 @@ export default function AppRoutes() {
     <Routes>
       <Route element={<Layout />}>
         {/* Auth */}
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/login" element={<Login />} />
         <Route path="/login-with-otp" element={<LoginWithOtp />} />
         <Route path="/signup" element={<Signup />} />

@@ -10,6 +10,35 @@ import { useAuth } from "../../context/AuthContext";
 import useCatalogSearch from "../../hooks/useCatalogSearch";
 
 const MAX_RESULTS = 8;
+const FALLBACK_AVATAR = "/images/profile.png";
+
+function NavAvatar({ user }) {
+  const [imgError, setImgError] = useState(false);
+
+  // user.image is the URL returned by /profile/image or /me
+  const src = user?.image && !imgError ? user.image : null;
+
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt={user?.name || "Profile"}
+        className="nav-avatar-img"
+        onError={() => setImgError(true)}
+      />
+    );
+  }
+
+  if (user) {
+    return (
+      <span className="nav-avatar-initials">
+        {(user.name || "U").charAt(0).toUpperCase()}
+      </span>
+    );
+  }
+
+  return <FiUser />;
+}
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -26,25 +55,18 @@ export default function Navbar() {
     refreshCartCount();
   }, [refreshCartCount]);
 
-  // Click anywhere outside closes the dropdown — never a modal on desktop.
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const goToCart = () => {
-    navigate("/cart");
-  };
-
-  const goToProfile = () => {
-    navigate("/profile");
-  };
+  const goToCart    = () => navigate("/cart");
+  const goToProfile = () => navigate(user ? "/profile" : "/login");
 
   const runSearch = () => {
     const value = query.trim();
@@ -107,18 +129,11 @@ export default function Navbar() {
                     className="search-suggest__item"
                     onClick={() => goToProduct(product)}
                   >
-                    <FiSearch
-                      className="search-suggest__icon"
-                      aria-hidden="true"
-                    />
+                    <FiSearch className="search-suggest__icon" aria-hidden="true" />
                     <span className="search-suggest__text">
-                      <span className="search-suggest__name">
-                        {product.name}
-                      </span>
+                      <span className="search-suggest__name">{product.name}</span>
                       {product.categoryName && (
-                        <span className="search-suggest__cat">
-                          in {product.categoryName}
-                        </span>
+                        <span className="search-suggest__cat">in {product.categoryName}</span>
                       )}
                     </span>
                   </button>
@@ -139,10 +154,13 @@ export default function Navbar() {
             onClick={goToProfile}
             role="button"
             tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && goToProfile()}
             style={{ cursor: "pointer" }}
           >
-            <FiUser />
-            <span>{user ? "Profile" : "Login"}</span>
+            <div className="nav-avatar">
+              <NavAvatar user={user} />
+            </div>
+            <span>{user ? (user.name?.split(" ")[0] || "Profile") : "Login"}</span>
           </div>
 
           <div className="nav-item">

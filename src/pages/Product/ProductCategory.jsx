@@ -203,7 +203,7 @@ export default function ProductCategory() {
   return (
     <>
       <Navbar />
-      <SearchBar />
+      {/* <SearchBar /> */}
       <StoreIntro title={query ? "Search" : topBanner?.title || "Store"} />
 
       {!query && (
@@ -214,10 +214,13 @@ export default function ProductCategory() {
         />
       )}
 
-      <FilterBar
-        onFiltersApply={setActiveFilters}
-        categoryName={query ? "" : categoryName}
-      />
+      {/* replace the bare <FilterBar /> with this */}
+      <div className="filter-bar-sticky-wrap">
+        <FilterBar
+          onFiltersApply={setActiveFilters}
+          categoryName={query ? "" : categoryName}
+        />
+      </div>
 
       <div className="category-layout">
         {!query && (

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { BASE_URL } from "../api/config";
+import { cacheClear } from "../utils/apiCache";
 
 const AuthContext = createContext(null);
 
@@ -20,21 +21,50 @@ async function apiFetchProfile(token) {
 }
 
 /**
- * Normalise the raw /me API payload to the shape the rest of the app uses.
- * API fields: first_name, last_name, email_id, phone_number, profile_image, …
+ * GET /profile/image response shape:
+ * { success: true, message: "...", data: { image: "<full url>", thumbnail_image: "<url>" } }
  */
-function normaliseProfile(raw) {
+async function apiFetchProfileImage(token) {
+  try {
+    const res = await fetch(`${BASE_URL}/profile/image`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    // Primary: data.image | fallback chain for any other shape
+    return (
+      json?.data?.image ??
+      json?.data?.url ??
+      json?.data?.profile_image ??
+      json?.image ??
+      json?.url ??
+      null
+    );
+  } catch {
+    return null;
+  }
+}
+
+function normaliseProfile(raw, profileImageUrl = undefined) {
   if (!raw) return null;
   const nameParts = [raw.first_name, raw.middle_name, raw.last_name]
     .filter(Boolean)
     .join(" ");
+
+  const image =
+    profileImageUrl !== undefined
+      ? profileImageUrl
+      : raw.profile_image || raw.image || null;
+
   return {
     ...raw,
-    // Convenience aliases used throughout the UI
     name: nameParts || raw.user_name || raw.name || "User",
     email: raw.email_id || raw.email || "",
     phone: raw.phone_number || raw.phone || "",
-    image: raw.profile_image || raw.image || null,
+    image,
     memberSince: raw.created_at
       ? new Date(raw.created_at).toLocaleDateString("en-IN", {
           month: "long",
@@ -46,79 +76,81 @@ function normaliseProfile(raw) {
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    try {
-      const stored = localStorage.getItem("authUser");
-      return stored ? normaliseProfile(JSON.parse(stored)) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState(null);
+  const [profileReady, setProfileReady] = useState(false);
 
-  // On mount: if we already have a token, re-fetch the profile to stay fresh
-  useEffect(() => {
-    const token = getToken();
-    if (!token) return;
-    let cancelled = false;
-    apiFetchProfile(token)
-      .then((raw) => {
-        if (cancelled) return;
-        const normalised = normaliseProfile(raw);
-        setUser(normalised);
-        localStorage.setItem("authUser", JSON.stringify(normalised));
-      })
-      .catch(() => {
-        // Token may have expired — leave the locally cached user in place;
-        // the next authenticated API call will surface a 401 naturally.
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  /**
-   * Fetches the latest profile from the API and updates local state + storage.
-   * Call this after any mutation (image upload, profile edit, etc.).
-   */
   const fetchProfile = useCallback(async () => {
     const token = getToken();
-    if (!token) return;
+    if (!token) {
+      setUser(null);
+      setProfileReady(true);
+      return null;
+    }
     try {
-      const raw = await apiFetchProfile(token);
-      const normalised = normaliseProfile(raw);
+      const [raw, imageUrl] = await Promise.all([
+        apiFetchProfile(token),
+        apiFetchProfileImage(token),
+      ]);
+      // imageUrl from /profile/image takes priority; fall back to /me fields
+      const resolvedImage = imageUrl || raw?.profile_image || raw?.image || null;
+      const normalised = normaliseProfile(raw, resolvedImage);
       setUser(normalised);
-      localStorage.setItem("authUser", JSON.stringify(normalised));
+      setProfileReady(true);
       return normalised;
     } catch (err) {
       console.error("fetchProfile failed:", err);
+      setUser(null);
+      setProfileReady(true);
+      return null;
     }
   }, []);
 
-  const login = useCallback(async (userData, token) => {
-    if (token) localStorage.setItem("authToken", token);
-    // After login always fetch fresh profile rather than trusting login payload
-    const storedToken = token || getToken();
-    try {
-      const raw = await apiFetchProfile(storedToken);
-      const normalised = normaliseProfile(raw);
-      localStorage.setItem("authUser", JSON.stringify(normalised));
-      setUser(normalised);
-    } catch {
-      // Fallback: use what the login endpoint returned
-      const normalised = normaliseProfile(userData);
-      localStorage.setItem("authUser", JSON.stringify(normalised));
-      setUser(normalised);
+  // On mount: token exists → fetch profile from API only
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      setProfileReady(true);
+      return;
     }
+    let cancelled = false;
+    (async () => {
+      try {
+        const [raw, imageUrl] = await Promise.all([
+          apiFetchProfile(token),
+          apiFetchProfileImage(token),
+        ]);
+        if (cancelled) return;
+        const resolvedImage = imageUrl || raw?.profile_image || raw?.image || null;
+        const normalised = normaliseProfile(raw, resolvedImage);
+        setUser(normalised);
+      } catch {
+        if (!cancelled) {
+          localStorage.removeItem("authToken");
+          setUser(null);
+        }
+      } finally {
+        if (!cancelled) setProfileReady(true);
+      }
+    })();
+    return () => { cancelled = true; };
   }, []);
+
+  const login = useCallback(async (_userData, token) => {
+    localStorage.removeItem("authUser");
+    cacheClear();
+    if (token) localStorage.setItem("authToken", token);
+    await fetchProfile();
+  }, [fetchProfile]);
 
   const logout = useCallback(() => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("authUser");
+    cacheClear();
     setUser(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, fetchProfile }}>
+    <AuthContext.Provider value={{ user, login, logout, fetchProfile, profileReady }}>
       {children}
     </AuthContext.Provider>
   );

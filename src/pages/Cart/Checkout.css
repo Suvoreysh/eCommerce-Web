@@ -618,8 +618,12 @@ h2.page-title {
   font-size: 15px;
   cursor: pointer;
   color: #123848;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
 }
-
 .full-continue-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;

@@ -19,6 +19,7 @@ export const ENDPOINTS = {
 
   PROFILE: "/me",
   CHANGE_PASSWORD: "/change-password",
+  RESET_PASSWORD: "/reset-password",
   FORGOT_PASSWORD: "/forgot-password",
   PRODUCT_IMAGES: (id) => `/products/${id}/images`,
   PRODUCT_KEY_POINTS: (id) => `/products/${id}/key-points`,

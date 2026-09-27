@@ -24,15 +24,13 @@ const backIcon = (
 );
 
 function computeSummary(items) {
-  let subtotal = 0;
-  let gst = 0;
-
+  let subtotal = 0,
+    gst = 0;
   for (const it of items) {
     const qty = it.quantity;
     subtotal += (Number(it.price) || 0) * qty;
     if (it.gst_amount != null) gst += Number(it.gst_amount) * qty;
   }
-
   return {
     subtotal,
     gst,
@@ -58,54 +56,53 @@ export default function CartList() {
   const [error, setError] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
 
-  const fetchCart = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError("");
-      const response = await cartApi.getCart();
-      const data = response?.data;
-      const fetchedItems = Array.isArray(data?.items) ? data.items : [];
-      setItems(fetchedItems);
-      setCartMeta({
-        totalItems: Number(data?.total_items ?? 0),
-        subtotal: Number(data?.subtotal ?? 0),
-        gst: Number(data?.gst ?? 0),
-        discount: Number(data?.discount ?? 0),
-        payable: Number(data?.payable ?? 0),
-      });
-      refreshCartCount();
-    } catch (err) {
-      console.error("Get cart failed:", err);
-      setError(err.message || "Unable to load cart.");
-      setItems([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [refreshCartCount]);
+  const fetchCart = useCallback(
+    async (force = false) => {
+      try {
+        setLoading(true);
+        setError("");
+        const response = await cartApi.getCart(force);
+        const data = response?.data;
+        const fetchedItems = Array.isArray(data?.items) ? data.items : [];
+        setItems(fetchedItems);
+        setCartMeta({
+          totalItems: Number(data?.total_items ?? 0),
+          subtotal: Number(data?.subtotal ?? 0),
+          gst: Number(data?.gst ?? 0),
+          discount: Number(data?.discount ?? 0),
+          payable: Number(data?.payable ?? 0),
+        });
+        refreshCartCount();
+      } catch (err) {
+        console.error("Get cart failed:", err);
+        setError(err.message || "Unable to load cart.");
+        setItems([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [refreshCartCount],
+  );
 
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
 
-  // Fully remove item — no re-add
   const removeItem = useCallback(
     async (it) => {
       if (updatingId === it.id) return;
       setUpdatingId(it.id);
-
-      // Optimistic: remove from list
       setItems((prev) => {
         const next = prev.filter((x) => x.id !== it.id);
         setCartMeta(computeSummary(next));
         return next;
       });
-
       try {
-        await cartApi.deleteItem(it.id);
+        await cartApi.deleteItem(it.product_variant_id);
         refreshCartCount();
       } catch (err) {
         console.error("Remove failed:", err);
-        fetchCart();
+        fetchCart(true);
       } finally {
         setUpdatingId(null);
       }
@@ -113,65 +110,30 @@ export default function CartList() {
     [updatingId, refreshCartCount, fetchCart],
   );
 
-  // Decrease quantity:
-  //   newQty <= 0  → just delete, no re-add
-  //   newQty >= 1  → DELETE first, then re-ADD with newQty
-  const decreaseQty = useCallback(
-    async (it) => {
+  const changeQty = useCallback(
+    async (it, delta) => {
       if (updatingId === it.id) return;
-
-      const newQty = it.quantity - 1;
-
+      const newQty = it.quantity + delta;
       setUpdatingId(it.id);
 
-      // Optimistic UI
       if (newQty <= 0) {
         setItems((prev) => {
           const next = prev.filter((x) => x.id !== it.id);
           setCartMeta(computeSummary(next));
           return next;
         });
-      } else {
-        setItems((prev) => {
-          const next = prev.map((x) =>
-            x.id === it.id ? { ...x, quantity: newQty } : x,
-          );
-          setCartMeta(computeSummary(next));
-          return next;
-        });
-      }
-
-      try {
-        // Step 1: always delete the current cart entry
-        await cartApi.deleteItem(it.id);
-
-        // Step 2: if newQty >= 1, re-add with the reduced quantity
-        if (newQty >= 1) {
-          await cartApi.addItem(it.product_variant_id, newQty);
+        try {
+          await cartApi.deleteItem(it.product_variant_id);
+          refreshCartCount();
+        } catch (err) {
+          console.error("Delete failed:", err);
+          fetchCart(true);
+        } finally {
+          setUpdatingId(null);
         }
-
-        refreshCartCount();
-      } catch (err) {
-        console.error("Decrease qty failed:", err);
-        fetchCart();
-      } finally {
-        setUpdatingId(null);
+        return;
       }
-    },
-    [updatingId, refreshCartCount, fetchCart],
-  );
 
-  // Increase quantity:
-  //   DELETE first, then re-ADD with newQty
-  const increaseQty = useCallback(
-    async (it) => {
-      if (updatingId === it.id) return;
-
-      const newQty = it.quantity + 1;
-
-      setUpdatingId(it.id);
-
-      // Optimistic UI
       setItems((prev) => {
         const next = prev.map((x) =>
           x.id === it.id ? { ...x, quantity: newQty } : x,
@@ -181,18 +143,18 @@ export default function CartList() {
       });
 
       try {
-        // Step 1: delete existing entry
-        await cartApi.deleteItem(it.id);
-
-        // Step 2: re-add with increased quantity
-        await cartApi.addItem(it.product_variant_id, newQty);
-
-        // Refresh to get new cart item id from server (id changes after delete+add)
+        await cartApi.updateItem(it.product_variant_id, newQty);
         refreshCartCount();
-        fetchCart();
       } catch (err) {
-        console.error("Increase qty failed:", err);
-        fetchCart();
+        console.error("Update qty failed:", err);
+        try {
+          await cartApi.deleteItem(it.product_variant_id);
+          if (newQty >= 1) await cartApi.addItem(it.product_variant_id, newQty);
+          refreshCartCount();
+          fetchCart(true);
+        } catch {
+          fetchCart(true);
+        }
       } finally {
         setUpdatingId(null);
       }
@@ -202,7 +164,6 @@ export default function CartList() {
 
   const goToCheckout = () => navigate("/cart/details");
 
-  // ─── EMPTY STATE ──────────────────────────────────────────────────────────────
   const EmptyCart = () => (
     <div className="cart-empty-root">
       <div className="cart-empty-mobile">
@@ -254,7 +215,6 @@ export default function CartList() {
     </div>
   );
 
-  // ─── SUMMARY BLOCK ────────────────────────────────────────────────────────────
   const SummaryCard = ({ className, children }) => (
     <div className={`summary-card ${className}`}>
       <h2>Order Summary</h2>
@@ -277,7 +237,6 @@ export default function CartList() {
     </div>
   );
 
-  // ─── RENDER ───────────────────────────────────────────────────────────────────
   return (
     <div className="cart-page">
       <header className="cart-header">
@@ -294,20 +253,17 @@ export default function CartList() {
       {loading && (
         <p style={{ textAlign: "center", padding: "24px 0" }}>Loading cart…</p>
       )}
-
       {!loading && error && (
         <p style={{ textAlign: "center", padding: "24px 0", color: "red" }}>
           {error}
         </p>
       )}
-
       {!loading && !error && items.length === 0 && <EmptyCart />}
 
       {!loading && !error && items.length > 0 && (
         <>
           <p className="cart-title">My Cart ({cartMeta.totalItems})</p>
 
-          {/* ── MOBILE ── */}
           <div className="mobile-list">
             {items.map((it) => (
               <div
@@ -317,30 +273,26 @@ export default function CartList() {
                 <div className="item-thumb">
                   <LazyImage src={resolveImageUrl(it.image)} alt={it.name} />
                 </div>
-
                 <div className="item-info">
                   <div className="item-top">
                     <p className="item-name">{it.name}</p>
                   </div>
-
                   <div className="price-row">
                     ₹ {it.price}
                     {it.old_price && (
                       <span className="mrp">₹ {it.old_price}</span>
                     )}
                   </div>
-
                   {it.sku && (
                     <div className="color-row">
                       SKU: <b>{it.sku}</b>
                     </div>
                   )}
-
                   <div className="qty-row">
                     <span>Qty.</span>
                     <div className="stepper">
                       <button
-                        onClick={() => decreaseQty(it)}
+                        onClick={() => changeQty(it, -1)}
                         disabled={updatingId === it.id}
                         aria-label="Decrease quantity"
                       >
@@ -348,7 +300,7 @@ export default function CartList() {
                       </button>
                       <span>{it.quantity}</span>
                       <button
-                        onClick={() => increaseQty(it)}
+                        onClick={() => changeQty(it, +1)}
                         disabled={updatingId === it.id}
                         aria-label="Increase quantity"
                       >
@@ -360,7 +312,6 @@ export default function CartList() {
                       {(Number(it.price) * it.quantity).toLocaleString("en-IN")}
                     </span>
                   </div>
-
                   <div className="card-footer">
                     <button
                       className="remove-btn"
@@ -373,7 +324,6 @@ export default function CartList() {
                 </div>
               </div>
             ))}
-
             <SummaryCard className="mobile-summary" />
           </div>
 
@@ -383,10 +333,8 @@ export default function CartList() {
             </button>
           </div>
 
-          {/* ── DESKTOP ── */}
           <div className="cd-desktop">
             <AccountSidebar />
-
             <div className="od-main">
               <div className="od-main-header">
                 <div className="od-main-title">
@@ -420,7 +368,6 @@ export default function CartList() {
                           alt={it.name}
                         />
                       </div>
-
                       <div className="desktop-name-block">
                         <p className="item-name">{it.name}</p>
                         {it.sku && (
@@ -436,7 +383,6 @@ export default function CartList() {
                           {updatingId === it.id ? "Removing…" : "Remove"}
                         </button>
                       </div>
-
                       <div className="desktop-price">
                         <div className="price-row">
                           ₹ {it.price}
@@ -445,25 +391,23 @@ export default function CartList() {
                           )}
                         </div>
                       </div>
-
                       <div className="desktop-qty-cell">
                         <div className="stepper">
                           <button
-                            onClick={() => decreaseQty(it)}
+                            onClick={() => changeQty(it, -1)}
                             disabled={updatingId === it.id}
                           >
                             −
                           </button>
                           <span>{it.quantity}</span>
                           <button
-                            onClick={() => increaseQty(it)}
+                            onClick={() => changeQty(it, +1)}
                             disabled={updatingId === it.id}
                           >
                             +
                           </button>
                         </div>
                       </div>
-
                       <div className="desktop-line-total">
                         ₹{" "}
                         {(Number(it.price) * it.quantity).toLocaleString(
