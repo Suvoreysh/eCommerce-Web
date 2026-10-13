@@ -1,179 +1,820 @@
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
 .category-scroller {
   position: relative;
-  max-width: 1400px;
-  margin: 16px auto;
-  padding: 0 25px;
-}
-.category-track {
-  display: flex;
+
   width: 100%;
-  gap: 24px;
-  overflow-x: auto;
-  padding: 18px 82px 18px 18px;
-  border-radius: 34px;
-  background: #fff;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
-  scrollbar-width: none;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
+  max-width: 1400px;
+
+  margin: 16px auto;
+  padding: 0;
 }
+
+
+/* =========================================
+   TRACK
+========================================= */
+
+.category-track {
+  position: relative;
+
+  display: flex;
+
+  width: 100%;
+  min-height: 210px;
+
+  align-items: center;
+
+  gap: 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 18px 65px;
+
+  background: #ffffff;
+
+  border-radius: 34px;
+
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.12);
+
+  scrollbar-width: none;
+
+  scroll-behavior: smooth;
+
+  scroll-snap-type: x mandatory;
+
+  overscroll-behavior-x: contain;
+
+  -webkit-overflow-scrolling: touch;
+
+  box-sizing: border-box;
+}
+
+
 .category-track::-webkit-scrollbar {
   display: none;
 }
+
+
+/* =========================================
+   CATEGORY ITEM
+========================================= */
+
 .category-scroll-item {
-  padding: 0;
-  border: 0;
-  background: none;
-  font-family: inherit;
-  cursor: pointer;
+  position: relative;
+
   display: flex;
-  flex: 0 0 clamp(170px, 16vw, 225px);
-  min-width: 0;
-  gap: 10px;
+
+  flex: 0 0 20%;
+  min-width: 20%;
+
   flex-direction: column;
+
   align-items: center;
-  scroll-snap-align: start;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  font-family: inherit;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  scroll-snap-align: center;
   scroll-snap-stop: always;
+
+  box-sizing: border-box;
 }
+
+
+/* =========================================
+   IMAGE CONTAINER
+========================================= */
+
 .category-scroll-circle {
   position: relative;
+
   display: flex;
+
   width: 128px;
   height: 128px;
-  overflow: hidden;
-  border: 1px solid #bdbdbd;
-  border-radius: 50%;
-  background: #f4f6f7;
+
+  min-width: 128px;
+  min-height: 128px;
+
+  flex: 0 0 128px;
+
+  margin: 0 auto;
+
+  /*
+    Small space prevents image from
+    touching container edges.
+  */
+  padding: 3px;
+
   align-items: center;
   justify-content: center;
-}
-.category-scroll-item > span {
-  max-width: 100%;
+
   overflow: hidden;
-  color: #111;
+
+  /*
+    NO BORDER
+  */
+  border: none !important;
+
+  /*
+    Keep clipping circular images.
+  */
+  border-radius: 50%;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   NO HOVER BORDER / EFFECT
+========================================= */
+
+.category-scroll-item:hover
+.category-scroll-circle,
+.category-scroll-item:focus
+.category-scroll-circle,
+.category-scroll-item:focus-visible
+.category-scroll-circle,
+.category-scroll-item:active
+.category-scroll-circle {
+  border: none !important;
+
+  outline: none !important;
+
+  box-shadow: none !important;
+
+  transform: none !important;
+
+  background: transparent !important;
+}
+
+
+/* =========================================
+   IMAGE INNER
+========================================= */
+
+.category-image-inner {
+  position: relative;
+
+  display: flex !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  overflow: hidden;
+
+  border: none !important;
+
+  border-radius: 50%;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   LAZY IMAGE WRAPPER
+========================================= */
+
+.category-image-inner > * {
+  position: relative !important;
+
+  display: flex !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  border: none !important;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   NESTED LAZY IMAGE WRAPPER
+========================================= */
+
+.category-image-inner > * > * {
+  position: relative !important;
+
+  display: flex !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  border: none !important;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   ACTUAL IMAGE
+
+   Full image fits inside.
+   Nothing gets cropped.
+========================================= */
+
+.category-scroll-circle img,
+.category-image-inner img {
+  position: static !important;
+
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  margin: auto !important;
+  padding: 0 !important;
+
+  border: none !important;
+
+  outline: none !important;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+
+  object-fit: contain !important;
+
+  object-position: center center !important;
+
+  transform: none !important;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   CATEGORY NAME
+========================================= */
+
+.category-scroll-name {
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+
+  margin: 0;
+
+  padding: 0 8px;
+
+  overflow: hidden;
+
+  color: #111111;
+
   font-size: 16px;
   font-weight: 600;
+
+  line-height: 1.35;
+
+  text-align: center;
+
   text-overflow: ellipsis;
+
   white-space: nowrap;
+
+  box-sizing: border-box;
 }
-.category-next-btn {
+
+
+/* =========================================
+   REMOVE BUTTON FOCUS BORDER
+========================================= */
+
+.category-scroll-item:hover,
+.category-scroll-item:focus,
+.category-scroll-item:focus-visible,
+.category-scroll-item:active {
+  border: none !important;
+
+  outline: none !important;
+
+  box-shadow: none !important;
+}
+
+
+/* =========================================
+   LEFT + RIGHT ARROWS
+========================================= */
+
+.category-nav-btn {
   position: absolute;
+
   top: 50%;
-  right: 4px;
-  z-index: 5;
+
+  z-index: 30;
+
   display: flex;
-  width: 40px;
-  height: 40px;
-  border: 0;
+
+  width: 42px;
+  height: 42px;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+
   border-radius: 50%;
-  background: #000;
-  color: #fff;
+
+  background: #000000;
+
+  color: #ffffff;
+
   align-items: center;
   justify-content: center;
-  font-size: 23px;
+
+  font-size: 24px;
+
+  line-height: 1;
+
   cursor: pointer;
+
   transform: translateY(-50%);
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.22);
+
   transition:
     background 0.2s ease,
+    transform 0.2s ease,
     box-shadow 0.2s ease;
 }
-.category-next-btn:hover {
+
+
+/* =========================================
+   ARROW ICON
+========================================= */
+
+.category-nav-btn svg {
+  display: block;
+
+  width: 22px;
+  height: 22px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   LEFT ARROW
+
+   Same distance as right.
+========================================= */
+
+.category-prev-btn {
+  left: -21px;
+}
+
+
+/* =========================================
+   RIGHT ARROW
+
+   Same distance as left.
+========================================= */
+
+.category-next-btn {
+  right: -21px;
+}
+
+
+/* =========================================
+   ARROW HOVER
+========================================= */
+
+.category-nav-btn:hover {
   background: #123848;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.28);
+
+  transform:
+    translateY(-50%)
+    scale(1.05);
 }
-.category-image-skeleton,
-.category-scroll-skeleton .category-scroll-circle,
-.category-scroll-skeleton > span {
+
+
+.category-nav-btn:active {
+  transform:
+    translateY(-50%)
+    scale(0.96);
+}
+
+
+/* =========================================
+   DISABLED CATEGORY
+========================================= */
+
+.category-scroll-item:disabled {
+  opacity: 0.6;
+
+  cursor: progress;
+}
+
+
+/* =========================================
+   SKELETON
+========================================= */
+
+.category-scroll-skeleton {
+  cursor: default;
+
+  pointer-events: none;
+}
+
+
+.category-scroll-skeleton
+.category-scroll-circle {
+  border: none !important;
+
+  background: #e6ebed !important;
+
+  box-shadow: none !important;
+}
+
+
+.category-scroll-skeleton-name {
   position: relative;
-  overflow: hidden;
-  background: #e6ebed;
-}
-.category-image-skeleton {
-  position: absolute;
-  inset: 0;
-}
-.category-image-skeleton::after,
-.category-scroll-skeleton .category-scroll-circle::after,
-.category-scroll-skeleton > span::after {
-  position: absolute;
-  top: 0;
-  left: -70%;
-  width: 55%;
-  height: 100%;
-  content: "";
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.9),
-    transparent
-  );
-  transform: skewX(-18deg);
-  animation: category-shimmer 1.25s infinite;
-}
-.category-scroll-skeleton > span {
+
+  display: block;
+
   width: 105px;
   height: 17px;
+
+  overflow: hidden;
+
   border-radius: 8px;
+
+  background: #e6ebed;
 }
+
+
+/* =========================================
+   SHIMMER
+========================================= */
+
+.category-scroll-skeleton
+.category-scroll-circle::after,
+.category-scroll-skeleton-name::after {
+  position: absolute;
+
+  top: 0;
+  left: -70%;
+
+  width: 55%;
+  height: 100%;
+
+  content: "";
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.9),
+      transparent
+    );
+
+  transform: skewX(-18deg);
+
+  animation:
+    category-shimmer 1.25s infinite;
+}
+
+
 @keyframes category-shimmer {
   to {
     left: 130%;
   }
 }
-@media (max-width: 768px) {
-  .category-scroller {
-    margin: 12px auto;
-    padding: 0 16px;
-  }
-  .category-track {
-    gap: 18px;
-    padding: 14px 65px 14px 14px;
-    border-radius: 25px;
-  }
-  .category-scroll-item {
-    flex-basis: 100px;
-    gap: 8px;
-  }
-  .category-scroll-circle {
-    width: 70px;
-    height: 70px;
-  }
-  .category-scroll-item > span {
-    font-size: 12px;
-  }
-  .category-next-btn {
-    right: 2px;
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .category-image-skeleton::after,
-  .category-scroll-skeleton .category-scroll-circle::after,
-  .category-scroll-skeleton > span::after {
-    animation: none;
-  }
-}
 
-.category-scroll-item:hover .category-scroll-circle,
-.category-scroll-item:focus-visible .category-scroll-circle {
-  border-color: #123848;
-}
 
-.category-scroll-item:disabled {
-  opacity: 0.6;
-  cursor: progress;
-}
-
-.category-scroll-skeleton {
-  cursor: default;
-}
+/* =========================================
+   ERROR
+========================================= */
 
 .category-scroller-error {
   margin: 8px 0 0;
+
   padding: 0 8px;
+
   color: #d92d20;
+
   font-size: 13px;
+}
+
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+  .category-track {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+
+  .category-scroll-circle {
+    width: 132px;
+    height: 132px;
+
+    min-width: 132px;
+    min-height: 132px;
+
+    flex-basis: 132px;
+  }
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .category-scroller {
+    margin: 14px auto;
+
+    padding: 0 18px;
+  }
+
+
+  .category-track {
+    min-height: 160px;
+
+    padding: 14px 45px;
+
+    border-radius: 28px;
+  }
+
+
+  /* 4 items visible */
+
+  .category-scroll-item {
+    flex: 0 0 25%;
+
+    min-width: 25%;
+
+    gap: 8px;
+  }
+
+
+  .category-scroll-circle {
+    width: 88px;
+    height: 88px;
+
+    min-width: 88px;
+    min-height: 88px;
+
+    flex-basis: 88px;
+
+    padding: 2px;
+  }
+
+
+  .category-scroll-name {
+    padding: 0 5px;
+
+    font-size: 13px;
+  }
+
+
+  .category-nav-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+
+  .category-nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+
+  /*
+    Same position on both sides
+  */
+
+  .category-prev-btn {
+    left: 0;
+  }
+
+
+  .category-next-btn {
+    right: 0;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .category-scroller {
+    margin: 12px auto;
+
+    padding: 0 10px;
+  }
+
+
+  .category-track {
+    min-height: 135px;
+
+    padding: 12px 38px;
+
+    border-radius: 24px;
+  }
+
+
+  /* 3 items visible */
+
+  .category-scroll-item {
+    flex: 0 0 33.333333%;
+
+    min-width: 33.333333%;
+
+    gap: 7px;
+  }
+
+
+  .category-scroll-circle {
+    width: 70px;
+    height: 70px;
+
+    min-width: 70px;
+    min-height: 70px;
+
+    flex-basis: 70px;
+
+    padding: 1px;
+  }
+
+
+  .category-scroll-name {
+    padding: 0 4px;
+
+    font-size: 11px;
+
+    line-height: 1.25;
+  }
+
+
+  .category-nav-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+
+  .category-nav-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+
+  /*
+    Left and right are identical.
+  */
+
+  .category-prev-btn {
+    left: -2px;
+  }
+
+
+  .category-next-btn {
+    right: -2px;
+  }
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+
+  .category-track {
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+
+
+  .category-scroll-circle {
+    width: 62px;
+    height: 62px;
+
+    min-width: 62px;
+    min-height: 62px;
+
+    flex-basis: 62px;
+
+    padding: 1px;
+  }
+
+
+  .category-scroll-name {
+    font-size: 10px;
+  }
+
+
+  .category-nav-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+
+  .category-nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .category-scroll-skeleton
+  .category-scroll-circle::after,
+  .category-scroll-skeleton-name::after {
+    animation: none;
+  }
+
+
+  .category-track {
+    scroll-behavior: auto;
+  }
+
+
+  .category-nav-btn {
+    transition: none;
+  }
 }

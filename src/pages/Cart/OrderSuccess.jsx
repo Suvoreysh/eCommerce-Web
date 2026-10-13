@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useCartCount } from "../../context/CartCountContext";
 import { useCheckout } from "../../context/CheckoutContext";
 import { paymentLabel } from "../../utils/format";
+import CheckoutSidebar from "./CheckoutSidebar";
 import "./Checkout.css";
 
 export default function OrderSuccess() {
@@ -77,39 +78,16 @@ export default function OrderSuccess() {
 
   return (
     <div className="checkout-page">
+      {/* Mobile */}
       <div className="checkout-mobile">
         <div className="success-wrap">{successBody}</div>
       </div>
+
+      {/* Desktop */}
       <div className="cd-desktop">
-        <aside className="od-sidebar">
-          <div className="od-avatar" />
-          <h2 className="od-name">Checkout</h2>
-          <p className="od-phone">Complete</p>
-          <nav className="od-steps">
-            <div className="od-step done">
-              <span className="od-step-num">✓</span>
-              <span>Personal Details</span>
-            </div>
-            <div className="od-step done">
-              <span className="od-step-num">✓</span>
-              <span>Delivery Address</span>
-            </div>
-            <div className="od-step done">
-              <span className="od-step-num">✓</span>
-              <span>Payment</span>
-            </div>
-          </nav>
-          <div className="od-help">
-            <span className="od-help-icon">🎧</span>
-            <div>
-              <p className="od-help-title">Need Help?</p>
-              <p className="od-help-sub">24/7 Customer Support</p>
-              <p className="od-help-email">support@shopkart.com</p>
-            </div>
-          </div>
-        </aside>
+        <CheckoutSidebar current={4} />
         <div className="od-main">
-          <div className="od-main-header">
+          <div className="od-main-header od-main-header--sticky">
             <h1>Order Confirmed</h1>
           </div>
           <div className="success-wrap">{successBody}</div>

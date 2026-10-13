@@ -1,401 +1,609 @@
+/* ============================================================
+   AUTH PAGE
+============================================================ */
+
 .auth-page {
-  height: 100vh;
   width: 100%;
-  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: clamp(8px, 2vh, 20px);
   background: #f4f5f7;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
+
+/* ============================================================
+   OTP LOGIN BUTTON
+============================================================ */
+
 .otp-btn-login {
   width: 100%;
+  max-width: 100%;
   height: 50px;
-
   margin-top: 20px;
   margin-bottom: 20px;
+  padding: 0 18px;
 
   border: 0.5px solid #29586b;
-  cursor: pointer;
-
   border-radius: 999px;
 
   background: #ffffff;
   color: #434343;
 
-  font-size: 40px;
+  font-size: 14px !important;
   font-weight: 600;
 
-  transition: 0.3s;
+  cursor: pointer;
+  box-sizing: border-box;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 .otp-btn-login:hover {
   background: #f0f5f6;
 }
+
+/* ============================================================
+   MAIN CONTAINER
+============================================================ */
+
 .auth-container {
   width: 100%;
   max-width: 1300px;
-  height: 100%;
-  max-height: 100%;
-  background: transparent;
+  min-width: 0;
+
+  min-height: calc(100vh - 40px);
+
   display: grid;
-  grid-template-columns: 1fr min(480px, 100%);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 480px);
+
   align-items: center;
   justify-items: center;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: none;
+
   margin: 0 auto;
+
+  background: transparent;
+
+  border-radius: 8px;
+
+  box-sizing: border-box;
 }
 
-/* LEFT */
+/* ============================================================
+   LEFT SIDE
+============================================================ */
+
 .auth-left {
   position: relative;
+
   width: 100%;
+  min-width: 0;
   height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   background: transparent;
 }
 
 .auth-big-logo {
   width: clamp(160px, 20vh, 340px);
   max-width: 90%;
+  height: auto;
+  display: block;
 }
 
 .auth-pattern {
   position: absolute;
+
   width: clamp(80px, 12vh, 160px);
   height: clamp(80px, 12vh, 160px);
-  background-image: radial-gradient(circle, #184d63 1.5px, transparent 1.5px);
+
+  background-image: radial-gradient(
+    circle,
+    #184d63 1.5px,
+    transparent 1.5px
+  );
+
   background-size: 16px 16px;
+
   opacity: 0.15;
-  -webkit-mask-image: radial-gradient(circle, #000 60%, transparent 100%);
-  mask-image: radial-gradient(circle, #000 60%, transparent 100%);
+
+  -webkit-mask-image: radial-gradient(
+    circle,
+    #000 60%,
+    transparent 100%
+  );
+
+  mask-image: radial-gradient(
+    circle,
+    #000 60%,
+    transparent 100%
+  );
 }
 
 .top-left {
   top: 0;
   left: 0;
 }
+
 .bottom-left {
   bottom: 40px;
   left: 40px;
 }
 
-/* RIGHT */
+/* ============================================================
+   RIGHT SIDE
+============================================================ */
+
 .auth-right {
   width: 100%;
+  min-width: 0;
   height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   padding: clamp(8px, 2vh, 40px);
+
   background: transparent;
-  overflow: hidden;
+
+  box-sizing: border-box;
 }
+
+/* ============================================================
+   AUTH CARD
+============================================================ */
 
 .auth-card {
   width: 100%;
   max-width: 400px;
-  max-height: 100%;
+  min-width: 0;
+
   background: #fff;
+
   border: 1px solid #ececec;
   border-radius: clamp(10px, 1.2vw, 16px);
+
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.07),
     0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: clamp(14px, 2.5vh, 32px) clamp(18px, 2.5vw, 36px);
+
+  padding:
+    clamp(14px, 2.5vh, 32px)
+    clamp(18px, 2.5vw, 36px);
+
   margin: auto;
+
   text-align: center;
-  overflow: hidden;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   box-sizing: border-box;
+
+  overflow: visible;
 }
+
+/* ============================================================
+   LOGO
+============================================================ */
 
 .auth-logo {
   width: clamp(70px, 9vh, 142px);
+  max-width: 100%;
+  height: auto;
+
   display: block;
+
   margin: 0 auto;
 }
 
+/* ============================================================
+   TITLE
+============================================================ */
+
 .auth-title {
   text-align: center;
+
   font-size: clamp(18px, 2.6vh, 30px);
   font-weight: 800;
+
+  line-height: 1.2;
+
   margin-top: clamp(4px, 1vh, 10px);
   margin-bottom: clamp(4px, 0.8vh, 8px);
 }
 
+/* ============================================================
+   SUBTITLE
+============================================================ */
+
 .auth-subtitle {
-  text-align: center;
-  color: #777;
-  line-height: 1.4;
-  font-size: clamp(11px, 1.4vh, 14px);
-  margin-bottom: clamp(10px, 2vh, 22px);
+  width: 100%;
   max-width: 340px;
+
+  text-align: center;
+
+  color: #777;
+
+  line-height: 1.4;
+
+  font-size: clamp(11px, 1.4vh, 14px);
+
+  margin-top: 0;
+  margin-bottom: clamp(10px, 2vh, 22px);
   margin-left: auto;
   margin-right: auto;
+
+  box-sizing: border-box;
 }
 
-/* form */
-form {
+/* ============================================================
+   FORM
+============================================================ */
+
+.auth-card form {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
 }
 
+.auth-card form > * {
+  max-width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   INPUT SAFETY
+============================================================ */
+
+.auth-card input {
+  max-width: 100%;
+
+  font-size: clamp(12px, 1.5vh, 15px);
+
+  box-sizing: border-box;
+}
+
+.auth-card .input-group,
+.auth-card .input-wrapper,
+.auth-card .input-container,
+.auth-card .form-group,
+.auth-card .form-control {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   REMEMBER / FORGOT PASSWORD
+============================================================ */
+
 .auth-row {
+  width: 100%;
+  min-width: 0;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: clamp(6px, 1.2vh, 12px) 0 clamp(10px, 1.8vh, 18px);
-  width: 100%;
+
+  gap: 10px;
+
+  margin:
+    clamp(6px, 1.2vh, 12px)
+    0
+    clamp(10px, 1.8vh, 18px);
+
   font-size: clamp(12px, 1.4vh, 15px);
+
+  box-sizing: border-box;
 }
 
 .auth-checkbox {
   display: flex;
   align-items: center;
+
   gap: 8px;
+
+  min-width: 0;
+
   font-size: clamp(12px, 1.4vh, 15px);
+
+  white-space: nowrap;
+}
+
+.auth-checkbox input {
+  width: auto;
+  max-width: none;
+
+  flex-shrink: 0;
+
+  margin: 0;
 }
 
 .auth-link {
   color: #184d63;
+
   text-decoration: none;
+
   font-weight: 600;
+
   font-size: inherit;
 }
 
-.auth-switch {
-  text-align: center;
-  margin-top: clamp(6px, 1.6vh, 16px);
-  color: #666;
-  font-size: clamp(11px, 1.4vh, 14px);
+/* ============================================================
+   API ERROR
+============================================================ */
+
+.auth-error {
   width: 100%;
+
+  color: #ff4d4f;
+
+  margin-top: 0;
+  margin-bottom: clamp(8px, 2vh, 20px);
+
+  text-align: center;
+
+  font-size: clamp(11px, 1.4vh, 14px);
+
+  box-sizing: border-box;
 }
+
+/* ============================================================
+   BUTTON SAFETY
+============================================================ */
+
+.auth-card button {
+  max-width: 100%;
+
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   SIGNUP TEXT
+============================================================ */
+
+.auth-switch {
+  width: 100%;
+
+  text-align: center;
+
+  margin-top: clamp(6px, 1.6vh, 16px);
+  margin-bottom: 0;
+
+  color: #666;
+
+  font-size: clamp(11px, 1.4vh, 14px);
+
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   DIVIDER
+============================================================ */
 
 .auth-divider {
+  width: 100%;
+
   display: flex;
   align-items: center;
-  text-align: center;
-  margin: clamp(8px, 1.8vh, 18px) 0;
-  color: #777;
-  font-size: clamp(11px, 1.4vh, 14px);
-  white-space: nowrap;
-  width: 100%;
-}
 
-.auth-divider-text {
-  align-items: center;
   text-align: center;
+
   margin: clamp(8px, 1.8vh, 18px) 0;
+
   color: #777;
+
   font-size: clamp(11px, 1.4vh, 14px);
-  width: 100%;
+
+  white-space: nowrap;
+
+  box-sizing: border-box;
 }
 
 .auth-divider::before,
 .auth-divider::after {
   content: "";
+
   flex: 1;
+
   min-width: 20px;
+
   height: 1px;
+
   background: #ddd;
 }
 
+.auth-divider-text {
+  width: 100%;
+
+  display: block;
+
+  text-align: center;
+
+  margin: clamp(8px, 1.8vh, 18px) 0;
+
+  color: #777;
+
+  font-size: clamp(11px, 1.4vh, 14px);
+
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   SOCIAL LOGIN
+============================================================ */
+
 .auth-social {
+  width: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: clamp(10px, 1.6vw, 18px);
+
   margin-top: clamp(6px, 2vh, 20px);
-  width: 100%;
+
+  box-sizing: border-box;
 }
 
 .auth-social-btn {
   width: clamp(34px, 5vh, 52px);
   height: clamp(34px, 5vh, 52px);
+
+  flex: 0 0 auto;
+
   border: none;
   border-radius: 50%;
+
   background: #fff;
+
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  padding: 0;
+
   cursor: pointer;
-  transition: all 0.25s ease;
-  flex-shrink: 0;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .auth-social-btn:hover {
   transform: translateY(-2px);
+
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .auth-social-icon {
   width: clamp(16px, 2vh, 22px);
   height: clamp(16px, 2vh, 22px);
+
   object-fit: contain;
 }
 
-.auth-error {
-  color: #ff4d4f;
-  margin-bottom: clamp(8px, 2vh, 20px);
-  text-align: center;
-  font-size: clamp(11px, 1.4vh, 14px);
-  width: 100%;
-}
+/* ============================================================
+   OTP
+============================================================ */
 
 .otp-row {
+  width: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: var(--space-md);
+
   margin-bottom: var(--space-sm);
-  width: 100%;
+
+  box-sizing: border-box;
 }
 
 .otp-box {
   width: clamp(38px, 6vh, 56px);
   height: clamp(38px, 6vh, 56px);
+
+  flex-shrink: 1;
+
   text-align: center;
+
   font-size: clamp(1rem, 2vh, 1.4rem);
   font-weight: 700;
+
   border: 1.5px solid #000;
   border-radius: 9999px;
+
   background: var(--color-white);
+
+  padding: 0;
+
+  box-sizing: border-box;
 }
 
 .otp-box:focus {
   outline: none;
+
   border-color: var(--color-primary);
 }
 
 .otp-buttons {
+  width: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: clamp(8px, 1.8vh, 16px);
+
   margin-top: clamp(8px, 2vh, 20px);
-  width: 100%;
+
+  box-sizing: border-box;
 }
 
 .otp-timer {
   text-align: center;
+
   color: var(--color-text-muted);
+
   margin-bottom: var(--space-lg);
+
   font-size: clamp(11px, 1.4vh, 14px);
 }
 
-/* Ensure Input/Button components shrink too */
-.auth-card input,
-.auth-card button {
-  font-size: clamp(12px, 1.5vh, 15px);
-}
+/* ============================================================
+   BACK BUTTON
+============================================================ */
 
-/* MOBILE */
-@media (max-width: 900px) {
-  .auth-page {
-    height: 100vh;
-    padding: 0;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    overflow: hidden;
-  }
-
-  .auth-container {
-    grid-template-columns: 1fr;
-    height: 100%;
-    background: #fff;
-    border-radius: 0;
-    box-shadow: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .auth-left {
-    display: none;
-  }
-
-  .auth-right {
-    padding: clamp(10px, 3vh, 35px) clamp(14px, 5vw, 22px);
-    background: #fff;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-
-  .auth-card {
-    border: none;
-    box-shadow: none;
-    padding: 0;
-    border-radius: 0;
-    max-width: 420px;
-    max-height: 100%;
-    margin: 0 auto;
-    justify-content: center;
-  }
-
-  .auth-title {
-    font-size: clamp(22px, 5vh, 44px);
-  }
-
-  .auth-logo {
-    width: clamp(56px, 9vh, 80px);
-  }
-}
-
-@media (max-width: 500px) {
-  .auth-page {
-    padding: 0;
-  }
-
-  .auth-right {
-    padding: clamp(8px, 3vh, 25px) clamp(12px, 4vw, 16px);
-  }
-
-  .auth-title {
-    font-size: clamp(20px, 5.5vh, 38px);
-  }
-
-  .auth-subtitle {
-    font-size: clamp(11px, 2.2vh, 15px);
-  }
-
-  .auth-row {
-    font-size: clamp(11px, 2vh, 14px);
-  }
-}
-
-@media (max-width: 900px) {
-  .auth-left {
-    display: none;
-  }
-}
-
-/* Back Button */
 .auth-back-btn {
   position: absolute;
+
   top: clamp(12px, 3vh, 40px);
   left: clamp(14px, 3vw, 24px);
+
   width: clamp(36px, 5vh, 48px);
   height: clamp(36px, 5vh, 48px);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   border: none;
+
   background: transparent;
+
   cursor: pointer;
+
   padding: 0;
+
   color: #1c1c1c;
 }
 
@@ -405,26 +613,26 @@ form {
 
 .auth-back-btn:hover {
   background: transparent;
+
   color: #184d63;
 }
 
 .auth-back-btn:focus,
 .auth-back-btn:active {
   background: transparent;
+
   outline: none;
+
   box-shadow: none;
 }
 
-@media (min-width: 901px) {
-  .auth-back-btn {
-    display: none;
-  }
-}
-
-/* ---------- Forgot password ---------- */
+/* ============================================================
+   FORGOT PASSWORD SUCCESS
+============================================================ */
 
 .auth-success {
   width: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -434,37 +642,398 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
+
   width: clamp(48px, 8vh, 68px);
   height: clamp(48px, 8vh, 68px);
+
   margin-top: clamp(6px, 1.4vh, 14px);
+
   border-radius: 50%;
+
   background: #e8f0f2;
+
   color: #184d63;
+
   font-size: clamp(22px, 3.6vh, 30px);
 }
 
 .auth-success__email {
   max-width: 100%;
+
   margin: 0 0 clamp(10px, 2vh, 20px);
+
   overflow-wrap: anywhere;
+
   color: #184d63;
+
   font-size: clamp(12px, 1.6vh, 15px);
   font-weight: 700;
+
   text-align: center;
 }
 
 .auth-link-btn {
   padding: 0;
+
   border: 0;
+
   background: none;
+
   cursor: pointer;
 }
 
 .auth-link-btn:disabled {
   opacity: 0.6;
+
   cursor: not-allowed;
 }
 
 .auth-muted {
   color: #8a9296;
+}
+
+/* ============================================================
+   TABLET + MOBILE
+   <= 900px
+============================================================ */
+
+@media (max-width: 900px) {
+  .auth-page {
+    width: 100%;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding: 0;
+
+    align-items: stretch;
+
+    background: #fff;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .auth-container {
+    width: 100%;
+    max-width: 100%;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    grid-template-columns: none;
+
+    margin: 0;
+
+    background: #fff;
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+    overflow: visible;
+  }
+
+  .auth-left {
+    display: none;
+  }
+
+  .auth-right {
+    width: 100%;
+    max-width: 100%;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 24px;
+    padding-bottom: 24px;
+
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+
+    background: #fff;
+
+    box-sizing: border-box;
+
+    overflow: visible;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 420px;
+    min-width: 0;
+
+    border: none;
+    box-shadow: none;
+
+    padding: 0;
+
+    border-radius: 0;
+
+    margin: auto;
+
+    justify-content: center;
+
+    overflow: visible;
+  }
+
+  .auth-card form {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+  }
+
+  .auth-card form > * {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .auth-logo {
+    width: clamp(56px, 9vh, 80px);
+  }
+
+  .auth-title {
+    font-size: clamp(22px, 5vh, 44px);
+  }
+}
+
+/* ============================================================
+   MOBILE
+   <= 500px
+============================================================ */
+
+@media (max-width: 500px) {
+  .auth-page {
+    width: 100%;
+
+    padding: 0;
+
+    background: #fff;
+
+    overflow-x: hidden;
+  }
+
+  .auth-container {
+    width: 100%;
+    max-width: 100%;
+
+    padding: 0;
+
+    overflow-x: hidden;
+  }
+
+  .auth-right {
+    width: 100%;
+
+    /*
+      Main fix:
+      input fields now always have safe left/right spacing.
+    */
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    padding-left: max(18px, env(safe-area-inset-left));
+    padding-right: max(18px, env(safe-area-inset-right));
+
+    box-sizing: border-box;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+  }
+
+  .auth-card form {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+  }
+
+  .auth-card form > * {
+    max-width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+  }
+
+  .auth-card .input-group,
+  .auth-card .input-wrapper,
+  .auth-card .input-container,
+  .auth-card .form-group,
+  .auth-card .form-control {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+  }
+
+  .auth-card input {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+  }
+
+  .auth-title {
+    font-size: clamp(20px, 5.5vh, 38px);
+  }
+
+  .auth-subtitle {
+    width: 100%;
+    max-width: 300px;
+
+    padding-left: 4px;
+    padding-right: 4px;
+
+    font-size: clamp(11px, 2.2vh, 15px);
+
+    box-sizing: border-box;
+  }
+
+  .auth-row {
+    width: 100%;
+
+    gap: 8px;
+
+    font-size: clamp(10px, 2vh, 14px);
+  }
+
+  .auth-checkbox {
+    gap: 5px;
+
+    font-size: inherit;
+  }
+
+  .auth-row .auth-link {
+    flex-shrink: 0;
+
+    font-size: inherit;
+  }
+
+  .otp-btn-login {
+    width: 100%;
+    max-width: 100%;
+
+    height: 46px;
+
+    margin-top: 14px;
+    margin-bottom: 14px;
+
+    font-size: 12px !important;
+  }
+
+  .auth-social {
+    gap: 12px;
+  }
+}
+
+/* ============================================================
+   SMALL MOBILE
+   <= 375px
+============================================================ */
+
+@media (max-width: 375px) {
+  .auth-right {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .auth-subtitle {
+    max-width: 280px;
+  }
+
+  .auth-row {
+    gap: 6px;
+
+    font-size: 10px;
+  }
+
+  .auth-checkbox {
+    gap: 4px;
+  }
+
+  .auth-switch {
+    font-size: 10px;
+  }
+
+  .auth-divider-text {
+    font-size: 10px;
+  }
+
+  .otp-btn-login {
+    height: 44px;
+
+    font-size: 11px !important;
+  }
+}
+
+/* ============================================================
+   VERY SMALL MOBILE
+   <= 320px
+============================================================ */
+
+@media (max-width: 320px) {
+  .auth-right {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .auth-row {
+    gap: 5px;
+
+    font-size: 9px;
+  }
+
+  .auth-checkbox {
+    gap: 3px;
+  }
+
+  .auth-subtitle {
+    max-width: 260px;
+  }
+}
+
+/* ============================================================
+   DESKTOP ONLY
+============================================================ */
+
+@media (min-width: 901px) {
+  .auth-back-btn {
+    display: none;
+  }
 }

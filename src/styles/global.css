@@ -75,7 +75,11 @@ ul {
   user-select: none;
   text-decoration: none;
 }
-
+@media (max-width: 768px) {
+  .price-login-prompt {
+    font-size: 8px;
+  }
+}
 .price-login-prompt:hover {
   background: #143d4a;
   color: #ffffff;

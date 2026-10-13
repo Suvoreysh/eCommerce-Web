@@ -24,10 +24,10 @@ const backIcon = (
 );
 
 const STEPS = [
-  { id: 1, label: "Placed" },
+  // { id: 1, label: "Placed" },
   { id: 2, label: "Processing" },
-  { id: 3, label: "Shipped" },
-  { id: 4, label: "Out for Delivery" },
+  { id: 3, label: "Picking" },
+  { id: 4, label: "Shipping" },
   { id: 5, label: "Delivered" },
 ];
 

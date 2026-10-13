@@ -1,23 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FiFileText, FiPackage, FiShield, FiCalendar, FiHeadphones } from "react-icons/fi";
+import {
+  FiFileText,
+  FiPackage,
+  FiShield,
+  FiCalendar,
+  FiHeadphones,
+} from "react-icons/fi";
 
 import Seo from "../../components/common/Seo";
 import BackHomeButton from "../../components/profile/BackHomeButton";
+import Footer from "../../components/Footer/Footer";
+import Navbar from "../../components/navbar/Navbar";
+
 import "./Policy.css";
 
+/* =========================================
+   POLICY TABS
+========================================= */
+
 const TABS = [
-  { key: "terms", label: "Terms & Condition", icon: <FiFileText /> },
-  { key: "return", label: "Return Policy", icon: <FiPackage /> },
-  { key: "privacy", label: "Privacy Policy", icon: <FiShield /> },
+  {
+    key: "terms",
+    label: "Terms & Condition",
+    icon: <FiFileText />,
+  },
+  {
+    key: "return",
+    label: "Return Policy",
+    icon: <FiPackage />,
+  },
+  {
+    key: "privacy",
+    label: "Privacy Policy",
+    icon: <FiShield />,
+  },
 ];
+
+/* =========================================
+   POLICY CONTENT
+========================================= */
 
 const CONTENT = {
   terms: {
     title: "Terms & Conditions",
     lastUpdated: "May 25, 2024",
+
     intro:
       "Welcome to our store. By accessing or using our website and services, you agree to be bound by the following terms and conditions. Please read them carefully.",
+
     sections: [
       {
         heading: "Acceptance of Terms",
@@ -44,14 +75,18 @@ const CONTENT = {
         body: "We reserve the right to update or change these Terms & Conditions at any time. Any changes will be posted on this page with the updated effective date.",
       },
     ],
+
     footnote:
       "By continuing to use our website, you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions.",
   },
+
   return: {
     title: "Return Policy",
     lastUpdated: "May 25, 2024",
+
     intro:
       "We want you to be completely satisfied with your purchase. If you're not, here's how our returns and refunds work.",
+
     sections: [
       {
         heading: "Return Window",
@@ -74,14 +109,18 @@ const CONTENT = {
         body: "If you received a damaged, defective, or wrong item, we'll offer a free exchange or full refund based on your preference.",
       },
     ],
+
     footnote:
       "For any return-related questions, our support team is available 24/7 to help you.",
   },
+
   privacy: {
     title: "Privacy Policy",
     lastUpdated: "May 26, 2026",
+
     intro:
       "We respect your privacy and are committed to protecting your personal information.",
+
     sections: [
       {
         heading: "Information We Collect",
@@ -100,135 +139,219 @@ const CONTENT = {
         body: "We take reasonable security measures to protect your data from unauthorized access, misuse, or disclosure.",
       },
     ],
+
     footnote: "By using our website, you agree to this Privacy Policy.",
   },
 };
 
+/* =========================================
+   COMPONENT
+========================================= */
+
 export default function Policy() {
   const navigate = useNavigate();
   const { tab: tabParam } = useParams();
-  const [activeTab, setActiveTab] = useState(
-    TABS.some((t) => t.key === tabParam) ? tabParam : "terms",
-  );
+
+  const validTab = TABS.some((tab) => tab.key === tabParam)
+    ? tabParam
+    : "terms";
+
+  const [activeTab, setActiveTab] = useState(validTab);
+
+  /* =========================================
+     SYNC URL WITH TAB
+  ========================================= */
+
+  useEffect(() => {
+    if (tabParam && TABS.some((tab) => tab.key === tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
+
+  /* =========================================
+     CHANGE TAB
+  ========================================= */
 
   const handleTabChange = (key) => {
     setActiveTab(key);
-    navigate(`/policy/${key}`, { replace: true });
+
+    navigate(`/policy/${key}`, {
+      replace: true,
+    });
   };
 
   const content = CONTENT[activeTab];
 
+  const activeTabData = TABS.find((tab) => tab.key === activeTab);
+
   return (
-    <main className="policy-page">
+    <>
+      {/* =====================================
+          SEO
+      ====================================== */}
+
       <Seo
         title={content.title}
         description="Read our Terms & Conditions, Return Policy and Privacy Policy."
       />
 
-      {/* =====================================================
-          MOBILE HEADER
-      ====================================================== */}
-      <header className="policy-mobile-header">
-        <BackHomeButton className="policy-mobile-back" />
-        <h1>Policy</h1>
-        <span className="policy-mobile-header-spacer" />
-      </header>
+      {/* =====================================
+          GLOBAL NAVBAR
+          OUTSIDE POLICY PAGE
+      ====================================== */}
 
-      {/* =====================================================
-          MOBILE TABS
-      ====================================================== */}
-      <div className="policy-mobile-tabs">
-        {TABS.map((tab) => (
-          <button
-            key={tab.key}
-            type="button"
-            className={`policy-mobile-tab${
-              activeTab === tab.key ? " policy-mobile-tab--active" : ""
-            }`}
-            onClick={() => handleTabChange(tab.key)}
-          >
-            <span className="policy-mobile-tab-icon">{tab.icon}</span>
-            <span>{tab.label}</span>
-          </button>
-        ))}
-      </div>
+      <Navbar />
 
-      {/* =====================================================
-          SHARED CONTENT (mobile scroll body / desktop right pane)
-      ====================================================== */}
-      <div className="policy-layout">
-        {/* Desktop sidebar */}
-        <aside className="policy-sidebar">
-          <BackHomeButton className="policy-sidebar-back" />
+      {/* =====================================
+          POLICY PAGE
+      ====================================== */}
 
-          <h2>Policies</h2>
-          <p className="policy-sidebar-sub">
-            Read our policies below. You can switch between different
-            policies using the options.
-          </p>
+      <main className="policy-page">
+        {/* ===================================
+            MOBILE HEADER
+        ==================================== */}
 
-          <nav className="policy-sidebar-nav">
-            {TABS.map((tab) => (
-              <button
-                key={tab.key}
-                type="button"
-                className={`policy-sidebar-item${
-                  activeTab === tab.key ? " policy-sidebar-item--active" : ""
-                }`}
-                onClick={() => handleTabChange(tab.key)}
-              >
-                <span className="policy-sidebar-icon">{tab.icon}</span>
-                <span>{tab.label}</span>
-              </button>
-            ))}
-          </nav>
+        <header className="policy-mobile-header">
+          <BackHomeButton className="policy-mobile-back" />
 
-          <div className="policy-help">
-            <FiHeadphones className="policy-help-icon" />
-            <div>
-              <p className="policy-help-title">Need Help?</p>
-              <p className="policy-help-sub">
-                If you have any questions regarding our policies, feel free
-                to{" "}
-                <a href="mailto:support@shopkart.com">contact support</a>.
-              </p>
+          <h1>Policy</h1>
+
+          <span className="policy-mobile-header-spacer" aria-hidden="true" />
+        </header>
+
+        {/* ===================================
+            MOBILE TABS
+        ==================================== */}
+
+        <div className="policy-mobile-tabs">
+          {TABS.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              className={`policy-mobile-tab ${
+                activeTab === tab.key ? "policy-mobile-tab--active" : ""
+              }`}
+              onClick={() => handleTabChange(tab.key)}
+            >
+              <span className="policy-mobile-tab-icon">{tab.icon}</span>
+
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* ===================================
+            POLICY BODY
+        ==================================== */}
+
+        <div className="policy-layout">
+          {/* =================================
+              DESKTOP SIDEBAR
+          ================================== */}
+
+          <aside className="policy-sidebar">
+            <BackHomeButton className="policy-sidebar-back" />
+
+            <h2>Policies</h2>
+
+            <p className="policy-sidebar-sub">
+              Read our policies below. You can switch between different policies
+              using the options.
+            </p>
+
+            {/* SIDEBAR NAV */}
+
+            <nav className="policy-sidebar-nav" aria-label="Policy navigation">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  className={`policy-sidebar-item ${
+                    activeTab === tab.key ? "policy-sidebar-item--active" : ""
+                  }`}
+                  onClick={() => handleTabChange(tab.key)}
+                >
+                  <span className="policy-sidebar-icon">{tab.icon}</span>
+
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </nav>
+
+            {/* HELP */}
+
+            <div className="policy-help">
+              <FiHeadphones className="policy-help-icon" />
+
+              <div>
+                <p className="policy-help-title">Need Help?</p>
+
+                <p className="policy-help-sub">
+                  If you have any questions regarding our policies, feel free to{" "}
+                  <a href="mailto:support@shopkart.com">contact support</a>.
+                </p>
+              </div>
             </div>
-          </div>
-        </aside>
+          </aside>
 
-        {/* Content */}
-        <section className="policy-content">
-          <div className="policy-content-header">
-            <span className="policy-content-icon">{content && TABS.find((t) => t.key === activeTab)?.icon}</span>
+          {/* =================================
+              CONTENT
+          ================================== */}
 
-            <div>
-              <h1>{content.title}</h1>
-              <p className="policy-updated">
-                <FiCalendar /> Last updated: {content.lastUpdated}
-              </p>
+          <section className="policy-content">
+            {/* CONTENT HEADER */}
+
+            <div className="policy-content-header">
+              <span className="policy-content-icon">{activeTabData?.icon}</span>
+
+              <div>
+                <h1>{content.title}</h1>
+
+                <p className="policy-updated">
+                  <FiCalendar />
+
+                  <span>Last updated: {content.lastUpdated}</span>
+                </p>
+              </div>
             </div>
-          </div>
 
-          <p className="policy-intro">{content.intro}</p>
+            {/* INTRO */}
 
-          <ol className="policy-sections">
-            {content.sections.map((section, index) => (
-              <li key={section.heading} className="policy-section">
-                <span className="policy-section-number">{index + 1}</span>
-                <div>
-                  <h3>{section.heading}</h3>
-                  <p>{section.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+            <p className="policy-intro">{content.intro}</p>
 
-          <div className="policy-footnote">
-            <FiShield />
-            <p>{content.footnote}</p>
-          </div>
-        </section>
-      </div>
-    </main>
+            {/* SECTIONS */}
+
+            <ol className="policy-sections">
+              {content.sections.map((section, index) => (
+                <li key={section.heading} className="policy-section">
+                  <span className="policy-section-number">{index + 1}</span>
+
+                  <div className="policy-section-content">
+                    <h3>{section.heading}</h3>
+
+                    <p>{section.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            {/* FOOTNOTE */}
+
+            <div className="policy-footnote">
+              <FiShield />
+
+              <p>{content.footnote}</p>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      {/* =====================================
+          GLOBAL FOOTER
+          OUTSIDE POLICY PAGE
+      ====================================== */}
+
+      <Footer />
+    </>
   );
 }

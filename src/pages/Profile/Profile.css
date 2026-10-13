@@ -1,5 +1,10 @@
 /* ============================================================
-   RESET AND SHARED BASE
+   PROFILE.CSS
+   FULL RESPONSIVE PROFILE PAGE
+============================================================ */
+
+/* ============================================================
+   RESET / BASE
 ============================================================ */
 
 .profile-page,
@@ -10,10 +15,8 @@
 .profile-page {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
   background: #184d5d;
   font-family: inherit;
 }
@@ -27,9 +30,44 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+
+/* ============================================================
+   MOBILE DEFAULT
+============================================================ */
+
 .orders-desktop {
   display: none;
 }
+
+.profile-page {
+  height: 100vh;
+  height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   MOBILE TOP TEAL SECTION
+============================================================ */
+
+.profile-sticky-top {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  height: 51vh;
+  min-height: 380px;
+  max-height: 500px;
+
+  flex-shrink: 0;
+
+  background: #184d5d;
+}
+
 
 /* ============================================================
    MOBILE HEADER
@@ -37,105 +75,166 @@
 
 .profile-header {
   width: 100%;
-  height: 60px;
+  height: 68px;
+
   padding: 0 18px;
-  display: flex;
+
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
   align-items: center;
-  justify-content: space-between;
+
   color: #ffffff;
 }
 
 .profile-header h2 {
-  flex: 1;
   margin: 0;
+
   text-align: center;
-  font-size: 22px;
+
+  color: #ffffff;
+
+  font-size: 21px;
   line-height: 1.2;
   font-weight: 700;
 }
 
 .profile-header__btn {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
+
   padding: 0;
+
   border: none;
   outline: none;
   border-radius: 50%;
+
   background: transparent;
   color: #ffffff;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 29px;
+
+  font-size: 28px;
+
   cursor: pointer;
+
   transition:
     background 0.2s ease,
     opacity 0.2s ease,
     transform 0.2s ease;
 }
 
+.profile-header__btn:first-child {
+  justify-self: start;
+}
+
+.profile-header__btn:last-child {
+  justify-self: end;
+}
+
 .profile-header__btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .profile-header__btn:active {
-  opacity: 0.75;
-  transform: scale(0.94);
+  opacity: 0.8;
+  transform: scale(0.95);
 }
 
+
 /* ============================================================
-   MOBILE PROFILE HERO
+   MOBILE HERO
 ============================================================ */
 
 .profile-hero {
   width: 100%;
-  padding: 10px 20px 75px;
+
+  padding: 3px 20px 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   text-align: center;
+
   color: #ffffff;
 }
 
+
+/* ============================================================
+   MOBILE AVATAR
+============================================================ */
+
 .profile-avatar-wrapper {
   position: relative;
-  width: 145px;
-  height: 145px;
+
+  width: 150px;
+  height: 150px;
+
   margin: 0 auto;
+
+  flex-shrink: 0;
 }
 
 .profile-avatar {
   width: 100%;
   height: 100%;
+
   overflow: hidden;
-  border: 4px solid rgba(255, 255, 255, 0.22);
+
+  border: none;
   border-radius: 50%;
-  background: #d8d8d8;
+
+  background: #d7d7d7;
 }
 
 .profile-avatar img {
   width: 100%;
   height: 100%;
+
   display: block;
+
   object-fit: cover;
   object-position: center;
+
+  border-radius: 50%;
 }
+
+
+/* ============================================================
+   MOBILE AVATAR EDIT
+============================================================ */
 
 .profile-edit-btn {
   position: absolute;
-  right: 4px;
+
+  right: 3px;
   bottom: 4px;
-  z-index: 2;
-  width: 39px;
-  height: 39px;
+
+  z-index: 5;
+
+  width: 37px;
+  height: 37px;
+
   padding: 0;
+
   border: 3px solid #ffffff;
   border-radius: 50%;
+
   background: #184d5d;
   color: #ffffff;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 16px;
+
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+
+  box-shadow: none;
+
   transition:
     background 0.2s ease,
     transform 0.2s ease;
@@ -147,124 +246,232 @@
 }
 
 .profile-edit-btn:active {
-  transform: scale(0.94);
+  transform: scale(0.95);
 }
 
+.profile-edit-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+
+/* ============================================================
+   MOBILE USER NAME
+============================================================ */
+
 .profile-hero h1 {
-  margin: 18px 0 6px;
+  margin: 10px 0 2px;
+
+  color: #ffffff;
+
   font-size: 24px;
-  line-height: 1.3;
-  font-weight: 700;
+  line-height: 1.25;
+  font-weight: 500;
 }
 
 .profile-hero p {
   margin: 0;
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.9);
+
+  color: rgba(255, 255, 255, 0.95);
+
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 400;
 }
+
 
 /* ============================================================
    MOBILE ACCOUNT CARD
 ============================================================ */
 
 .profile-card {
+  position: relative;
+  z-index: 5;
+
   width: 100%;
+
   flex: 1;
-  margin-top: -35px;
-  padding: 28px 22px calc(90px + env(safe-area-inset-bottom));
-  border-radius: 32px 32px 0 0;
+  min-height: 0;
+
+  margin-top: -22px;
+
+  padding:
+    34px
+    20px
+    calc(95px + env(safe-area-inset-bottom));
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  -webkit-overflow-scrolling: touch;
+
+  border-radius: 30px 30px 0 0 !important;
+
   background: #ffffff;
+
+  scrollbar-width: none;
 }
 
+.profile-card::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* ============================================================
+   MOBILE ACCOUNT TITLE
+============================================================ */
+
 .profile-card h3 {
-  margin: 0 0 18px;
+  margin: 0 0 16px 4px;
+
   color: #111111;
-  font-size: 18px;
+
+  font-size: 17px;
   line-height: 1.3;
   font-weight: 700;
 }
 
+
+/* ============================================================
+   MOBILE MENU
+============================================================ */
+
 .profile-menu {
   width: 100%;
+
   display: flex;
   flex-direction: column;
+
+  gap: 0;
 }
 
 .profile-item {
   width: 100%;
-  min-height: 74px;
-  padding: 14px 0;
+  min-height: 64px;
+
+  padding: 8px 0;
+
   border: none;
-  border-bottom: 1px solid #edf0f2;
+  border-bottom: none;
+
   background: transparent;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+
+  gap: 14px;
+
   color: #111111;
-  text-decoration: none;
+
   text-align: left;
+  text-decoration: none;
+
   cursor: pointer;
+
   transition:
     opacity 0.2s ease,
-    transform 0.2s ease,
-    background 0.2s ease;
-}
-
-.profile-item:last-child {
-  border-bottom: none;
+    transform 0.2s ease;
 }
 
 .profile-item:hover {
-  opacity: 0.8;
-  transform: translateX(2px);
+  opacity: 0.85;
 }
+
+.profile-item:active {
+  transform: scale(0.99);
+}
+
+
+/* ============================================================
+   MOBILE MENU LEFT
+============================================================ */
 
 .profile-item__left {
   min-width: 0;
+
   display: flex;
   align-items: center;
-  gap: 16px;
+
+  gap: 22px;
 }
 
+
+/* ============================================================
+   MOBILE MENU ICON
+============================================================ */
+
 .profile-item__icon {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  border-radius: 14px;
-  background: #eef2f4;
+  width: 48px;
+  height: 48px;
+
+  flex: 0 0 48px;
+
+  border-radius: 16px;
+
+  background: #e9eff1;
   color: #184d5d;
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .profile-item__icon img {
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
+
   display: block;
+
   object-fit: contain;
 }
 
-.profile-item__icon svg {
-  width: 21px;
-  height: 21px;
+.profile-item__icon svg,
+.profile-item__svg {
+  width: 25px;
+  height: 25px;
+
+  display: block;
+
+  color: #184d5d;
 }
 
+
+/* ============================================================
+   MOBILE MENU TEXT
+============================================================ */
+
 .profile-item__left > span {
+  min-width: 0;
+
   overflow: hidden;
+
   color: #111111;
-  font-size: 16px;
-  font-weight: 500;
+
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 400;
+
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+
+/* ============================================================
+   MOBILE MENU ARROW
+============================================================ */
+
 .profile-item__arrow {
+  margin-left: auto;
+
   flex-shrink: 0;
+
   color: #184d5d;
-  font-size: 24px;
+
+  font-size: 29px;
+  line-height: 1;
 }
+
 
 /* ============================================================
    MOBILE LOGOUT
@@ -287,63 +494,78 @@
   color: #d64545;
 }
 
-.profile-logout-item:hover {
-  opacity: 1;
-  background: rgba(214, 69, 69, 0.035);
-}
-
-/* ============================================================
-   LOGOUT MODAL OVERLAY
-============================================================ */
-
-.logout-modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  padding: 20px;
-  background: rgba(8, 27, 33, 0.62);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: logoutOverlayIn 0.2s ease forwards;
-}
 
 /* ============================================================
    LOGOUT MODAL
 ============================================================ */
 
+.logout-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 99999;
+
+  padding: 20px;
+
+  background: rgba(8, 27, 33, 0.62);
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  animation: logoutOverlayIn 0.2s ease forwards;
+}
+
 .logout-modal {
   position: relative;
+
   width: min(100%, 430px);
+
   padding: 34px 30px 30px;
+
   border-radius: 24px;
+
   background: #ffffff;
+
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+
   text-align: center;
+
   animation: logoutModalIn 0.25s ease forwards;
 }
 
+
 /* ============================================================
-   MODAL CLOSE
+   LOGOUT MODAL CLOSE
 ============================================================ */
 
 .logout-modal-close {
   position: absolute;
+
   top: 15px;
   right: 15px;
+
   width: 36px;
   height: 36px;
+
   padding: 0;
+
   border: none;
   border-radius: 50%;
+
   background: #f2f4f5;
   color: #687176;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
+
   transition:
     background 0.2s ease,
     color 0.2s ease,
@@ -358,24 +580,26 @@
 .logout-modal-close:hover {
   background: #e8edef;
   color: #184d5d;
+
   transform: rotate(90deg);
 }
 
-.logout-modal-close:active {
-  transform: scale(0.92);
-}
 
 /* ============================================================
-   MODAL ICON
+   LOGOUT MODAL ICON
 ============================================================ */
 
 .logout-modal-icon {
   width: 66px;
   height: 66px;
+
   margin: 0 auto 20px;
+
   border-radius: 50%;
+
   background: #fff0f0;
   color: #d64545;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -386,13 +610,16 @@
   height: 29px;
 }
 
+
 /* ============================================================
-   MODAL CONTENT
+   LOGOUT MODAL CONTENT
 ============================================================ */
 
 .logout-modal-content h2 {
   margin: 0 0 9px;
+
   color: #111111;
+
   font-size: 23px;
   line-height: 1.3;
   font-weight: 700;
@@ -400,65 +627,81 @@
 
 .logout-modal-content p {
   max-width: 330px;
+
   margin: 0 auto;
+
   color: #747b7f;
+
   font-size: 14px;
   line-height: 1.6;
 }
 
+
 /* ============================================================
-   MODAL ACTIONS
+   LOGOUT MODAL ACTIONS
 ============================================================ */
 
 .logout-modal-actions {
   width: 100%;
+
   margin-top: 27px;
+
   display: flex;
+
   gap: 12px;
 }
 
 .logout-modal-actions button {
   min-height: 48px;
+
   flex: 1;
+
   padding: 10px 18px;
+
   border-radius: 12px;
+
   font-size: 14px;
   font-weight: 600;
+
   cursor: pointer;
+
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
     color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.2s ease;
 }
 
 .logout-cancel-btn {
   border: 1px solid #dce3e6;
+
   background: #ffffff;
   color: #4e595d;
 }
 
 .logout-cancel-btn:hover {
   border-color: #c7d1d5;
+
   background: #f5f7f8;
 }
 
 .logout-confirm-btn {
   border: 1px solid #d64545;
+
   background: #d64545;
   color: #ffffff;
 }
 
 .logout-confirm-btn:hover {
-  background: #c43838;
   border-color: #c43838;
-  box-shadow: 0 5px 15px rgba(214, 69, 69, 0.2);
+
+  background: #c43838;
 }
 
 .logout-modal-actions button:active {
   transform: scale(0.97);
 }
+
 
 /* ============================================================
    MODAL ANIMATIONS
@@ -477,84 +720,187 @@
 @keyframes logoutModalIn {
   from {
     opacity: 0;
+
     transform: translateY(15px) scale(0.97);
   }
 
   to {
     opacity: 1;
+
     transform: translateY(0) scale(1);
   }
 }
 
+
 /* ============================================================
-   SMALL MOBILE
+   PROFILE IMAGE UPLOAD
 ============================================================ */
 
-@media (max-width: 480px) {
+.profile-avatar-wrapper,
+.od-avatar-wrapper {
+  position: relative;
+}
+
+.profile-upload-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  border-radius: 50%;
+
+  background: rgba(20, 61, 74, 0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes profile-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.profile-upload-spinner {
+  width: 36px;
+  height: 36px;
+
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+
+  animation: profile-spin 0.7s linear infinite;
+}
+
+.profile-spinner-sm {
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+
+  display: inline-block;
+
+  animation: profile-spin 0.7s linear infinite;
+}
+
+.profile-upload-error {
+  margin: 6px 0 0;
+
+  padding: 0 16px;
+
+  color: #e53e3e;
+
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.profile-edit-btn:disabled,
+.od-avatar-edit-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+
+/* ============================================================
+   SHORT MOBILE / IPHONE SE
+============================================================ */
+
+@media (max-width: 768px) and (max-height: 700px) {
+  .profile-sticky-top {
+    height: 48vh;
+    min-height: 310px;
+  }
+
   .profile-header {
     height: 56px;
-    padding: 0 14px;
   }
 
   .profile-header h2 {
-    font-size: 20px;
+    font-size: 19px;
   }
 
   .profile-header__btn {
     width: 38px;
     height: 38px;
-    font-size: 27px;
-  }
 
-  .profile-hero {
-    padding: 10px 18px 65px;
+    font-size: 25px;
   }
 
   .profile-avatar-wrapper {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
   }
 
   .profile-edit-btn {
-    right: 2px;
-    bottom: 2px;
-    width: 35px;
-    height: 35px;
-    font-size: 14px;
+    right: 0;
+    bottom: 1px;
+
+    width: 33px;
+    height: 33px;
+
+    border-width: 2px;
+  }
+
+  .profile-edit-btn svg {
+    width: 15px;
+    height: 15px;
   }
 
   .profile-hero h1 {
-    margin-top: 16px;
-    font-size: 22px;
+    margin-top: 7px;
+
+    font-size: 20px;
   }
 
   .profile-hero p {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .profile-card {
-    margin-top: -30px;
-    padding: 24px 18px
-      calc(88px + env(safe-area-inset-bottom));
-    border-radius: 28px 28px 0 0;
+    margin-top: -17px;
+
+    padding:
+      21px
+      17px
+      calc(85px + env(safe-area-inset-bottom));
   }
 
   .profile-card h3 {
-    font-size: 17px;
+    margin-bottom: 8px;
+
+    font-size: 15px;
   }
 
   .profile-item {
-    min-height: 70px;
-    padding: 13px 0;
-  }
+    min-height: 54px;
 
-  .profile-item__left {
-    gap: 14px;
+    padding: 5px 0;
   }
 
   .profile-item__icon {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
+
+    flex-basis: 40px;
+
+    border-radius: 13px;
+  }
+
+  .profile-item__icon img,
+  .profile-item__icon svg,
+  .profile-item__svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .profile-item__left {
+    gap: 16px;
   }
 
   .profile-item__left > span {
@@ -562,53 +908,75 @@
   }
 
   .profile-item__arrow {
-    font-size: 22px;
-  }
-
-  /* MOBILE LOGOUT MODAL */
-
-  .logout-modal-overlay {
-    padding: 16px;
-  }
-
-  .logout-modal {
-    width: 100%;
-    padding: 32px 20px 22px;
-    border-radius: 22px;
-  }
-
-  .logout-modal-icon {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 17px;
-  }
-
-  .logout-modal-icon svg {
-    width: 26px;
-    height: 26px;
-  }
-
-  .logout-modal-content h2 {
-    font-size: 21px;
-  }
-
-  .logout-modal-content p {
-    font-size: 13px;
-  }
-
-  .logout-modal-actions {
-    margin-top: 23px;
-    gap: 9px;
-  }
-
-  .logout-modal-actions button {
-    min-height: 46px;
-    font-size: 13px;
+    font-size: 24px;
   }
 }
 
+
 /* ============================================================
-   DESKTOP LAYOUT
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 360px) {
+  .profile-header {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .profile-card {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .profile-item__left {
+    gap: 12px;
+  }
+
+  .profile-item__left > span {
+    font-size: 14px;
+  }
+
+  .logout-modal {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .logout-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .logout-modal-actions button {
+    width: 100%;
+  }
+}
+
+
+/* ============================================================
+   TALL MOBILE
+============================================================ */
+
+@media (max-width: 768px) and (min-height: 800px) {
+  .profile-sticky-top {
+    height: 52vh;
+  }
+
+  .profile-header {
+    height: 70px;
+  }
+
+  .profile-avatar-wrapper {
+    width: 150px;
+    height: 150px;
+  }
+
+  .profile-card {
+    padding-top: 34px;
+  }
+}
+
+
+/* ============================================================
+   DESKTOP
 ============================================================ */
 
 @media (min-width: 769px) {
@@ -616,148 +984,164 @@
     overflow: hidden;
   }
 
-  .profile-header,
-  .profile-hero,
+  .profile-sticky-top,
   .profile-card {
     display: none;
   }
 
   .profile-page {
     width: 100%;
+
     height: 100vh;
     height: 100dvh;
+
     min-height: 0;
+
     overflow: hidden;
+
     background: #184d5d;
   }
 
   .orders-desktop {
     width: 100%;
+
     height: 100vh;
     height: 100dvh;
+
     min-height: 0;
+
     overflow: hidden;
+
     display: flex;
     align-items: stretch;
   }
 
-  /* ========================================================
+
+  /* ============================================================
      DESKTOP SIDEBAR
-  ======================================================== */
+  ============================================================ */
 
   .od-sidebar {
-    position: sticky;
-    top: 0;
-    left: 0;
-    z-index: 10;
+    position: relative;
+
     width: 328px;
     height: 100vh;
     height: 100dvh;
+
     min-height: 0;
+
     flex-shrink: 0;
+
     padding: 24px 30px 30px;
+
     overflow: hidden;
-    background: #1a4653;
+
+    background:#1a3e4a;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
     text-align: center;
   }
 
-  .od-sidebar::-webkit-scrollbar {
-    width: 4px;
-  }
 
-  .od-sidebar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .od-sidebar::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.18);
-  }
-
-  /* ========================================================
+  /* ============================================================
      DESKTOP AVATAR
-  ======================================================== */
+  ============================================================ */
 
   .od-avatar-wrapper {
     position: relative;
+
     width: 140px;
     height: 140px;
+
     margin: 0 auto 20px;
+
     flex-shrink: 0;
-    overflow: visible;
   }
 
   .od-avatar {
-    position: relative;
     width: 100%;
     height: 100%;
-    margin: 0;
+
     overflow: hidden;
+
     border: 4px solid rgba(255, 255, 255, 0.34);
     border-radius: 50%;
+
     background: #d0d0d0;
   }
 
   .od-avatar img {
     width: 100%;
     height: 100%;
+
     display: block;
+
     object-fit: cover;
     object-position: center;
   }
 
-  /* ========================================================
+
+  /* ============================================================
      DESKTOP AVATAR EDIT
-  ======================================================== */
+  ============================================================ */
 
   .od-avatar-edit-btn {
     position: absolute;
+
     right: 8px;
     bottom: 8px;
+
     z-index: 5;
+
     width: 39px;
     height: 39px;
+
     padding: 0;
-    border: 3px solid #1a4653;
+
+    border: 3px solid #1a3e4a;
     border-radius: 50%;
+
     background: #ffffff;
     color: #184d5d;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 17px;
+
     cursor: pointer;
+
     box-shadow: 0 5px 14px rgba(0, 0, 0, 0.28);
+
     transition:
       background 0.2s ease,
       color 0.2s ease,
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
+      transform 0.2s ease;
   }
 
   .od-avatar-edit-btn:hover {
     background: #184d5d;
     color: #ffffff;
+
     transform: scale(1.08);
-    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.32);
   }
 
-  .od-avatar-edit-btn:active {
-    transform: scale(0.95);
-  }
 
-  /* ========================================================
-     USER DETAILS
-  ======================================================== */
+  /* ============================================================
+     DESKTOP USER
+  ============================================================ */
 
   .od-name {
     max-width: 100%;
+
     margin: 0 0 6px;
+
     overflow-wrap: anywhere;
+
     color: #ffffff;
+
     font-size: 23px;
     line-height: 1.3;
     font-weight: 700;
@@ -765,76 +1149,96 @@
 
   .od-phone {
     margin: 0 0 28px;
+
     color: rgba(255, 255, 255, 0.68);
+
     font-size: 14px;
     line-height: 1.4;
   }
 
-  /* ========================================================
+
+  /* ============================================================
      EDIT PROFILE
-  ======================================================== */
+  ============================================================ */
 
   .od-edit-profile-btn {
     width: 100%;
     min-height: 56px;
+
     margin: 0 0 30px;
+
     padding: 12px 20px;
+
     border: none;
     border-radius: 14px;
+
     background: #ffffff;
     color: #184d5d;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     gap: 9px;
+
     font-size: 15px;
     font-weight: 600;
+
     cursor: pointer;
+
     transition:
       background 0.2s ease,
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-
-  .od-edit-profile-btn svg {
-    flex-shrink: 0;
-    font-size: 18px;
+      transform 0.2s ease;
   }
 
   .od-edit-profile-btn:hover {
     background: #edf5f7;
+
     transform: translateY(-1px);
-    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
   }
 
-  /* ========================================================
-     SIDEBAR NAVIGATION
-  ======================================================== */
+
+  /* ============================================================
+     DESKTOP NAV
+  ============================================================ */
 
   .od-nav {
     width: 100%;
+
     margin-bottom: auto;
+
     display: flex;
     flex-direction: column;
+
     gap: 5px;
   }
 
   .od-nav-item {
     width: 100%;
     min-height: 50px;
+
     padding: 13px 15px;
+
     border: none;
     border-radius: 12px;
+
     background: transparent;
+
     color: rgba(255, 255, 255, 0.72);
+
     display: flex;
     align-items: center;
+
     gap: 14px;
+
     text-align: left;
     text-decoration: none;
+
     font-size: 15px;
     font-weight: 500;
+
     cursor: pointer;
+
     transition:
       background 0.2s ease,
       color 0.2s ease,
@@ -843,22 +1247,29 @@
 
   .od-nav-item:hover {
     background: rgba(255, 255, 255, 0.1);
+
     color: #ffffff;
+
     transform: translateX(3px);
   }
 
   .od-nav-item--active {
     background: rgba(255, 255, 255, 0.14);
+
     color: #ffffff;
+
     font-weight: 600;
   }
 
   .od-nav-icon {
     width: 22px;
+
     flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 19px;
   }
 
@@ -868,193 +1279,212 @@
 
   .od-nav-logout:hover {
     background: rgba(255, 95, 95, 0.13);
+
     color: #ffb8b8;
   }
 
-  /* ========================================================
-     SUPPORT BOX
-  ======================================================== */
+
+  /* ============================================================
+     HELP
+  ============================================================ */
 
   .od-help {
     width: 100%;
+
     margin-top: 30px;
+
     padding: 16px;
+
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 14px;
+
     background: rgba(255, 255, 255, 0.07);
+
     display: flex;
     align-items: flex-start;
+
     gap: 12px;
+
     text-align: left;
   }
 
   .od-help-icon {
     margin-top: 2px;
+
     flex-shrink: 0;
+
     color: rgba(255, 255, 255, 0.75);
+
     font-size: 27px;
   }
 
   .od-help-title {
     margin: 0 0 3px;
+
     color: #ffffff;
+
     font-size: 14px;
     font-weight: 700;
   }
 
   .od-help-sub {
     margin: 0 0 4px;
+
     color: rgba(255, 255, 255, 0.62);
+
     font-size: 12px;
     line-height: 1.4;
   }
 
   .od-help-email {
     display: block;
+
     color: rgba(255, 255, 255, 0.55);
+
     font-size: 11px;
     line-height: 1.4;
+
     text-decoration: none;
+
     overflow-wrap: anywhere;
   }
 
-  .od-help-email:hover {
-    color: #ffffff;
-    text-decoration: underline;
-  }
 
-  /* ========================================================
-     DESKTOP MAIN CONTENT
-  ======================================================== */
+  /* ============================================================
+     DESKTOP MAIN
+  ============================================================ */
 
   .od-main {
     width: calc(100% - 328px);
+
     height: 100vh;
     height: 100dvh;
+
     min-width: 0;
     min-height: 0;
-    padding: 30px 40px 60px;
+
+    padding: 20px 40px 50px;
+
     overflow-x: hidden;
     overflow-y: auto;
-    overscroll-behavior: contain;
+
     background: #f6f7f9;
+
     scrollbar-width: thin;
-    scrollbar-color: #cbd4d8 transparent;
   }
 
-  .od-main::-webkit-scrollbar {
-    width: 6px;
-  }
 
-  .od-main::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .od-main::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: #cbd4d8;
-  }
-
-  /* ========================================================
-     MAIN HEADER
-  ======================================================== */
+  /* ============================================================
+     DESKTOP HEADER
+  ============================================================ */
 
   .od-main-header {
     width: 100%;
-    margin-bottom: 30px;
+
+    margin-bottom: 24px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 24px;
+  }
+
+  .od-main-header--sticky {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 50;
+
+    padding: 10px 0 18px;
+
+    margin-bottom: 10px;
+
+    background: #f6f7f9;
+
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
   }
 
   .od-main-title {
     min-width: 0;
+
     display: flex;
     align-items: center;
+
     gap: 15px;
   }
 
   .od-main-title h1 {
     margin: 0;
+
     color: #050505;
-    font-size: 35px;
+
+    font-size: 32px;
     line-height: 1.25;
     font-weight: 700;
   }
 
-  /* ========================================================
-     DESKTOP BACK BUTTON
-  ======================================================== */
-
   .od-desktop-back-btn {
     width: 44px;
     height: 44px;
+
     padding: 0;
+
     flex-shrink: 0;
+
     border: 1px solid #dce4e7;
     border-radius: 50%;
+
     background: #ffffff;
     color: #184d5d;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 28px;
+
     cursor: pointer;
+
     box-shadow: 0 3px 12px rgba(24, 77, 93, 0.09);
-    transition:
-      background 0.2s ease,
-      color 0.2s ease,
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-
-  .od-desktop-back-btn:hover {
-    background: #184d5d;
-    color: #ffffff;
-    transform: translateX(-3px);
-    box-shadow: 0 5px 15px rgba(24, 77, 93, 0.2);
-  }
-
-  .od-desktop-back-btn:active {
-    transform: scale(0.94);
   }
 
   .od-info-btn {
     padding: 8px 0;
+
     flex-shrink: 0;
+
     border: none;
+
     background: transparent;
     color: #555d60;
+
     display: flex;
     align-items: center;
+
     gap: 7px;
+
     font-size: 14px;
     font-weight: 500;
+
     cursor: pointer;
-    transition: color 0.2s ease;
   }
 
-  .od-info-btn svg {
-    flex-shrink: 0;
-    font-size: 19px;
-  }
 
-  .od-info-btn:hover {
-    color: #184d5d;
-  }
-
-  /* ========================================================
+  /* ============================================================
      WELCOME
-  ======================================================== */
+  ============================================================ */
 
   .pd-welcome {
-    margin-bottom: 27px;
+    margin-bottom: 24px;
   }
 
   .pd-welcome-sub {
     margin: 0 0 5px;
+
     color: #111111;
+
     font-size: 17px;
     line-height: 1.4;
     font-weight: 600;
@@ -1062,34 +1492,43 @@
 
   .pd-welcome-desc {
     margin: 0;
+
     color: #777d80;
+
     font-size: 14px;
     line-height: 1.5;
   }
 
-  /* ========================================================
-     USER INFORMATION
-  ======================================================== */
+
+  /* ============================================================
+     INFO GRID
+  ============================================================ */
 
   .pd-info-grid {
-    margin-bottom: 32px;
+    margin-bottom: 28px;
+
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: 38px 65px;
+
+    gap: 30px 65px;
   }
 
   .pd-info-row {
     min-width: 240px;
+
     display: flex;
     align-items: flex-start;
+
     gap: 12px;
   }
 
   .pd-info-icon-box {
     width: 27px;
     height: 27px;
+
     flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1097,37 +1536,47 @@
 
   .pd-info-icon {
     color: #184d5d;
+
     font-size: 19px;
   }
 
   .pd-info-label {
     margin: 0 0 4px;
+
     color: #858585;
+
     font-size: 11px;
-    line-height: 1.3;
     font-weight: 600;
+
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
   .pd-info-value {
     margin: 0;
+
     color: #111111;
+
     font-size: 14px;
     line-height: 1.5;
     font-weight: 500;
+
     overflow-wrap: anywhere;
   }
 
-  /* ========================================================
+
+  /* ============================================================
      QUICK ACTION CARDS
-  ======================================================== */
+  ============================================================ */
 
   .od-list {
     width: 100%;
-    margin-bottom: 30px;
+
+    margin-bottom: 28px;
+
     display: flex;
     flex-direction: column;
+
     gap: 16px;
   }
 
@@ -1136,17 +1585,26 @@
   }
 
   .od-card--link {
-    min-height: 122px;
-    padding: 24px 30px;
+    width: 100%;
+    min-height: 110px;
+
+    padding: 20px 26px;
+
     border: 1px solid transparent;
     border-radius: 20px;
+
     background: #ffffff;
     color: #111111;
+
     display: flex;
     align-items: center;
+
     gap: 20px;
+
     text-decoration: none;
+
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.045);
+
     transition:
       border-color 0.2s ease,
       box-shadow 0.2s ease,
@@ -1155,16 +1613,22 @@
 
   .od-card--link:hover {
     border-color: rgba(24, 77, 93, 0.1);
+
     box-shadow: 0 8px 24px rgba(24, 77, 93, 0.12);
+
     transform: translateY(-2px);
   }
 
   .pd-qa-icon {
     width: 62px;
     height: 62px;
+
     flex-shrink: 0;
+
     border-radius: 17px;
+
     background: #edf2f4;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1173,20 +1637,31 @@
   .pd-qa-icon img {
     width: 27px;
     height: 27px;
-    display: block;
+
     object-fit: contain;
+  }
+
+  .pd-qa-svg {
+    width: 27px;
+    height: 27px;
+
+    color: #184d5d;
   }
 
   .pd-qa-text {
     min-width: 0;
+
     flex: 1;
+
     display: flex;
     flex-direction: column;
+
     gap: 6px;
   }
 
   .pd-qa-text strong {
     color: #111111;
+
     font-size: 16px;
     line-height: 1.35;
     font-weight: 600;
@@ -1194,51 +1669,61 @@
 
   .pd-qa-text span {
     color: #858585;
+
     font-size: 14px;
     line-height: 1.45;
   }
 
   .pd-qa-arrow {
     flex-shrink: 0;
+
     color: #184d5d;
+
     font-size: 22px;
-    transition: transform 0.2s ease;
   }
 
-  .od-card--link:hover .pd-qa-arrow {
-    transform: translateX(4px);
-  }
 
-  /* ========================================================
+  /* ============================================================
      TRUST BAR
-  ======================================================== */
+  ============================================================ */
 
   .pd-trust-bar {
     width: 100%;
-    padding: 23px 27px;
+
+    padding: 20px 27px;
+
     border-radius: 18px;
+
     background: #1a3e4a;
+
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+
     gap: 20px;
   }
 
   .pd-trust-item {
     min-width: 0;
+
     display: flex;
     align-items: center;
+
     gap: 12px;
+
     color: #ffffff;
   }
 
   .pd-trust-icon {
     flex-shrink: 0;
+
     font-size: 24px;
   }
 
   .pd-trust-title {
     margin: 0 0 3px;
+
     color: #ffffff;
+
     font-size: 13px;
     line-height: 1.35;
     font-weight: 600;
@@ -1246,31 +1731,14 @@
 
   .pd-trust-sub {
     margin: 0;
+
     color: rgba(255, 255, 255, 0.62);
+
     font-size: 11px;
     line-height: 1.4;
   }
-
-  /* ========================================================
-     ACCESSIBILITY
-  ======================================================== */
-
-  .od-avatar-edit-btn:focus-visible,
-  .od-edit-profile-btn:focus-visible,
-  .od-desktop-back-btn:focus-visible,
-  .od-info-btn:focus-visible,
-  .od-nav-item:focus-visible,
-  .od-card--link:focus-visible,
-  .profile-item:focus-visible,
-  .profile-header__btn:focus-visible,
-  .profile-edit-btn:focus-visible,
-  .logout-modal-close:focus-visible,
-  .logout-cancel-btn:focus-visible,
-  .logout-confirm-btn:focus-visible {
-    outline: 3px solid rgba(50, 160, 190, 0.45);
-    outline-offset: 3px;
-  }
 }
+
 
 /* ============================================================
    TABLET / SMALL DESKTOP
@@ -1279,7 +1747,8 @@
 @media (min-width: 769px) and (max-width: 1100px) {
   .od-sidebar {
     width: 270px;
-    padding: 26px 20px 28px;
+
+    padding: 24px 20px 28px;
   }
 
   .od-avatar-wrapper {
@@ -1287,36 +1756,20 @@
     height: 120px;
   }
 
-  .od-avatar-edit-btn {
-    right: 7px;
-    bottom: 7px;
-    width: 36px;
-    height: 36px;
-    font-size: 15px;
-  }
-
   .od-main {
     width: calc(100% - 270px);
-    padding: 30px 28px 48px;
-  }
 
-  .od-main-title {
-    gap: 11px;
+    padding: 20px 28px 45px;
   }
 
   .od-main-title h1 {
     font-size: 29px;
   }
 
-  .od-desktop-back-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 25px;
-  }
-
   .od-card--link {
-    min-height: 108px;
-    padding: 20px 22px;
+    min-height: 105px;
+
+    padding: 18px 22px;
   }
 
   .pd-qa-icon {
@@ -1329,25 +1782,24 @@
   }
 }
 
+
 /* ============================================================
-   VERY SMALL DESKTOP WIDTH
+   VERY SMALL DESKTOP / LARGE TABLET
 ============================================================ */
 
 @media (min-width: 769px) and (max-width: 850px) {
   .od-sidebar {
     width: 240px;
-    padding-right: 16px;
+
     padding-left: 16px;
+    padding-right: 16px;
   }
 
   .od-main {
     width: calc(100% - 240px);
-    padding-right: 20px;
-    padding-left: 20px;
-  }
 
-  .od-main-header {
-    align-items: flex-start;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .od-main-title h1 {
@@ -1367,108 +1819,23 @@
   }
 }
 
+
 /* ============================================================
-   EXTRA SMALL DEVICES
+   ACCESSIBILITY
 ============================================================ */
 
-@media (max-width: 360px) {
-  .profile-card {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .profile-item__left {
-    gap: 11px;
-  }
-
-  .profile-item__left > span {
-    font-size: 14px;
-  }
-
-  .profile-item__icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .logout-modal {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .logout-modal-actions {
-    flex-direction: column-reverse;
-  }
-
-  .logout-modal-actions button {
-    width: 100%;
-  }
-}
-/* ============================================================
-   PROFILE IMAGE UPLOAD STATES
-============================================================ */
-
-/* Shared wrapper needs position:relative already set upstream */
-.profile-avatar-wrapper,
-.od-avatar-wrapper {
-  position: relative;
-}
-
-/* Full-avatar overlay spinner shown while upload is in progress */
-.profile-upload-overlay {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: rgba(20, 61, 74, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-}
-
-/* Large ring spinner for the overlay */
-@keyframes profile-spin {
-  to { transform: rotate(360deg); }
-}
-
-.profile-upload-spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid rgba(255, 255, 255, 0.35);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: profile-spin 0.7s linear infinite;
-}
-
-/* Small spinner used inside the edit button while uploading */
-.profile-spinner-sm {
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: profile-spin 0.7s linear infinite;
-  display: inline-block;
-}
-
-/* Camera icon replaces pencil icon */
-.profile-edit-btn svg,
-.od-avatar-edit-btn svg {
-  font-size: 15px;
-}
-
-/* Upload error message */
-.profile-upload-error {
-  font-size: 12px;
-  color: #e53e3e;
-  text-align: center;
-  margin: 6px 0 0;
-  padding: 0 16px;
-  line-height: 1.4;
-}
-
-/* Disabled state for edit buttons */
-.profile-edit-btn:disabled,
-.od-avatar-edit-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+.profile-header__btn:focus-visible,
+.profile-edit-btn:focus-visible,
+.profile-item:focus-visible,
+.od-avatar-edit-btn:focus-visible,
+.od-edit-profile-btn:focus-visible,
+.od-desktop-back-btn:focus-visible,
+.od-info-btn:focus-visible,
+.od-nav-item:focus-visible,
+.od-card--link:focus-visible,
+.logout-modal-close:focus-visible,
+.logout-cancel-btn:focus-visible,
+.logout-confirm-btn:focus-visible {
+  outline: 3px solid rgba(50, 160, 190, 0.45);
+  outline-offset: 3px;
 }

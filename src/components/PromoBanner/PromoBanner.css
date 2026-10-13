@@ -33,3 +33,97 @@
     min-height: 0;
   }
 }
+
+/* ==================================================
+   CAROUSEL
+================================================== */
+
+.promo-banner__track {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+/* Slide strip — all slides in a single flex row */
+.promo-banner__slides-wrap {
+  display: flex;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.promo-banner__slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  width: 100%;
+}
+
+/* All slides: no min-height so off-screen slides don't stretch the track */
+.promo-banner__track .lazy-img {
+  border-radius: 0;
+  display: block;
+  line-height: 0;
+  min-height: 0;
+  background: none;
+}
+
+/* Only the active slide gets the loading skeleton height */
+.promo-banner__slide.active .lazy-img {
+  min-height: 220px;
+  background: #e7edef;
+}
+
+.promo-banner__slide.active .lazy-img[data-status="loaded"] {
+  min-height: 0;
+  background: none;
+}
+
+.promo-banner__track .lazy-img__el {
+  display: block;
+  width: 100%;
+}
+
+/* Dots */
+.promo-banner__dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  z-index: 2;
+}
+
+.promo-banner__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s ease, transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.promo-banner__dot.active {
+  background: #fff;
+  transform: scale(1.35);
+}
+
+@media (max-width: 768px) {
+  .promo-banner__track {
+    border-radius: 16px;
+  }
+
+  .promo-banner__dots {
+    bottom: 9px;
+    gap: 6px;
+  }
+
+  .promo-banner__dot {
+    width: 7px;
+    height: 7px;
+  }
+}

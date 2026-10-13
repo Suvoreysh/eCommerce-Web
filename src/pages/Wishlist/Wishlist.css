@@ -11,17 +11,13 @@
   display: flex;
   align-items: center;
   gap: 6px;
-
   border: 1px solid var(--primary);
   background: transparent;
   color: var(--primary);
-
   font-size: 13px;
   font-weight: 600;
-
   padding: 8px 14px;
   border-radius: 10px;
-
   cursor: pointer;
   transition: 0.2s ease;
 }
@@ -52,17 +48,14 @@
   height: 42px;
   padding: 0;
   flex-shrink: 0;
-
   border: 1px solid #dce4e7;
   border-radius: 50%;
   background: #ffffff;
   color: #143d4a;
-
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-
   transition:
     background 0.2s ease,
     color 0.2s ease,
@@ -84,8 +77,97 @@
   align-items: center;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
   .wishlist-desktop {
     display: none;
   }
+}
+
+/* ============================================================
+   SKELETON LOADER
+============================================================ */
+
+@keyframes wl-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.wl-skel-pulse {
+  background: linear-gradient(
+    90deg,
+    #e8ecee 25%,
+    #d4dadd 50%,
+    #e8ecee 75%
+  );
+  background-size: 800px 100%;
+  animation: wl-shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ── Mobile skeleton card ── */
+
+.wl-skel-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #fff;
+  border-radius: 24px;
+  padding: 16px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.05),
+    0 10px 28px rgba(0, 0, 0, 0.04);
+}
+
+.wl-skel-thumb {
+  flex: 0 0 94px;
+  width: 94px;
+  height: 92px;
+  border-radius: 18px;
+}
+
+.wl-skel-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.wl-skel-line {
+  border-radius: 6px;
+  display: block;
+}
+
+.wl-skel-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.wl-skel-btn {
+  height: 34px;
+  width: 80px;
+  border-radius: 10px;
+}
+
+/* ── Desktop skeleton row ── */
+
+.wl-skel-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 140px 140px;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f2f4;
+}
+
+.wl-skel-dthumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+}
+
+.wl-skel-dname {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }

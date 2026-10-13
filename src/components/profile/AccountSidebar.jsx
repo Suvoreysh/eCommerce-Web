@@ -7,6 +7,8 @@ import {
   FiMapPin,
   FiLogOut,
   FiHeadphones,
+  FiShoppingCart,
+  FiUser,
 } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
 import { useCartCount } from "../../context/CartCountContext";
@@ -16,8 +18,10 @@ import "./AccountSidebar.css";
 const FALLBACK_AVATAR = "/images/profile.png";
 
 const NAV_ITEMS = [
+  { to: "/profile",         icon: <FiUser />,        label: "My Account" },
   { to: "/orders",          icon: <FiShoppingBag />, label: "My Orders" },
   { to: "/wishlist",        icon: <FiHeart />,       label: "Wishlist" },
+  { to: "/cart",            icon: <FiShoppingCart />,label: "My Cart" },
   { to: "/change-password", icon: <FiLock />,        label: "Change Password" },
   { to: "/address",         icon: <FiMapPin />,      label: "Address Book" },
 ];
@@ -37,7 +41,6 @@ export default function AccountSidebar() {
     navigate("/home", { replace: true });
   };
 
-  // user.image is always a full absolute URL from the API (/profile/image → data.image)
   const showImg = user?.image && !imgError;
 
   return (

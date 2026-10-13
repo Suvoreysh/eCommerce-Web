@@ -241,7 +241,7 @@ export default function ChangePassword() {
         <AccountSidebar />
 
         <div className="od-main">
-          <div className="od-main-header">
+          <div className="od-main-header od-main-header--sticky">
             <div className="od-main-title">
               <BackHomeButton className="od-desktop-back-btn" />
               <h1>Change Password</h1>

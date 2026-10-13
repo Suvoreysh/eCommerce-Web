@@ -78,7 +78,7 @@
 }
 
 /* ─── DESKTOP ────────────────────────────────────────────── */
-@media (min-width: 992px) {
+@media (min-width: 769px) {
   .wl-empty-mobile {
     display: none;
   }

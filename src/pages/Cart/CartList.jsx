@@ -187,7 +187,7 @@ export default function CartList() {
       <div className="cd-desktop cart-empty-desktop">
         <AccountSidebar />
         <div className="od-main cart-empty-desktop-main">
-          <div className="od-main-header">
+          <div className="od-main-header od-main-header--sticky">
             <div className="od-main-title">
               <BackHomeButton className="od-desktop-back-btn" />
               <h1>My Cart</h1>
@@ -336,7 +336,7 @@ export default function CartList() {
           <div className="cd-desktop">
             <AccountSidebar />
             <div className="od-main">
-              <div className="od-main-header">
+              <div className="od-main-header od-main-header--sticky">
                 <div className="od-main-title">
                   <BackHomeButton className="od-desktop-back-btn" />
                   <h1>My Cart</h1>

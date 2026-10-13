@@ -1,160 +1,747 @@
-.filter-bar {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 18px 25px 0;
+/* ============================================================
+   FILTER BAR
+============================================================ */
 
-    display: flex;
-    gap: 14px;
+.filter-bar {
+  position: relative;
+
+  width: 100%;
+  max-width: 1400px;
+
+  margin: 0 auto;
+  padding: 18px 25px 0;
+
+  display: flex;
+  align-items: stretch;
+
+  gap: 14px;
+
+  box-sizing: border-box;
+
+  /* dropdown must be allowed outside vertically */
+  overflow: visible;
 }
+
+
+/* ============================================================
+   FILTER BUTTON + PRODUCTS BUTTON
+============================================================ */
 
 .filter-btn,
 .products-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+  flex: 1;
 
-    padding: 12px 22px;
-    border-radius: 13px;
-    border: 1px solid #ddd;
+  min-width: 0;
 
-    background: #fff;
-    color: #1a1a1a;
-    font-size: 14px;
-    font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
+  gap: 8px;
+
+  padding: 12px 22px;
+
+  border: 1px solid #ddd;
+  border-radius: 13px;
+
+  background: #fff;
+
+  color: #1a1a1a;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
+
 
 .filter-btn:hover,
 .products-btn:hover {
-    border-color: #123848;
-    background: #f7f9f9;
+  border-color: #123848;
+
+  background: #f7f9f9;
 }
+
+
+/* Filter icon */
+
+.filter-btn svg {
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   PRODUCTS BUTTON
+============================================================ */
 
 .products-btn {
-    justify-content: space-between;
+  width: 100%;
+
+  justify-content: space-between;
+
+  text-align: left;
 }
 
-@media (max-width: 768px) {
-    .filter-bar {
-        padding: 16px 16px 0;
-        gap: 10px;
-    }
 
-    .filter-btn,
-    .products-btn {
-        padding: 11px 18px;
-        font-size: 13px;
-    }
+.products-btn svg {
+  flex-shrink: 0;
 }
+
+
+/* ============================================================
+   PRODUCTS DROPDOWN WRAPPER
+============================================================ */
+
 .products-dropdown-wrapper {
-    position: relative;
-    flex: 1;
-    display: flex;
+  position: relative;
+
+  flex: 1 1 0;
+
+  width: 0;
+  min-width: 0;
+
+  display: flex;
+
+  box-sizing: border-box;
+
+  overflow: visible;
 }
+
 
 .products-dropdown-wrapper .products-btn {
-    width: 100%;
+  width: 100%;
+  min-width: 0;
+
+  flex: 1 1 auto;
 }
+
+
+/* ============================================================
+   DROPDOWN PANEL
+============================================================ */
 
 .products-dropdown-panel {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    z-index: 500;
+  position: absolute;
 
-    display: flex;
-    gap: 0;
+  /*
+    Position relative to products-dropdown-wrapper
+  */
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
 
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-    overflow: hidden;
-    min-width: 260px;
-    max-width: 90vw;
+  z-index: 500;
+
+  display: flex;
+
+  width: 100%;
+
+  /*
+    Important:
+    Do NOT use fixed 260px minimum width.
+  */
+  min-width: 100%;
+  max-width: 100%;
+
+  gap: 0;
+
+  border: 1px solid #ddd;
+  border-radius: 12px;
+
+  background: #fff;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+  overflow: hidden;
+
+  box-sizing: border-box;
 }
+
+
+/* ============================================================
+   SINGLE COLUMN DROPDOWN
+============================================================ */
+
+.products-dropdown-panel-single {
+  width: 100%;
+
+  min-width: 100%;
+  max-width: 100%;
+}
+
+
+/* ============================================================
+   DROPDOWN COLUMN
+============================================================ */
 
 .products-dropdown-col {
-    width: 220px;
-    max-height: 320px;
-    overflow-y: auto;
-    padding: 10px 0;
+  width: 100%;
+  min-width: 0;
+
+  max-height: 320px;
+
+  padding: 10px 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  box-sizing: border-box;
+
+  overscroll-behavior: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color: #c5c5c5 transparent;
 }
+
+
+.products-dropdown-col::-webkit-scrollbar {
+  width: 5px;
+}
+
+
+.products-dropdown-col::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+.products-dropdown-col::-webkit-scrollbar-thumb {
+  background: #c5c5c5;
+
+  border-radius: 20px;
+}
+
+
+.products-dropdown-panel-single .products-dropdown-col {
+  width: 100%;
+}
+
+
+/* ============================================================
+   MULTIPLE COLUMN SUPPORT
+============================================================ */
 
 .products-dropdown-col + .products-dropdown-col {
-    border-left: 1px solid #eee;
+  border-left: 1px solid #eee;
 }
+
+
+/* ============================================================
+   COLUMN TITLE
+============================================================ */
 
 .products-dropdown-col-title {
-    padding: 6px 16px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+  padding: 6px 16px;
+
+  color: #888;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
 }
+
+
+/* ============================================================
+   DROPDOWN ITEMS
+============================================================ */
 
 .products-dropdown-item {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+  width: 100%;
+  min-width: 0;
 
-    padding: 10px 16px;
-    border: none;
-    background: transparent;
-    text-align: left;
-    font-size: 14px;
-    color: #1a1a1a;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  padding: 10px 16px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #1a1a1a;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
 }
+
+
+/* Category name */
+
+.products-dropdown-item span {
+  display: block;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 
 .products-dropdown-item:hover,
 .products-dropdown-item.active {
-    background: #f2f6f5;
-    color: #123848;
+  background: #f2f6f5;
+
+  color: #123848;
 }
 
-.products-dropdown-message {
-    padding: 10px 16px;
-    font-size: 13px;
-    color: #999;
-}
 
-@media (max-width: 768px) {
-    .products-dropdown-panel {
-        flex-direction: column;
-        left: 50%;
-        transform: translateX(-50%);
-        width: calc(100vw - 32px);
-    }
-
-    .products-dropdown-col {
-        width: 100%;
-        max-height: 220px;
-    }
-
-    .products-dropdown-col + .products-dropdown-col {
-        border-left: none;
-        border-top: 1px solid #eee;
-    }
-}
+/* ============================================================
+   ALL ITEM
+============================================================ */
 
 .products-dropdown-item-all {
-    font-weight: 700;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 4px;
+  margin-bottom: 4px;
+
+  border-bottom: 1px solid #eee;
+
+  font-weight: 700;
 }
 
-.products-dropdown-panel-single {
-    min-width: 220px;
+
+/* ============================================================
+   LOADING / EMPTY MESSAGE
+============================================================ */
+
+.products-dropdown-message {
+  width: 100%;
+
+  margin: 0;
+
+  padding: 10px 16px;
+
+  color: #999;
+
+  font-size: 13px;
+
+  box-sizing: border-box;
 }
 
-.products-dropdown-panel-single .products-dropdown-col {
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 992px) {
+
+  .filter-bar {
+    padding-left: 20px;
+    padding-right: 20px;
+
+    gap: 12px;
+  }
+
+
+  .filter-btn,
+  .products-btn {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 768px) {
+
+  .filter-bar {
     width: 100%;
+    max-width: 100%;
+
+    margin: 0;
+
+    padding: 16px 16px 0;
+
+    display: grid;
+
+    /*
+      Two equal columns:
+      FILTERS | CATEGORY
+    */
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    gap: 10px;
+
+    overflow: visible;
+
+    box-sizing: border-box;
+  }
+
+
+  /* ==========================================================
+     FILTER BUTTON
+  ========================================================== */
+
+  .filter-btn {
+    width: 100%;
+    min-width: 0;
+
+    height: 44px;
+
+    padding: 0 12px;
+
+    gap: 6px;
+
+    border-radius: 12px;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+  }
+
+
+  .filter-btn svg {
+    flex-shrink: 0;
+
+    font-size: 14px;
+  }
+
+
+  /* ==========================================================
+     CATEGORY WRAPPER
+  ========================================================== */
+
+  .products-dropdown-wrapper {
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    flex: none;
+
+    display: block;
+
+    overflow: visible;
+  }
+
+
+  /* ==========================================================
+     CATEGORY BUTTON
+  ========================================================== */
+
+  .products-dropdown-wrapper .products-btn,
+  .products-btn {
+    width: 100%;
+    min-width: 0;
+
+    height: 44px;
+
+    padding: 0 12px;
+
+    border-radius: 12px;
+
+    font-size: 13px;
+
+    overflow: hidden;
+  }
+
+
+  /*
+    Your category name is currently a text node rather
+    than its own span, so keep the button constrained.
+  */
+
+  .products-btn {
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+  }
+
+
+  .products-btn svg {
+    flex: 0 0 auto;
+
+    margin-left: auto;
+
+    font-size: 13px;
+  }
+
+
+  /* ==========================================================
+     DROPDOWN PANEL
+  ========================================================== */
+
+  .products-dropdown-panel {
+    position: absolute;
+
+    top: calc(100% + 6px);
+
+    left: 0;
+    right: 0;
+
+    transform: none;
+
+    width: 100%;
+
+    min-width: 100%;
+    max-width: 100%;
+
+    margin: 0;
+
+    flex-direction: column;
+
+    border-radius: 12px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    z-index: 1000;
+  }
+
+
+  .products-dropdown-panel-single {
+    width: 100%;
+
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+
+  /* ==========================================================
+     DROPDOWN COLUMN
+  ========================================================== */
+
+  .products-dropdown-col {
+    width: 100%;
+    min-width: 0;
+
+    max-height: 220px;
+
+    padding: 7px 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+
+  .products-dropdown-panel-single .products-dropdown-col {
+    width: 100%;
+  }
+
+
+  .products-dropdown-col + .products-dropdown-col {
+    border-top: 1px solid #eee;
+    border-left: none;
+  }
+
+
+  /* ==========================================================
+     DROPDOWN ITEMS
+  ========================================================== */
+
+  .products-dropdown-item {
+    width: 100%;
+
+    padding: 11px 13px;
+
+    font-size: 12px;
+  }
+
+
+  .products-dropdown-item span {
+    max-width: 100%;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  .products-dropdown-message {
+    padding: 11px 13px;
+
+    font-size: 12px;
+  }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 420px) {
+
+  .filter-bar {
+    padding: 12px 10px 0;
+
+    gap: 8px;
+  }
+
+
+  .filter-btn,
+  .products-dropdown-wrapper .products-btn {
+    height: 42px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    font-size: 11px;
+  }
+
+
+  .filter-btn svg,
+  .products-btn svg {
+    font-size: 12px;
+  }
+
+
+  .products-dropdown-panel {
+    top: calc(100% + 5px);
+
+    left: 0;
+    right: 0;
+
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+
+    transform: none;
+
+    border-radius: 10px;
+  }
+
+
+  .products-dropdown-col {
+    max-height: 210px;
+
+    padding: 6px 0;
+  }
+
+
+  .products-dropdown-item {
+    padding: 10px 11px;
+
+    font-size: 11px;
+  }
+
+
+  .products-dropdown-message {
+    padding: 10px 11px;
+
+    font-size: 11px;
+  }
+}
+
+
+/* ============================================================
+   IPHONE SE / 375PX
+============================================================ */
+
+@media (max-width: 375px) {
+
+  .filter-bar {
+    padding: 10px 8px 0;
+
+    gap: 7px;
+  }
+
+
+  .filter-btn,
+  .products-dropdown-wrapper .products-btn {
+    height: 40px;
+
+    padding-left: 9px;
+    padding-right: 9px;
+
+    font-size: 10px;
+  }
+
+
+  .filter-btn svg,
+  .products-btn svg {
+    font-size: 11px;
+  }
+
+
+  .products-dropdown-panel {
+    width: 100%;
+
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+
+  .products-dropdown-col {
+    max-height: 200px;
+  }
+
+
+  .products-dropdown-item {
+    padding: 10px;
+
+    font-size: 10px;
+  }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 340px) {
+
+  .filter-bar {
+    padding-left: 6px;
+    padding-right: 6px;
+
+    gap: 6px;
+  }
+
+
+  .filter-btn,
+  .products-dropdown-wrapper .products-btn {
+    padding-left: 7px;
+    padding-right: 7px;
+
+    font-size: 9px;
+  }
+
+
+  .products-dropdown-item {
+    padding-left: 9px;
+    padding-right: 9px;
+
+    font-size: 9px;
+  }
+}
+
+
+/* ============================================================
+   STICKY WRAP — remove divider line
+============================================================ */
+
+.filter-bar-sticky-wrap {
+  border-bottom: none;
+  box-shadow: none;
 }

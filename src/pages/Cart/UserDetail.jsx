@@ -7,16 +7,11 @@ import { useCheckout } from "../../context/CheckoutContext";
 import { resolveImageUrl } from "../../utils/image";
 import { firstErrorMessage, formatINR } from "../../utils/format";
 import Stepper from "../../components/cart/Stepper";
+import CheckoutSidebar from "./CheckoutSidebar";
 import "./Checkout.css";
 
 const fallbackImg =
   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect width='120' height='120' rx='14' fill='%23f0f1f3'/></svg>";
-
-const steps = [
-  { num: 1, label: "Personal Details" },
-  { num: 2, label: "Delivery Address" },
-  { num: 3, label: "Payment" },
-];
 
 const personIcon = (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -42,7 +37,6 @@ const backIcon = (
   </svg>
 );
 
-// ---------- Validation ----------
 const EMAIL_VALID_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
 const PHONE_VALID_RE = /^[0-9]{10}$/;
 
@@ -60,6 +54,57 @@ const validators = {
   },
   country: (v) => (!v.trim() ? "Country is required" : ""),
 };
+
+// ─── Skeleton ──────────────────────────────────────────────
+
+function PageSkeleton() {
+  return (
+    <div className="content">
+      {/* cart card skeleton */}
+      <div className="co-skel-card">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: 14,
+          }}
+        >
+          <div
+            className="co-skel co-skel-row"
+            style={{ width: 120, height: 18 }}
+          />
+          <div
+            className="co-skel co-skel-row"
+            style={{ width: 48, height: 28, borderRadius: 14 }}
+          />
+        </div>
+        <div className="co-skel-thumb-row">
+          {[1, 2].map((n) => (
+            <div key={n} className="co-skel co-skel-thumb" />
+          ))}
+        </div>
+        <div
+          className="co-skel co-skel-row"
+          style={{ width: 80, height: 22 }}
+        />
+      </div>
+
+      {/* section label */}
+      <div
+        className="co-skel co-skel-row"
+        style={{ width: 160, height: 18, marginBottom: 20 }}
+      />
+
+      {/* inputs */}
+      {[1, 2, 3, 4].map((n) => (
+        <div key={n} className="co-skel co-skel-input" />
+      ))}
+
+      {/* button */}
+      <div className="co-skel co-skel-input" style={{ borderRadius: 10 }} />
+    </div>
+  );
+}
 
 export default function UserDetail() {
   const navigate = useNavigate();
@@ -86,35 +131,29 @@ export default function UserDetail() {
 
   useEffect(() => {
     let active = true;
-
     (async () => {
       try {
         setLoadingDetails(true);
         setLoadError("");
         const response = await checkoutApi.getUserDetails();
         if (!active) return;
-
         const data = response?.data || {};
-        const prefilled = {
+        setPersonal({
           fullName:
             data.full_name ||
             [data.first_name, data.last_name].filter(Boolean).join(" "),
           email: data.email_id || "",
           phone: data.phone_number || "",
           country: data.country || "India",
-        };
-
-        setPersonal(prefilled);
+        });
         setUserDetails(data);
       } catch (err) {
         if (!active) return;
-        console.error("Get checkout user details failed:", err);
         setLoadError(firstErrorMessage(err, "Unable to load your details."));
       } finally {
         if (active) setLoadingDetails(false);
       }
     })();
-
     return () => {
       active = false;
     };
@@ -123,12 +162,10 @@ export default function UserDetail() {
 
   useEffect(() => {
     let active = true;
-
     (async () => {
       try {
         const response = await cartApi.getCart();
         if (!active) return;
-
         const data = response?.data;
         setCartItems(Array.isArray(data?.items) ? data.items : []);
         setCartMeta({
@@ -142,7 +179,6 @@ export default function UserDetail() {
         if (active) setCartLoading(false);
       }
     })();
-
     return () => {
       active = false;
     };
@@ -151,9 +187,8 @@ export default function UserDetail() {
   const update = (key) => (e) => {
     const value = e.target.value;
     setPersonal((p) => ({ ...p, [key]: value }));
-    if (touched[key]) {
+    if (touched[key])
       setErrors((er) => ({ ...er, [key]: validators[key](value) }));
-    }
   };
 
   const handleBlur = (key) => () => {
@@ -180,13 +215,15 @@ export default function UserDetail() {
 
   const handleContinue = () => {
     if (!runAllValidation()) return;
-    setUserDetails((previous) => ({ ...previous, ...personal }));
+    setUserDetails((prev) => ({ ...prev, ...personal }));
     navigate("/cart/delivery");
   };
 
   const payable = cartMeta.subtotal - cartMeta.discount;
 
-  const formContent = (
+  const formContent = loadingDetails ? (
+    <PageSkeleton />
+  ) : (
     <div className="content">
       <div className="card">
         <div className="items-card-head">
@@ -195,11 +232,18 @@ export default function UserDetail() {
             Edit
           </button>
         </div>
-
         {cartLoading ? (
-          <p className="saved-text" style={{ color: "#6b6b6b" }}>
-            Loading your cart…
-          </p>
+          <>
+            <div className="co-skel-thumb-row">
+              {[1, 2].map((n) => (
+                <div key={n} className="co-skel co-skel-thumb" />
+              ))}
+            </div>
+            <div
+              className="co-skel co-skel-row"
+              style={{ width: 80, height: 22 }}
+            />
+          </>
         ) : (
           <>
             <div className="thumb-row">
@@ -230,11 +274,7 @@ export default function UserDetail() {
         )}
       </div>
 
-      <div className="field-label">
-        {personIcon}
-        Personal Details
-      </div>
-
+      <div className="field-label">{personIcon} Personal Details</div>
       {loadError && <p className="error-text">{loadError}</p>}
 
       <input
@@ -242,7 +282,6 @@ export default function UserDetail() {
         value={personal.fullName}
         onChange={update("fullName")}
         onBlur={handleBlur("fullName")}
-        disabled={loadingDetails}
         className={touched.fullName && errors.fullName ? "input-error" : ""}
       />
       {touched.fullName && errors.fullName && (
@@ -255,7 +294,6 @@ export default function UserDetail() {
         value={personal.email}
         onChange={update("email")}
         onBlur={handleBlur("email")}
-        disabled={loadingDetails}
         className={touched.email && errors.email ? "input-error" : ""}
       />
       {touched.email && errors.email && (
@@ -263,9 +301,7 @@ export default function UserDetail() {
       )}
 
       <div
-        className={`phone-row ${
-          touched.phone && errors.phone ? "input-error" : ""
-        }`}
+        className={`phone-row ${touched.phone && errors.phone ? "input-error" : ""}`}
       >
         <span className="cc-badge">IN ▾</span>
         <input
@@ -273,7 +309,6 @@ export default function UserDetail() {
           value={personal.phone}
           onChange={update("phone")}
           onBlur={handleBlur("phone")}
-          disabled={loadingDetails}
           inputMode="numeric"
           maxLength={10}
         />
@@ -287,7 +322,6 @@ export default function UserDetail() {
         value={personal.country}
         onChange={update("country")}
         onBlur={handleBlur("country")}
-        disabled={loadingDetails}
         className={touched.country && errors.country ? "input-error" : ""}
       />
       {touched.country && errors.country && (
@@ -296,7 +330,7 @@ export default function UserDetail() {
 
       <button
         className="full-continue-btn"
-        disabled={!canContinue || loadingDetails}
+        disabled={!canContinue}
         onClick={handleContinue}
       >
         Continue
@@ -306,50 +340,28 @@ export default function UserDetail() {
 
   return (
     <div className="checkout-page">
+      {/* Mobile */}
       <div className="checkout-mobile">
-        <div className="top-bar">
-          <button className="icon-btn" onClick={() => navigate("/cart")}>
-            {backIcon}
-          </button>
-          <h1>Cart</h1>
-          <div className="info-circle">i</div>
-        </div>
-        <div className="stepper-wrap">
-          <Stepper current={1} />
+        <div className="checkout-sticky-top">
+          <div className="top-bar">
+            <button className="icon-btn" onClick={() => navigate("/cart")}>
+              {backIcon}
+            </button>
+            <h1>Cart</h1>
+            <div className="info-circle">i</div>
+          </div>
+          <div className="stepper-wrap">
+            <Stepper current={1} />
+          </div>
         </div>
         {formContent}
       </div>
 
+      {/* Desktop */}
       <div className="cd-desktop">
-        <aside className="od-sidebar">
-          <div className="od-avatar" />
-          <h2 className="od-name">Checkout</h2>
-          <p className="od-phone">Step 1 of 3</p>
-
-          <nav className="od-steps">
-            {steps.map((s) => (
-              <div
-                key={s.num}
-                className={`od-step ${s.num === 1 ? "active" : ""}`}
-              >
-                <span className="od-step-num">{s.num}</span>
-                <span>{s.label}</span>
-              </div>
-            ))}
-          </nav>
-
-          <div className="od-help">
-            <span className="od-help-icon">🎧</span>
-            <div>
-              <p className="od-help-title">Need Help?</p>
-              <p className="od-help-sub">24/7 Customer Support</p>
-              <p className="od-help-email">support@shopkart.com</p>
-            </div>
-          </div>
-        </aside>
-
+        <CheckoutSidebar current={1} onBack={() => navigate("/cart")} />
         <div className="od-main">
-          <div className="od-main-header">
+          <div className="od-main-header od-main-header--sticky">
             <h1>Personal Details</h1>
           </div>
           {formContent}

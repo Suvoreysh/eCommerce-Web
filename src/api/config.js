@@ -29,6 +29,7 @@ export const ENDPOINTS = {
     `/categories/${categoryId}/subcategories`,
   CATEGORY_PRODUCTS: (categoryId) => `/categories/${categoryId}/products`,
   CATEGORY_OFFERS: (categoryId) => `/categories/${categoryId}/offers`,
+  CATEGORY_BANNERS: (categoryId) => `/categories/${categoryId}/banners`,
   SUBCATEGORIES: "/subcategories",
   SUBCATEGORY_DETAIL: (id) => `/subcategories/${id}`,
   SUBCATEGORY_PRODUCTS: (id) => `/subcategories/${id}/products`,

@@ -14,33 +14,32 @@ import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 
 export default function ProductListing() {
-  const { topBanner, exclusiveOffers, loading: bannersLoading } =
-    useStoreBanners(["all_products_top", "store_top"]);
   const {
-    status,
-    error,
-    categories,
-    sections,
-    reload,
-    retrySection,
-  } = useCategorySections(4);
+    topBanner,
+    exclusiveOffers = [],
+    loading: bannersLoading,
+  } = useStoreBanners(["all_products_top", "store_top"]);
+  const { status, error, categories, sections, reload, retrySection } =
+    useCategorySections(4);
   const { open: openVariants, modal: variantModal } = useVariantCart();
 
-  // A category whose products finished loading and came back empty is
-  // dropped from the page entirely — nothing useful to show for it here.
   const visibleCategories = categories.filter((category) => {
     const section = sections[category.id];
-    return !section || section.status !== "ready" || section.products.length > 0;
+    return (
+      !section || section.status !== "ready" || section.products.length > 0
+    );
   });
 
   return (
     <>
       <Navbar />
-      <SearchBar />
+      {/* <SearchBar /> */}
       <StoreIntro
         title="Store"
         subtitle={
-          topBanner?.title || "The Best location to buy the product you loved."
+          topBanner?.subtitle ||
+          topBanner?.title ||
+          "The Best location to buy the product you loved."
         }
       />
       <PromoBanner
@@ -111,7 +110,10 @@ export default function ProductListing() {
                 onRetry={retrySection}
               />
               {section.status === "ready" && (
-                <CategoryOffersGrid category={category} offers={section.offers || []} />
+                <CategoryOffersGrid
+                  category={category}
+                  offers={section.offers || []}
+                />
               )}
             </div>
           );

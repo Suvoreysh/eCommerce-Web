@@ -150,6 +150,18 @@ select {
   transition: transform .3s ease;
 }
 
+.panel-icon--svg {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.panel-icon--svg svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .panel-arrow.rotated {
   transform: rotate(90deg);
 }
